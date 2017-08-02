@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns ="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WoodyPlants.App">
+  <Label Text="WoodyPlants App" VerticalOptions="Center" HorizontalOptions="Center" />
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <!--Set Styles for StaticResource semiTransparentButton, which is used all over the app-->
+
+      <Style x:Key="semiTransparentButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="#CC1E4D2B" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="Margin" Value="20, 0, 20, 0" />
+      </Style>
+    </ResourceDictionary>
+  </Application.Resources>      
+</Application>

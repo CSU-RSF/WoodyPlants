@@ -20,7 +20,10 @@ namespace WoodyPlants.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            LoadApplication(new WoodyPlants.App());
+
+            string dbPath = FileAccessHelper.GetLocalFilePath("db.db3");
+            var platform = new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid();
+            LoadApplication(new WoodyPlants.App(platform, dbPath));
         }
     }
 }

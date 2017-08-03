@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using SQLite.Net.Platform.XamarinIOS;
 using Foundation;
 using UIKit;
 
@@ -23,7 +23,10 @@ namespace WoodyPlants.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+
+            string dbPath = FileAccessHelper.GetLocalFilePath("db.db3");
+            var platform = new SQLitePlatformIOS();
+            LoadApplication(new WoodyPlants.App(platform, dbPath));
 
             return base.FinishedLaunching(app, options);
         }

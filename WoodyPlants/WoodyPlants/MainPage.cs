@@ -33,6 +33,7 @@ namespace WoodyPlants
             // Add empty space
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
+
             // Add navigation buttons
             Button introductionButton = new Button
             {

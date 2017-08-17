@@ -5,7 +5,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
-namespace WoodyPlants.iOS
+namespace PortableApp.iOS
 {
     public class Application
     {

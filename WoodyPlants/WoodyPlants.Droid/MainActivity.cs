@@ -7,7 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
-namespace WoodyPlants.Droid
+namespace PortableApp.Droid
 {
     [Activity(Label = "CO Woody Plants", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
@@ -23,7 +23,7 @@ namespace WoodyPlants.Droid
 
             string dbPath = FileAccessHelper.GetLocalFilePath("db.db3");
             var platform = new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid();
-            LoadApplication(new WoodyPlants.App(platform, dbPath));
+            LoadApplication(new PortableApp.App(platform, dbPath));
         }
     }
 }

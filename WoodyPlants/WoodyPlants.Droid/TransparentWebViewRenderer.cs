@@ -1,10 +1,10 @@
-﻿using WoodyPlants;
-using WoodyPlants.Droid;
+﻿using PortableApp;
+using PortableApp.Droid;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(TransparentWebView), typeof(TransparentWebViewRenderer))]
-namespace WoodyPlants.Droid
+namespace PortableApp.Droid
 {
     public class TransparentWebViewRenderer : WebViewRenderer
     {

@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WoodyPlants.Models
+namespace PortableApp.Models
 {
     [Table("woody_plants")]
     public class WoodyPlant
@@ -17,6 +17,9 @@ namespace WoodyPlants.Models
 
         [Unique]
         public string plantname { get; set; }
+
+
+        public bool isFavorite { get; set; }
     }
 
 }

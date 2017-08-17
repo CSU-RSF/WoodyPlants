@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 
-namespace WoodyPlants
+namespace PortableApp
 {
     public partial class MainPage : ViewHelpers
     {
@@ -50,7 +50,7 @@ namespace WoodyPlants
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
                 Text = "WOODY PLANTS"
             };
-           introductionButton.Clicked += ToWoodyPlants;
+            woodyPlantsButton.Clicked += ToWoodyPlants;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
             innerContainer.Children.Add(woodyPlantsButton, 0, 3);
 

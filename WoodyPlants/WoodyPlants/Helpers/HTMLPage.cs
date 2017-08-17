@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace WoodyPlants
+namespace PortableApp
 {
     public interface IBaseUrl { string Get(); }
 

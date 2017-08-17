@@ -4,13 +4,15 @@ using SQLite.Net.Interop;
 using System;
 using Xamarin.Forms;
 
-namespace WoodyPlants
+namespace PortableApp
 {
    
 
     public partial class App : Application
     {
         public static WoodyPlantRepository WoodyPlantRepo { get; private set; }
+        public static WoodySettingRepository WoodySettingsRepo { get; private set; }
+
         public App(ISQLitePlatform sqliteplatform, string dbPath)
         {
             InitializeComponent();
@@ -23,7 +25,7 @@ namespace WoodyPlants
             DBConnection dbConnAsync = new DBConnection(newConnAsync);
 
             WoodyPlantRepo = new WoodyPlantRepository();
-
+            WoodySettingsRepo = new WoodySettingRepository();
             this.MainPage = new NavigationPage(new MainPage());
         }
     }

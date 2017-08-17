@@ -5,7 +5,7 @@ using SQLite.Net.Platform.XamarinIOS;
 using Foundation;
 using UIKit;
 
-namespace WoodyPlants.iOS
+namespace PortableApp.iOS
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
     // User Interface of the application, as well as listening (and optionally responding) to 
@@ -26,7 +26,7 @@ namespace WoodyPlants.iOS
 
             string dbPath = FileAccessHelper.GetLocalFilePath("db.db3");
             var platform = new SQLitePlatformIOS();
-            LoadApplication(new WoodyPlants.App(platform, dbPath));
+            LoadApplication(new PortableApp.App(platform, dbPath));
 
             return base.FinishedLaunching(app, options);
         }

@@ -1,10 +1,10 @@
-﻿using WoodyPlants;
-using WoodyPlants.iOS;
+﻿using PortableApp;
+using PortableApp.iOS;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
 [assembly: ExportRenderer(typeof(TransparentWebView), typeof(TransparentWebViewRenderer))]
-namespace WoodyPlants.iOS
+namespace PortableApp.iOS
 {
     public class TransparentWebViewRenderer : WebViewRenderer
     {

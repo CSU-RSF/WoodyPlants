@@ -6,7 +6,7 @@ using System.Text;
 using Foundation;
 using UIKit;
 
-namespace WoodyPlants.iOS
+namespace PortableApp.iOS
 {
     public class FileAccessHelper
     {

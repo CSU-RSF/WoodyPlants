@@ -1,7 +1,7 @@
 ﻿using SQLite.Net;
 using SQLite.Net.Async;
 
-namespace WoodyPlants
+namespace PortableApp
 {
     public class DBConnection
     {
@@ -18,10 +18,10 @@ namespace WoodyPlants
         // Seed database with Plant info
         //public void SeedDB()
         //{
-        //    ObservableCollection<WetlandPlant> plants = new ObservableCollection<WetlandPlant>(App.WetlandPlantRepo.GetAllWetlandPlants());
+        //    ObservableCollection<WoodyPlant> plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
         //    if (plants.Count == 0)
         //    {
-        //        conn.Insert(new WetlandPlant() { commonname = "Test" });
+        //        conn.Insert(new WoodyPlant() { commonname = "Test" });
         //    }
         //}
 

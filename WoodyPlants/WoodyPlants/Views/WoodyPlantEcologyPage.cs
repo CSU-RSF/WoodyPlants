@@ -12,7 +12,7 @@ namespace PortableApp
         ObservableCollection<WoodyPlant> plants;
         TransparentWebView browser;
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             Content = null;
 

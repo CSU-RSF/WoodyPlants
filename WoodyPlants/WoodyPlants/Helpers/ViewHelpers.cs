@@ -349,5 +349,24 @@ namespace PortableApp
             button.BackgroundColor = Color.FromHex("CC1E4D2B");
         }
     }
-  
+
+    static class Extensions
+    {
+        public static void Sort<TSource, TKey>(this Collection<TSource> source, Func<TSource, TKey> keySelector, string sortDirection)
+        {
+            List<TSource> sortedList;
+            if (sortDirection == "\u25B2")
+            {
+                sortedList = source.OrderByDescending(keySelector).ToList();
+            }
+            else
+            {
+                sortedList = source.OrderBy(keySelector).ToList();
+            }
+            source.Clear();
+            foreach (var sortedItem in sortedList)
+                source.Add(sortedItem);
+        }
+    }
+
 }

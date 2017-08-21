@@ -19,7 +19,7 @@ namespace PortableApp
         StackLayout jumpListContainer;
         ObservableCollection<WoodyPlant> plants;
         bool cameFromSearch;
-        Dictionary<string, string> sortOptions = new Dictionary<string, string> { { "Scientific Name", "scinamenoauthor" }, { "Common Name", "commonname" }, { "Family", "family" }, { "Group", "sections" } };
+        Dictionary<string, string> sortOptions = new Dictionary<string, string> { { "Scientific Name", "scientificnameweber" }, { "Common Name", "commonname" }, { "Family", "family" } };
         Picker sortPicker = new Picker();
         Button sortButton = new Button { Style = Application.Current.Resources["semiTransparentPlantButton"] as Style, Text = "Sort", BorderRadius = Device.OnPlatform(0, 1, 0) };
         Button sortDirection = new Button { Style = Application.Current.Resources["semiTransparentPlantButton"] as Style, Text = "\u25BC", BorderRadius = Device.OnPlatform(0, 1, 0) };
@@ -131,7 +131,7 @@ namespace PortableApp
             // Add search bar
             searchBar = new CustomSearchBar
             {
-                Placeholder = "Plant Name",
+                Placeholder = "Search by scientific or common name...",
                 FontSize = 12,
                 Margin = new Thickness(Device.OnPlatform(10, 0, 0), 0, 0, 0),
                 SearchCommand = new Command(() => { })
@@ -236,18 +236,16 @@ namespace PortableApp
         {
             sortButton.Text = sortPicker.Items[sortPicker.SelectedIndex];
             woodyPlantsList.ItemsSource = null;
-            //if (sortButton.Text == "Scientific Name")
-            //    plants.Sort(i => i.scinamenoauthor, sortDirection.Text);
-            //else if (sortButton.Text == "Common Name")
-            //    plants.Sort(i => i.commonname, sortDirection.Text);
-            //else if (sortButton.Text == "Family")
-            //    plants.Sort(i => i.family, sortDirection.Text);
-            //else if (sortButton.Text == "Group")
-            //    plants.Sort(i => i.sections, sortDirection.Text);
+            if (sortButton.Text == "Scientific Name")
+                plants.Sort(i => i.scientificnameweber, sortDirection.Text);
+            else if (sortButton.Text == "Common Name")
+                plants.Sort(i => i.commonname, sortDirection.Text);
+            else if (sortButton.Text == "Family")
+                plants.Sort(i => i.family, sortDirection.Text);
 
-            //App.WoodySettingsRepo.AddOrUpdateSetting(new WoodyPlantsSetting { name = "Sort Field", valuetext = sortButton.Text, valueint = sortPicker.SelectedIndex });
-            //WoodyPlantsList.ItemTemplate = CellTemplate();
-            //WoodyPlantsList.ItemsSource = plants;
+            App.WoodySettingsRepo.AddOrUpdateSetting(new WoodySetting { name = "Sort Field", valuetext = sortButton.Text, valueint = sortPicker.SelectedIndex });
+            woodyPlantsList.ItemTemplate = CellTemplate();
+            woodyPlantsList.ItemsSource = plants;
             //FilterJumpList(sortButton.Text);
         }
 
@@ -267,8 +265,8 @@ namespace PortableApp
         private DataTemplate CellTemplate()
         {
             // Get correct order of labels on each plant
-            //GetSortField();
-            //labelValues = GetLabelValues();
+            GetSortField();
+            labelValues = GetLabelValues();
 
             var cellTemplate = new DataTemplate(() => {
 
@@ -293,25 +291,21 @@ namespace PortableApp
                 StackLayout textSection = new StackLayout { Orientation = StackOrientation.Vertical, Spacing = 2 };
 
                 Label label1 = new Label { TextColor = Color.White, FontSize = 12, FontAttributes = FontAttributes.Bold };
-                label1.SetBinding(Label.TextProperty, new Binding("plantname"));
-               //if (labelValues[0] == "scinamenoauthorstripped") label1.FontAttributes = FontAttributes.Italic;
+                label1.SetBinding(Label.TextProperty, new Binding(labelValues[0]));
+                if (labelValues[0] == "scientificnameweber") label1.FontAttributes = FontAttributes.Italic;
                 textSection.Children.Add(label1);
 
                 var headerDivider = new BoxView { HeightRequest = 1, WidthRequest = 500, BackgroundColor = Color.White };
                 textSection.Children.Add(headerDivider);
 
-                //Label label2 = new Label { TextColor = Color.White, FontSize = 12 };
-                //label2.SetBinding(Label.TextProperty, new Binding(labelValues[1]));
-                //if (labelValues[1] == "scinamenoauthorstripped") label2.FontAttributes = FontAttributes.Italic;
-                //textSection.Children.Add(label2);
+                Label label2 = new Label { TextColor = Color.White, FontSize = 12 };
+                label2.SetBinding(Label.TextProperty, new Binding(labelValues[1]));
+                if (labelValues[1] == "scientificnameweber") label2.FontAttributes = FontAttributes.Italic;
+                textSection.Children.Add(label2);
 
-                //Label label3 = new Label { TextColor = Color.White, FontSize = 12 };
-                //label3.SetBinding(Label.TextProperty, new Binding(labelValues[2]));
-                //textSection.Children.Add(label3);
-
-                //Label label4 = new Label { TextColor = Color.White, FontSize = 12 };
-                //label4.SetBinding(Label.TextProperty, new Binding(labelValues[3]));
-                //textSection.Children.Add(label4);
+                Label label3 = new Label { TextColor = Color.White, FontSize = 12 };
+                label3.SetBinding(Label.TextProperty, new Binding(labelValues[2]));
+                textSection.Children.Add(label3);
 
                 cell.Children.Add(textSection, 1, 0);
                 return new ViewCell { View = cell };
@@ -349,6 +343,16 @@ namespace PortableApp
             }
             else
                 jumpListContainer.Children.Clear();
+        }
+
+        private string[] GetLabelValues()
+        {
+            if (sortField.valuetext == "Common Name")
+                return new string[] { "commonname", "scientificnameweber", "family" };
+            if (sortField.valuetext == "Family")
+                return new string[] { "family", "scientificnameweber", "commonname" };
+            else
+                return new string[] { "scientificnameweber", "commonname", "family" };
         }
 
         private void GetSortField()

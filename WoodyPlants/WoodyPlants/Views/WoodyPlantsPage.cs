@@ -49,7 +49,7 @@ namespace PortableApp
             if (sortField.valuetext == "Sort")
             {
                 sortPicker.SelectedIndex = 0;
-                FilterJumpList("plantname");
+                FilterJumpList("scientificnameweber");
             }
             else
             {

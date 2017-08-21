@@ -30,17 +30,18 @@ namespace PortableApp
 
         public void SeedDB()
         {
-            conn.Insert(new WoodyPlant { plantid = 1, plantname = "Tim" });
-            conn.Insert(new WoodyPlant { plantid = 2, plantname = "Ken" });
-            conn.Insert(new WoodyPlant { plantid = 3, plantname = "Matt" });
-            conn.Insert(new WoodyPlant { plantid = 4, plantname = "Ben" });
-            conn.Insert(new WoodyPlant { plantid = 5, plantname = "Alli" });
-            conn.Insert(new WoodyPlant { plantid = 6, plantname = "Kevin" });
+            conn.Insert(new WoodyPlant { plantid = 1, family = "Agave-Agavaceae", scientificnameweber = "Yucca baccata", commonname = "BANANA YUCCA", othercommonname = "datil yucca" });
+            conn.Insert(new WoodyPlant { plantid = 2, family = "Agave-Agavaceae", scientificnameweber = "Yucca glauca", commonname = "YUCCA", othercommonname = "spanish bayonet, soapweed" });
+            conn.Insert(new WoodyPlant { plantid = 3, family = "Barberry-Berbridaceae", scientificnameweber = "Berberis fendleri", commonname = "FENDLER BARBERRY", othercommonname = "Colorado barberry" });
+            conn.Insert(new WoodyPlant { plantid = 4, family = "Barberry-Berbridaceae", scientificnameweber = "Mahonia repens", commonname = "CREEPING HOLLYGRAPE", othercommonname = "Oregon grape, holly-grap, creeping oregon grape" });
+            conn.Insert(new WoodyPlant { plantid = 5, family = "Birch-Betulaceae", scientificnameweber = "Alnus incana", commonname = "THINLEAF ALDER", othercommonname = "american speckled alder" });
+            conn.Insert(new WoodyPlant { plantid = 6, family = "Birch-Betulaceae", scientificnameweber = "Betula glandulosa", commonname = "DWARF BIRCH", othercommonname = "bog birch" });
+            conn.Insert(new WoodyPlant { plantid = 7, family = "Birch-Betulaceae", scientificnameweber = "Betula occidentalis", commonname = "WESTERN RIVER BIRCH", othercommonname = "river birch, rocky mountain birch" });
         }
 
         public List<string> GetPlantJumpList()
         {
-            return GetAllWoodyPlants().Select(x => x.plantname.ToString()).Distinct().ToList();
+            return GetAllWoodyPlants().Select(x => x.scientificnameweber.ToString()).Distinct().ToList();
         }
 
         //// return a specific WoodyPlant given an id
@@ -59,7 +60,7 @@ namespace PortableApp
         // get plants through term supplied in quick search
         public List<WoodyPlant> WoodyPlantsQuickSearch(string searchTerm)
         {
-            return GetAllWoodyPlants().Where(p => p.plantname.ToLower().Contains(searchTerm.ToLower())).ToList();
+            return GetAllWoodyPlants().Where(p => p.scientificnameweber.ToLower().Contains(searchTerm.ToLower())).ToList();
         }
 
         //// get current search criteria (saved in db) and return appropriate list of Woody Plants

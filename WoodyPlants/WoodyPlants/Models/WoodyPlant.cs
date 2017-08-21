@@ -15,9 +15,10 @@ namespace PortableApp.Models
         [PrimaryKey]
         public int plantid { get; set; }
 
-        [Unique]
-        public string plantname { get; set; }
-
+        public string family { get; set; }
+        public string scientificnameweber { get; set; }
+        public string commonname { get; set; }
+        public string othercommonname { get; set; }
 
         public bool isFavorite { get; set; }
     }

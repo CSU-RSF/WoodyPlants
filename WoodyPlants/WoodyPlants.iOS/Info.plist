@@ -22,8 +22,6 @@
 	</array>
 	<key>MinimumOSVersion</key>
 	<string>8.0</string>
-	<key>CFBundleDisplayName</key>
-	<string>WoodyPlants</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.RSF.woodyplants</string>
 	<key>CFBundleVersion</key>
@@ -32,8 +30,6 @@
 	<string>LaunchScreen</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-	<key>CFBundleName</key>
-	<string>WoodyPlants</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 </dict>

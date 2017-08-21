@@ -38,6 +38,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Assets\WoodyPlantImageRepository.cs" />
     <Compile Include="Assets\WoodySettingRepository.cs" />
     <Compile Include="Assets\WoodyPlantRepository.cs" />
     <Compile Include="Data\DBConnection.cs" />
@@ -45,6 +46,7 @@
     <Compile Include="Helpers\HTMLPage.cs" />
     <Compile Include="Helpers\ViewHelpers.cs" />
     <Compile Include="MainPage.cs" />
+    <Compile Include="Models\WoodyPlantImage.cs" />
     <Compile Include="Models\WoodySetting.cs" />
     <Compile Include="Models\WoodyPlant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

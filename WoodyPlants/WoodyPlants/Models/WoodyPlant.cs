@@ -23,6 +23,9 @@ namespace PortableApp.Models
 
         public bool isFavorite { get; set; }
 
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<WoodyPlantImage> Images { get; set; }
+
         //public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
         public ImageSource ThumbnailPath { get { return ImageSource.FromResource("WoodyPlants.Resources.Images.image.png"); } }
     }

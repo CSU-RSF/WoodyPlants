@@ -11,6 +11,7 @@ namespace PortableApp
     public partial class App : Application
     {
         public static WoodyPlantRepository WoodyPlantRepo { get; private set; }
+        public static WoodyPlantImageRepository WoodyPlantImageRepo { get; private set; }
         public static WoodySettingRepository WoodySettingsRepo { get; private set; }
 
         public App(ISQLitePlatform sqliteplatform, string dbPath)
@@ -24,6 +25,7 @@ namespace PortableApp
             SQLiteAsyncConnection newConnAsync = new SQLiteAsyncConnection(() => new SQLiteConnectionWithLock(sqliteplatform, new SQLiteConnectionString(dbPath, false)));
             DBConnection dbConnAsync = new DBConnection(newConnAsync);
 
+            WoodyPlantImageRepo = new WoodyPlantImageRepository();
             WoodyPlantRepo = new WoodyPlantRepository();
             WoodySettingsRepo = new WoodySettingRepository();
             this.MainPage = new NavigationPage(new MainPage());

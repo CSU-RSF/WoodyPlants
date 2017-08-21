@@ -30,6 +30,7 @@ namespace PortableApp
 
         public void SeedDB()
         {
+            // Add seven sample plants
             conn.Insert(new WoodyPlant { plantid = 1, family = "Agave-Agavaceae", scientificnameweber = "Yucca baccata", commonname = "BANANA YUCCA", othercommonname = "datil yucca" });
             conn.Insert(new WoodyPlant { plantid = 2, family = "Agave-Agavaceae", scientificnameweber = "Yucca glauca", commonname = "YUCCA", othercommonname = "spanish bayonet, soapweed" });
             conn.Insert(new WoodyPlant { plantid = 3, family = "Barberry-Berbridaceae", scientificnameweber = "Berberis fendleri", commonname = "FENDLER BARBERRY", othercommonname = "Colorado barberry" });

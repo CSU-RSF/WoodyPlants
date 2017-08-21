@@ -1,4 +1,4 @@
-﻿//using PCLStorage;
+﻿using PCLStorage;
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
 using System;
@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace PortableApp.Models
 {
@@ -21,6 +22,9 @@ namespace PortableApp.Models
         public string othercommonname { get; set; }
 
         public bool isFavorite { get; set; }
+
+        //public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
+        public ImageSource ThumbnailPath { get { return ImageSource.FromResource("WoodyPlants.Resources.Images.image.png"); } }
     }
 
 }

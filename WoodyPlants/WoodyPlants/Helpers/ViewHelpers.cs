@@ -99,7 +99,6 @@ namespace PortableApp
                 gridLayout.Children.Add(NextImageConstructor(plants, plantIndex), 3, 0);
             }
         
-
             return gridLayout;
         }
 
@@ -150,7 +149,7 @@ namespace PortableApp
         {
             Image previousImage = new Image
             {
-                Source = ImageSource.FromResource("PortableApp.Resources.Icons.previous_icon.png"),
+                Source = ImageSource.FromResource("WoodyPlants.Resources.Icons.previous_icon.png"),
                 HeightRequest = 20,
                 WidthRequest = 20,
                 Margin = new Thickness(0, 15, 0, 15)
@@ -180,7 +179,7 @@ namespace PortableApp
         {
             Image nextImage = new Image
             {
-                Source = ImageSource.FromResource("PortableApp.Resources.Icons.next_icon.png"),
+                Source = ImageSource.FromResource("WoodyPlants.Resources.Icons.next_icon.png"),
                 HeightRequest = 20,
                 WidthRequest = 20,
                 Margin = new Thickness(0, 15, 0, 15)
@@ -209,7 +208,7 @@ namespace PortableApp
             string favoriteIconOpposite = !plant.isFavorite ? "favorite_icon_filled.png" : "favorite_icon_empty.png";
             Image favoriteImage = new Image
             {
-                Source = ImageSource.FromResource("PortableApp.Resources.Icons." + favoriteIcon),
+                Source = ImageSource.FromResource("WoodyPlants.Resources.Icons." + favoriteIcon),
                 HeightRequest = 20,
                 WidthRequest = 20,
                 Margin = new Thickness(0, 15, 0, 15)
@@ -218,7 +217,7 @@ namespace PortableApp
             favoriteGestureRecognizer.Tapped += async (sender, e) =>
             {
                 plant.isFavorite = plant.isFavorite == true ? false : true;
-                favoriteImage.Source = ImageSource.FromResource("PortableApp.Resources.Icons." + favoriteIconOpposite);
+                favoriteImage.Source = ImageSource.FromResource("WoodyPlants.Resources.Icons." + favoriteIconOpposite);
                 await App.WoodyPlantRepo.UpdatePlantAsync(plant);
             };
             favoriteImage.GestureRecognizers.Add(favoriteGestureRecognizer);

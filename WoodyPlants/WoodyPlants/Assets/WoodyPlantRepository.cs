@@ -51,11 +51,11 @@ namespace PortableApp
         //    return conn.GetWithChildren<WoodyPlant>(plant.plantid);
         //}
 
-        //// get plants marked as favorites
-        //public List<WoodyPlant> GetFavoritePlants()
-        //{
-        //    return GetAllWoodyPlants().Where(p => p.isFavorite == true).ToList();
-        //}
+        // get plants marked as favorites
+        public List<WoodyPlant> GetFavoritePlants()
+        {
+            return GetAllWoodyPlants().Where(p => p.isFavorite == true).ToList();
+        }
 
         // get plants through term supplied in quick search
         public List<WoodyPlant> WoodyPlantsQuickSearch(string searchTerm)

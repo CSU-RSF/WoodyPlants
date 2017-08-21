@@ -53,7 +53,7 @@ namespace PortableApp
             }
             else
             {
-                //sortPicker.SelectedIndex = (int)sortField.valueint;
+                sortPicker.SelectedIndex = (int)sortField.valueint;
                 FilterJumpList(sortButton.Text);
             }
         }
@@ -81,7 +81,7 @@ namespace PortableApp
                 Style = Application.Current.Resources["plantFilterButton"] as Style,
                 Text = "Browse"
             };
-            //browseFilter.Clicked += FilterPlants;
+            browseFilter.Clicked += FilterPlants;
             plantFilterGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             plantFilterGroup.Children.Add(browseFilter, 0, 0);
 
@@ -117,7 +117,6 @@ namespace PortableApp
             plantFilterGroup.Children.Add(favoritesFilter, 4, 0);
 
             //// Add header to inner container
-            //HeaderNavigationOptions navOptions = new HeaderNavigationOptions { plantFiltersVisible = true, plantFilterGroupButtons = plantFilterGroup, backButtonVisible = true, homeButtonVisible = true };
             Grid navigationBar = ConstructPlantsNavigationBar();
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             innerContainer.Children.Add(navigationBar, 0, 0);
@@ -142,8 +141,8 @@ namespace PortableApp
             // Add sort container
             Grid sortContainer = new Grid { ColumnSpacing = 0 };
             sortContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.7, GridUnitType.Star) });
-            sortContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.2, GridUnitType.Star) });
-            sortContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.1, GridUnitType.Star) });
+            sortContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.25, GridUnitType.Star) });
+            sortContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.05, GridUnitType.Star) });
             sortContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
 
             sortButton.Clicked += SortPickerTapped;
@@ -284,7 +283,7 @@ namespace PortableApp
                 // Add image
                 var image = new Image { Aspect = Aspect.AspectFill, Margin = new Thickness(0, 0, 0, 20) };
                 //string imageBinding = downloadImages ? "ThumbnailPathDownloaded" : "ThumbnailPathStreamed";
-                //image.SetBinding(Image.SourceProperty, new Binding(imageBinding));
+                image.SetBinding(Image.SourceProperty, new Binding("ThumbnailPath"));
                 cell.Children.Add(image, 0, 0);
 
                 // Add text section
@@ -359,6 +358,34 @@ namespace PortableApp
         {
             sortField = App.WoodySettingsRepo.GetSetting("Sort Field");
             sortButton.Text = sortField.valuetext;
+        }
+
+        public void FilterPlants(object sender, EventArgs e)
+        {
+            Button filter = (Button)sender;
+            ChangeFilterColors(filter);
+            if (filter.Text == "Browse")
+                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
+            else if (filter.Text == "Favorites")
+                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetFavoritePlants());
+
+            woodyPlantsList.ItemsSource = plants;
+            FilterJumpList(sortButton.Text);
+        }
+
+        public void ChangeFilterColors(Button selectedFilter)
+        {
+            foreach (var element in plantFilterGroup.Children)
+            {
+                if (element.GetType() == typeof(Button))
+                {
+                    Button button = (Button)element;
+                    if (button.Text == selectedFilter.Text)
+                        button.BackgroundColor = Color.FromHex("cc000000");
+                    else
+                        button.BackgroundColor = Color.FromHex("66000000");
+                }
+            }
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)

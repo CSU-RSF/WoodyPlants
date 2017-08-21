@@ -289,22 +289,29 @@ namespace PortableApp
 
             return gridLayout;
         }
-        public async void ToIntroduction(object sender, EventArgs e)
+
+        public async void ToHelp(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            await Navigation.PushAsync(new HTMLPage("Introduction.html", "INTRODUCTION"));
+            await Navigation.PushAsync(new HTMLPage("Help.html", "BOTANICAL HELP"));
         }
 
-        public async void ToResources(object sender, EventArgs e)
+        public async void ToPlants(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            await Navigation.PushAsync(new HTMLPage("Resources.html", "RESOURCES"));
+            await Navigation.PushAsync(new WoodyPlantsPage());
         }
 
-        public async void ToWoodyPlants(object sender, EventArgs e)
+        public async void ToAbout(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-           await Navigation.PushAsync(new WoodyPlantsPage());
+            await Navigation.PushAsync(new HTMLPage("About.html", "ABOUT/CONTACT"));
+        }
+
+        public async void ToHowToUse(object sender, EventArgs e)
+        {
+            ChangeButtonColor(sender, e);
+            await Navigation.PushAsync(new HTMLPage("HowToUse.html", "HOW TO USE"));
         }
 
         public WebView HTMLProcessor(string location)

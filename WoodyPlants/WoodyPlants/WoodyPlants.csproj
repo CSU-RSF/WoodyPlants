@@ -104,16 +104,19 @@
     <EmbeddedResource Include="Resources\Images\background.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\HTML\Introduction.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\HTML\Resources.html" />
+    <EmbeddedResource Include="Views\HTML\Help.html" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Icons\favorite_icon_empty.png" />
     <EmbeddedResource Include="Resources\Icons\favorite_icon_filled.png" />
     <EmbeddedResource Include="Resources\Icons\next_icon.png" />
     <EmbeddedResource Include="Resources\Icons\previous_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\HTML\HowToUse.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\HTML\About.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

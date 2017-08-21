@@ -35,33 +35,43 @@ namespace PortableApp
 
 
             // Add navigation buttons
-            Button introductionButton = new Button
+            Button plantsButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "INTRODUCTION"
+                Text = "PLANTS"
             };
-
-            introductionButton.Clicked += ToIntroduction;
+            plantsButton.Clicked += ToPlants;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-            innerContainer.Children.Add(introductionButton, 0, 2);
+            innerContainer.Children.Add(plantsButton, 0, 2);
 
-            Button woodyPlantsButton = new Button
+            Button helpButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "WOODY PLANTS"
+                Text = "BOTANICAL HELP"
             };
-            woodyPlantsButton.Clicked += ToWoodyPlants;
+            helpButton.Clicked += ToHelp;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-            innerContainer.Children.Add(woodyPlantsButton, 0, 3);
+            innerContainer.Children.Add(helpButton, 0, 3);
 
-            Button resourcesButton = new Button
+            Button howToUseButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "RESOURCES"
+                Text = "HOW TO USE"
             };
-            resourcesButton.Clicked += ToResources;
+
+            howToUseButton.Clicked += ToHowToUse;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-            innerContainer.Children.Add(resourcesButton, 0, 4);
+            innerContainer.Children.Add(howToUseButton, 0, 4);
+
+            Button aboutButton = new Button
+            {
+                Style = Application.Current.Resources["semiTransparentButton"] as Style,
+                Text = "ABOUT/CONTACT"
+            };
+
+            aboutButton.Clicked += ToAbout;
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.Children.Add(aboutButton, 0, 5);
 
             // Add empty space
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });

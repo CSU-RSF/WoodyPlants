@@ -60,7 +60,7 @@ namespace PortableApp
         // get plants through term supplied in quick search
         public List<WoodyPlant> WoodyPlantsQuickSearch(string searchTerm)
         {
-            return GetAllWoodyPlants().Where(p => p.scientificnameweber.ToLower().Contains(searchTerm.ToLower())).ToList();
+            return GetAllWoodyPlants().Where(p => p.scientificnameweber.ToLower().Contains(searchTerm.ToLower()) || p.commonname.ToLower().Contains(searchTerm.ToLower())).ToList();
         }
 
         //// get current search criteria (saved in db) and return appropriate list of Woody Plants

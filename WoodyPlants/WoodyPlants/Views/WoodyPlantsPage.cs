@@ -71,6 +71,13 @@ namespace PortableApp
             Grid innerContainer = new Grid { Padding = new Thickness(0, Device.OnPlatform(10, 0, 0), 0, 0), ColumnSpacing = 0 };
             innerContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
+            Grid gridLayout = new Grid { VerticalOptions = LayoutOptions.FillAndExpand, HorizontalOptions = LayoutOptions.FillAndExpand, ColumnSpacing = 0 };
+            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
+
+            // BACK button
+            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridLayout.Children.Add(BackImageConstructor(), 0, 0);
+
             // Construct filter button group
             plantFilterGroup = new Grid { ColumnSpacing = -1, Margin = new Thickness(0, 8, 0, 5) };
             plantFilterGroup.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
@@ -112,14 +119,20 @@ namespace PortableApp
                 Style = Application.Current.Resources["plantFilterButton"] as Style,
                 Text = "Favorites"
             };
-            //favoritesFilter.Clicked += FilterPlants;
+            favoritesFilter.Clicked += FilterPlants;
             plantFilterGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             plantFilterGroup.Children.Add(favoritesFilter, 4, 0);
 
-            //// Add header to inner container
-            Grid navigationBar = ConstructPlantsNavigationBar();
+            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(6, GridUnitType.Star) });
+            gridLayout.Children.Add(plantFilterGroup, 1, 0);
+
+            // Home button
+            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridLayout.Children.Add(HomeImageConstructor(), 2, 0);
+
+            // Add header to inner container
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
-            innerContainer.Children.Add(navigationBar, 0, 0);
+            innerContainer.Children.Add(gridLayout, 0, 0);
 
             // Add button group grid
             Grid searchSortGroup = new Grid();

@@ -15,8 +15,8 @@ namespace PortableApp.Views
             NavigationPage.SetHasNavigationBar(this, false);
             var helpers = new ViewHelpers();
 
-            //Children.Add(new WoodyPlantImagesPage(plant, plants) { Title = "IMAGES", Icon = "images.png" });
-            //Children.Add(new WoodyPlantInfoPage(plant, plants) { Title = "INFO", Icon = "info.png" });
+            Children.Add(new WoodyPlantImagesPage(plant, plants) { Title = "IMAGES", Icon = "images.png" });
+            Children.Add(new WoodyPlantInfoPage(plant, plants) { Title = "INFO", Icon = "info.png" });
             Children.Add(new WoodyPlantEcologyPage(plant, plants) { Title = "ECOLOGY", Icon = "ecology.png" });
             //Children.Add(new WoodyPlantRangePage(plant, plants) { Title = "RANGE", Icon = "range.png" });
             //Children.Add(new WoodyPlantSimilarPage(plant, plants) { Title = "SIMILAR", Icon = "similar.png" });

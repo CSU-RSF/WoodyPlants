@@ -45,11 +45,14 @@
     <Compile Include="Helpers\Grouping.cs" />
     <Compile Include="Helpers\HTMLPage.cs" />
     <Compile Include="Helpers\ViewHelpers.cs" />
+    <Compile Include="Helpers\ZoomImage.cs" />
     <Compile Include="MainPage.cs" />
     <Compile Include="Models\WoodyPlantImage.cs" />
     <Compile Include="Models\WoodySetting.cs" />
     <Compile Include="Models\WoodyPlant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\WoodyPlantImagesPage.cs" />
+    <Compile Include="Views\WoodyPlantInfoPage.cs" />
     <Compile Include="Views\WoodyPlantDetailPage.cs" />
     <Compile Include="Views\WoodyPlantEcologyPage.cs" />
     <Compile Include="Views\WoodyPlantsPage.cs" />

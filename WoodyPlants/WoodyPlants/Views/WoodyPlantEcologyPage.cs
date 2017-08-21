@@ -12,10 +12,8 @@ namespace PortableApp
         ObservableCollection<WoodyPlant> plants;
         TransparentWebView browser;
 
-        protected override void OnAppearing()
+        public WoodyPlantEcologyPage(WoodyPlant plant, ObservableCollection<WoodyPlant> plants)
         {
-            Content = null;
-
             // Turn off navigation bar and initialize pageContainer
             NavigationPage.SetHasNavigationBar(this, false);
             AbsoluteLayout pageContainer = ConstructPageContainer();
@@ -51,14 +49,6 @@ namespace PortableApp
             // Add inner container to page container and set as page content
             pageContainer.Children.Add(innerContainer, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
             Content = pageContainer;
-
-            base.OnAppearing();
-        }
-
-        public WoodyPlantEcologyPage(WoodyPlant WoodyPlant, ObservableCollection<WoodyPlant> WoodyPlants)
-        {
-            plant = WoodyPlant;
-            plants = WoodyPlants;
 
         }
         

@@ -17,9 +17,9 @@ namespace PortableApp
         public WoodyPlantImageRepository()
 		{
             //Create the Woody Plant table(only if it's not yet created) 
-            conn.DropTable<WoodyPlantImage>();
+            //conn.DropTable<WoodyPlantImage>();
             conn.CreateTable<WoodyPlantImage>();
-            SeedDB();
+            //SeedDB();
         }
 
         // return a list of Woody Plant Images saved to the WoodyPlantImage table in the database

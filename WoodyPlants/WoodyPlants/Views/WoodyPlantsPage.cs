@@ -19,7 +19,7 @@ namespace PortableApp
         StackLayout jumpListContainer;
         ObservableCollection<WoodyPlant> plants;
         bool cameFromSearch;
-        Dictionary<string, string> sortOptions = new Dictionary<string, string> { { "Scientific Name", "scientificnameweber" }, { "Common Name", "commonname" }, { "Family", "family" } };
+        Dictionary<string, string> sortOptions = new Dictionary<string, string> { { "Scientific Name", "scientificNameWeber" }, { "Common Name", "commonName" }, { "Family", "family" } };
         Picker sortPicker = new Picker();
         Button sortButton = new Button { Style = Application.Current.Resources["semiTransparentPlantButton"] as Style, Text = "Sort", BorderRadius = Device.OnPlatform(0, 1, 0) };
         Button sortDirection = new Button { Style = Application.Current.Resources["semiTransparentPlantButton"] as Style, Text = "\u25BC", BorderRadius = Device.OnPlatform(0, 1, 0) };
@@ -37,9 +37,10 @@ namespace PortableApp
             if (!cameFromSearch)
             {
                 plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
+                //plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
                 if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
                 //ChangeFilterColors(browseFilter);
-                //plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
+                
                 base.OnAppearing();
             }
             // else
@@ -50,7 +51,7 @@ namespace PortableApp
             if (sortField.valuetext == "Sort")
             {
                 sortPicker.SelectedIndex = 0;
-                FilterJumpList("scientificnameweber");
+                FilterJumpList("scientificNameWeber");
             }
             else
             {

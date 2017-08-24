@@ -185,6 +185,10 @@ namespace PortableApp.Models
 
         //public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
         public ImageSource ThumbnailPath { get { return ImageSource.FromResource("WoodyPlants.Resources.Images.image.png"); } }
+
+        public string scientificNameWeberFirstInitial { get { return scientificNameWeber[0].ToString(); } }
+        public string familyFirstInitial { get { return family[0].ToString(); } }
+        public string commonNameFirstInitial { get { return commonName[0].ToString(); } }
     }
 
 }

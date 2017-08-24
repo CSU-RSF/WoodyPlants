@@ -18,7 +18,7 @@ namespace PortableApp
             // Create the Woody Setting table (only if it's not yet created)
             //conn.DropTable<WoodySetting>();
             conn.CreateTable<WoodySetting>();
-            SeedDB();
+            //SeedDB();
         }
 
         // return a list of Woodyplants saved to the WoodySetting table in the database

@@ -21,6 +21,8 @@ namespace PortableApp
         // VIEWS
         //
 
+        public ExternalDBConnection externalConnection = new ExternalDBConnection();
+
         // Construct Page Container as an AbsoluteLayout with a background image
         public AbsoluteLayout ConstructPageContainer()
         {

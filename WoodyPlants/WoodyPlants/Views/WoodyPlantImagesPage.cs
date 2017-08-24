@@ -1,4 +1,5 @@
-﻿using CarouselView.FormsPlugin.Abstractions;
+﻿using CarouselView;
+using CarouselView.FormsPlugin.Abstractions;
 using PortableApp.Helpers;
 using PortableApp.Models;
 using System.Collections.ObjectModel;
@@ -21,7 +22,7 @@ namespace PortableApp
             innerContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             // Add header to inner container
-            Grid navigationBar = ConstructPlantNavigationBar(plant.scientificnameweber, plant, plants);
+            Grid navigationBar = ConstructPlantNavigationBar(plant.scientificNameWeber, plant, plants);
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             innerContainer.Children.Add(navigationBar, 0, 0);
             
@@ -56,7 +57,7 @@ namespace PortableApp
             carouselControl.InterPageSpacing = 10;
             carouselControl.Orientation = CarouselViewOrientation.Horizontal;
             
-            innerContainer.RowDefinitions.Add(new RowDefinition { });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             innerContainer.Children.Add(carouselControl, 0, 1);
 
             // Add inner container to page container and set as page content

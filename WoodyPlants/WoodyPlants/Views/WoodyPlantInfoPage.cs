@@ -20,7 +20,7 @@ namespace PortableApp
             innerContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             // Add header to inner container
-            Grid navigationBar = ConstructPlantNavigationBar(plant.scientificnameweber, plant, plants);
+            Grid navigationBar = ConstructPlantNavigationBar(plant.scientificNameWeber, plant, plants);
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             innerContainer.Children.Add(navigationBar, 0, 0);
             
@@ -51,10 +51,10 @@ namespace PortableApp
             html += "<style>body { color: white; font-size: 0.9em; } .section_header { font-weight: bold; border-bottom: 1px solid white; margin: 10px 0; } .embedded_table { width: 100%; margin-left: 10px; }</style>";
 
             html += "<div class='section_header'>NOMENCLATURE</div>";
-            html += "<strong>Scientific Name: </strong>" + plant.scientificnameweber + "<br/>";
+            html += "<strong>Scientific Name: </strong>" + plant.scientificNameWeber + "<br/>";
             html += "<strong>Family: </strong>" + plant.family + "<br/>";
-            html += "<strong>Common Name: </strong>" + plant.commonname + "<br/>";
-            html += "<strong>Other Common Names: </strong>" + plant.othercommonname + "<br/>";
+            html += "<strong>Common Name: </strong>" + plant.commonName + "<br/>";
+            html += "<strong>Other Common Names: </strong>" + plant.scientificNameOther + "<br/>";
 
             html += "</body></html>";
 

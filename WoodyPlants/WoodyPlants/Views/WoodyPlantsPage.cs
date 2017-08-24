@@ -31,7 +31,7 @@ namespace PortableApp
         Button favoritesFilter;
         SearchBar searchBar;
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             // Get filtered plant list if came from search
             if (!cameFromSearch)
@@ -39,6 +39,7 @@ namespace PortableApp
                 plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
                 if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
                 //ChangeFilterColors(browseFilter);
+                //plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
                 base.OnAppearing();
             }
             // else
@@ -249,9 +250,9 @@ namespace PortableApp
             sortButton.Text = sortPicker.Items[sortPicker.SelectedIndex];
             woodyPlantsList.ItemsSource = null;
             if (sortButton.Text == "Scientific Name")
-                plants.Sort(i => i.scientificnameweber, sortDirection.Text);
+                plants.Sort(i => i.scientificNameWeber, sortDirection.Text);
             else if (sortButton.Text == "Common Name")
-                plants.Sort(i => i.commonname, sortDirection.Text);
+                plants.Sort(i => i.commonName, sortDirection.Text);
             else if (sortButton.Text == "Family")
                 plants.Sort(i => i.family, sortDirection.Text);
 
@@ -360,11 +361,11 @@ namespace PortableApp
         private string[] GetLabelValues()
         {
             if (sortField.valuetext == "Common Name")
-                return new string[] { "commonname", "scientificnameweber", "family" };
+                return new string[] { "commonName", "scientificNameWeber", "family" };
             if (sortField.valuetext == "Family")
-                return new string[] { "family", "scientificnameweber", "commonname" };
+                return new string[] { "family", "scientificNameWeber", "commonName" };
             else
-                return new string[] { "scientificnameweber", "commonname", "family" };
+                return new string[] { "scientificNameWeber", "commonName", "family" };
         }
 
         private void GetSortField()

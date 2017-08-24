@@ -31,13 +31,13 @@ namespace PortableApp
         public void SeedDB()
         {
             // Add seven sample plants
-            conn.Insert(new WoodyPlant { plant_id = 75, plant_imported_id = 1, family = "Agave-Agavaceae", scientificNameWeber = "Yucca baccata", commonName = "BANANA YUCCA", scientificNameOther = "datil yucca" });
-            conn.Insert(new WoodyPlant { plant_id = 76, plant_imported_id = 2, family = "Agave-Agavaceae", scientificNameWeber = "Yucca glauca", commonName = "YUCCA", scientificNameOther = "spanish bayonet, soapweed" });
-            conn.Insert(new WoodyPlant { plant_id = 77, plant_imported_id = 3, family = "Barberry-Berbridaceae", scientificNameWeber = "Berberis fendleri", commonName = "FENDLER BARBERRY", scientificNameOther = "Colorado barberry" });
-            conn.Insert(new WoodyPlant { plant_id = 78, plant_imported_id = 4, family = "Barberry-Berbridaceae", scientificNameWeber = "Mahonia repens", commonName = "CREEPING HOLLYGRAPE", scientificNameOther = "Oregon grape, holly-grap, creeping oregon grape" });
-            conn.Insert(new WoodyPlant { plant_id = 79, plant_imported_id = 5, family = "Birch-Betulaceae", scientificNameWeber = "Alnus incana", commonName = "THINLEAF ALDER", scientificNameOther = "american speckled alder" });
-            conn.Insert(new WoodyPlant { plant_id = 80, plant_imported_id = 6, family = "Birch-Betulaceae", scientificNameWeber = "Betula glandulosa", commonName = "DWARF BIRCH", scientificNameOther = "bog birch" });
-            conn.Insert(new WoodyPlant { plant_id = 81, plant_imported_id = 7, family = "Birch-Betulaceae", scientificNameWeber = "Betula occidentalis", commonName = "WESTERN RIVER BIRCH", scientificNameOther = "river birch, rocky mountain birch" });
+            conn.Insert(new WoodyPlant { plant_id = 1, plant_imported_id = 1, family = "Agave-Agavaceae", scientificNameWeber = "Yucca baccata", commonName = "BANANA YUCCA", scientificNameOther = "datil yucca" });
+            conn.Insert(new WoodyPlant { plant_id = 2, plant_imported_id = 2, family = "Agave-Agavaceae", scientificNameWeber = "Yucca glauca", commonName = "YUCCA", scientificNameOther = "spanish bayonet, soapweed" });
+            conn.Insert(new WoodyPlant { plant_id = 3, plant_imported_id = 3, family = "Barberry-Berbridaceae", scientificNameWeber = "Berberis fendleri", commonName = "FENDLER BARBERRY", scientificNameOther = "Colorado barberry" });
+            conn.Insert(new WoodyPlant { plant_id = 4, plant_imported_id = 4, family = "Barberry-Berbridaceae", scientificNameWeber = "Mahonia repens", commonName = "CREEPING HOLLYGRAPE", scientificNameOther = "Oregon grape, holly-grap, creeping oregon grape" });
+            conn.Insert(new WoodyPlant { plant_id = 5, plant_imported_id = 5, family = "Birch-Betulaceae", scientificNameWeber = "Alnus incana", commonName = "THINLEAF ALDER", scientificNameOther = "american speckled alder" });
+            conn.Insert(new WoodyPlant { plant_id = 6, plant_imported_id = 6, family = "Birch-Betulaceae", scientificNameWeber = "Betula glandulosa", commonName = "DWARF BIRCH", scientificNameOther = "bog birch" });
+            conn.Insert(new WoodyPlant { plant_id = 7, plant_imported_id = 7, family = "Birch-Betulaceae", scientificNameWeber = "Betula occidentalis", commonName = "WESTERN RIVER BIRCH", scientificNameOther = "river birch, rocky mountain birch" });
         }
 
         public List<string> GetPlantJumpList()

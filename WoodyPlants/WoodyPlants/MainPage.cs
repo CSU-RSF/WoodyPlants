@@ -14,7 +14,7 @@ namespace PortableApp
         private bool isConnectedToWiFi;
         private Grid innerContainer;
         private Switch downloadImagesSwitch;
-        //private WoodySetting downloadImagesSetting;
+        private WoodySetting downloadImagesSetting;
         private int numberOfPlants;
         private bool updatePlants = false;
         DownloadWoodyPlantsPage downloadPage;
@@ -22,8 +22,8 @@ namespace PortableApp
         private bool canceledDownload = false;
         private WoodySetting datePlantDataUpdatedLocally;
         private WoodySetting datePlantDataUpdatedOnServer;
-        //private List<WoodySetting> imageFilesToDownload = new List<WoodySetting>();
-        //private IEnumerable<WoodySetting> imageFileSettingsOnServer;
+        private List<WoodySetting> imageFilesToDownload = new List<WoodySetting>();
+        private IEnumerable<WoodySetting> imageFileSettingsOnServer;
 
         protected override async void OnAppearing()
         {
@@ -31,6 +31,10 @@ namespace PortableApp
             isConnected = Connectivity.checkConnection();
             isConnectedToWiFi = Connectivity.checkWiFiConnection();
             numberOfPlants = new List<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants()).Count;
+            downloadImagesSetting = await App.WoodySettingsRepo.GetSettingAsync("Download Images");
+            downloadImages = (bool)downloadImagesSetting.valuebool;
+            downloadImagesSwitch.IsToggled = downloadImages;
+
 
             // in order to go to the DownloadPage, must be connected to the internet (or cell data), did not just come from the download page
             if (isConnected && !canceledDownload && !finishedDownload)
@@ -39,8 +43,8 @@ namespace PortableApp
                 try
                 {
                     datePlantDataUpdatedOnServer = await externalConnection.GetDateUpdatedDataOnServer();
-                    //imageFileSettingsOnServer = await externalConnection.GetImageZipFileSettings();
-                    //ImageFilesToDownload();
+                    imageFileSettingsOnServer = await externalConnection.GetImageZipFileSettings();
+                    ImageFilesToDownload();
                 }
                 catch { }
 
@@ -120,8 +124,20 @@ namespace PortableApp
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
             innerContainer.Children.Add(aboutButton, 0, 5);
 
+            // Switch for downloading images
+            StackLayout downloadImagesLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Margin = new Thickness(20, 0, 20, 0), HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
+            downloadImagesSwitch = new Switch { BackgroundColor = Color.FromHex("66000000") };
+            downloadImagesSwitch.Toggled += ToggleDownloadImagesSwitch;
+            Label downloadImagesLabel = new Label { Text = "Download Images", TextColor = Color.White };
+            downloadImagesLayout.Children.Add(downloadImagesLabel);
+            downloadImagesLayout.Children.Add(downloadImagesSwitch);
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.Children.Add(downloadImagesLayout, 0, 6);
+
             // Add empty space
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+
+
         }
 
         private async void HandleFinishedDownload(object sender, EventArgs e)
@@ -144,6 +160,30 @@ namespace PortableApp
             downloadPage.InitFinishedDownload += HandleFinishedDownload;
             await Navigation.PushModalAsync(downloadPage);
            
-    }
+        }
+
+        public void ImageFilesToDownload()
+        {
+            foreach (WoodySetting imageFile in imageFileSettingsOnServer)
+            {
+                WoodySetting imageFileLocalSetting = App.WoodySettingsRepo.GetImageZipFileSetting(imageFile.valuetext);
+                if (imageFileLocalSetting == null)
+                    imageFilesToDownload.Add(imageFile);
+            }
+        }
+
+        private async void ToggleDownloadImagesSwitch(object sender, ToggledEventArgs e)
+        {
+            if (downloadImagesSwitch.IsToggled == true)
+            {
+                downloadImagesSetting.valuebool = true;
+                if (imageFilesToDownload.Count > 0)
+                    ToDownloadPage();
+            }
+            else
+                downloadImagesSetting.valuebool = false;
+
+            await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
+        }
     }
 }

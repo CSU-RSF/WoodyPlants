@@ -54,11 +54,11 @@ namespace PortableApp
             return JsonConvert.DeserializeObject<WoodySetting>(result);
         }
 
-        //public async Task<IEnumerable<WoodySetting>> GetImageZipFileSettings()
-        //{
-        //    result = await client.GetStringAsync(Url + "_settings/images");
-        //    return JsonConvert.DeserializeObject<IList<WoodySetting>>(result);
-        //}
+        public async Task<IEnumerable<WoodySetting>> GetImageZipFileSettings()
+        {
+            result = await client.GetStringAsync(Url + "_settings/images");
+            return JsonConvert.DeserializeObject<IList<WoodySetting>>(result);
+        }
 
         //public async Task<Stream> GetImageZipFiles(string imageFileToDownload)
         //{

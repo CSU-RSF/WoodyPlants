@@ -22,6 +22,7 @@ namespace PortableApp
         //
 
         public ExternalDBConnection externalConnection = new ExternalDBConnection();
+        public bool downloadImages = (bool)App.WoodySettingsRepo.GetSetting("Download Images").valuebool;
 
         // Construct Page Container as an AbsoluteLayout with a background image
         public AbsoluteLayout ConstructPageContainer()

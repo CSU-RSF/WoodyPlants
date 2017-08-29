@@ -18,7 +18,7 @@ namespace PortableApp
             // Create the Woody Setting table (only if it's not yet created)
             //conn.DropTable<WoodySetting>();
             conn.CreateTable<WoodySetting>();
-            //SeedDB();
+            SeedDB();
         }
 
         // return a list of Woodyplants saved to the WoodySetting table in the database
@@ -128,7 +128,7 @@ namespace PortableApp
             if (GetSetting("Sort Field") == null)
                 conn.Insert(new WoodySetting { name = "Sort Field", valuetext = "Scientific Name", valueint = 0 });
             if (GetSetting("Download Images") == null)
-                conn.Insert(new WoodySetting { name = "Download Images", valuebool = false });
+                conn.Insert(new WoodySetting { name = "Download Images", valuebool = true });
             if (GetSetting("Date Plants Downloaded") == null)
                 conn.Insert(new WoodySetting { name = "Date Plants Downloaded", valuetimestamp = new DateTime(2000, 1, 1) });
         }

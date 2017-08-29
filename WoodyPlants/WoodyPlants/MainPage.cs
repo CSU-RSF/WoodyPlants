@@ -1,15 +1,62 @@
 ﻿
+using PortableApp.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-
+using PortableApp.Models;
 
 namespace PortableApp
 {
     public partial class MainPage : ViewHelpers
     {
+        private bool isConnected;
+        private bool isConnectedToWiFi;
         private Grid innerContainer;
+        private Switch downloadImagesSwitch;
+        //private WoodySetting downloadImagesSetting;
+        private int numberOfPlants;
+        private bool updatePlants = false;
+        DownloadWoodyPlantsPage downloadPage;
+        private bool finishedDownload = false;
+        private bool canceledDownload = false;
+        private WoodySetting datePlantDataUpdatedLocally;
+        private WoodySetting datePlantDataUpdatedOnServer;
+        //private List<WoodySetting> imageFilesToDownload = new List<WoodySetting>();
+        //private IEnumerable<WoodySetting> imageFileSettingsOnServer;
+
+        protected override async void OnAppearing()
+        {
+            // Initialize variables
+            isConnected = Connectivity.checkConnection();
+            isConnectedToWiFi = Connectivity.checkWiFiConnection();
+            numberOfPlants = new List<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants()).Count;
+
+            // in order to go to the DownloadPage, must be connected to the internet (or cell data), did not just come from the download page
+            if (isConnected && !canceledDownload && !finishedDownload)
+            {
+                datePlantDataUpdatedLocally = App.WoodySettingsRepo.GetSetting("Date Plants Downloaded");
+                try
+                {
+                    datePlantDataUpdatedOnServer = await externalConnection.GetDateUpdatedDataOnServer();
+                    //imageFileSettingsOnServer = await externalConnection.GetImageZipFileSettings();
+                    //ImageFilesToDownload();
+                }
+                catch { }
+
+                // If valid date comparison and date on server is more recent than local date, show download button
+                if (datePlantDataUpdatedLocally != null && datePlantDataUpdatedOnServer != null)
+                {
+                    if (datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp || numberOfPlants == 0)
+                    {
+                        updatePlants = true;
+                        ToDownloadPage();
+                    }
+                }
+                
+            }
+            base.OnAppearing();
+        }
 
         public MainPage()
         {
@@ -77,5 +124,26 @@ namespace PortableApp
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
         }
 
+        private async void HandleFinishedDownload(object sender, EventArgs e)
+        {
+            finishedDownload = true;
+            await App.Current.MainPage.Navigation.PopModalAsync();
+        }
+
+        private async void HandleCancelDownload(object sender, EventArgs e)
+        {
+            canceledDownload = true;
+            await App.Current.MainPage.Navigation.PopModalAsync();
+        }
+
+        private async void ToDownloadPage()
+        {
+            downloadPage = new DownloadWoodyPlantsPage(updatePlants, datePlantDataUpdatedLocally, datePlantDataUpdatedOnServer);
+            updatePlants = true;
+            downloadPage.InitCancelDownload += HandleCancelDownload;
+            downloadPage.InitFinishedDownload += HandleFinishedDownload;
+            await Navigation.PushModalAsync(downloadPage);
+           
+    }
     }
 }

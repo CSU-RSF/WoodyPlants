@@ -87,20 +87,20 @@ namespace PortableApp
         //    return plants;
         //}
 
-        //public async Task AddOrUpdatePlantAsync(WoodyPlant plant)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrEmpty(plant.commonname))
-        //            throw new Exception("Valid plant required");
-        //        await connAsync.InsertOrReplaceWithChildrenAsync(plant);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        StatusMessage = string.Format("Failed to add {0}. Error: {1}", plant, ex.Message);
-        //    }
+        public async Task AddOrUpdatePlantAsync(WoodyPlant plant)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(plant.commonName))
+                    throw new Exception("Valid plant required");
+                await connAsync.InsertOrReplaceWithChildrenAsync(plant);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to add {0}. Error: {1}", plant, ex.Message);
+            }
 
-        //}
+        }
 
         public async Task UpdatePlantAsync(WoodyPlant plant)
         {

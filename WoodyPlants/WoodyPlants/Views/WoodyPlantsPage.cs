@@ -36,8 +36,8 @@ namespace PortableApp
             // Get filtered plant list if came from search
             if (!cameFromSearch)
             {
-                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
-                //plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
+                //plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
+                plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
                 if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
                 //ChangeFilterColors(browseFilter);
                 

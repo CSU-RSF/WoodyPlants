@@ -25,7 +25,7 @@ namespace PortableApp
         // Set headers for client
         public ExternalDBConnection()
         {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", "p4OqMiplghVdWPbVv5rx84jdlskdJk*jdlsKDIE84");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", "p4OqMiplghVdWPlol5rx84jdlskdJk*jdlsKDIE42");
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         }
         
@@ -41,18 +41,18 @@ namespace PortableApp
         //    return JsonConvert.DeserializeObject<IList<WoodyGlossary>>(result);
         //}
 
-        //public async Task<WoodySetting> GetDateUpdatedDataOnServer()
-        //{
-        //    try
-        //    {
-        //        result = await client.GetStringAsync(Url + "_settings/DatePlantDataUpdatedOnServer");
-        //    }
-        //    catch
-        //    {
-        //        return null;
-        //    }
-        //    return JsonConvert.DeserializeObject<WoodySetting>(result);
-        //}
+        public async Task<WoodySetting> GetDateUpdatedDataOnServer()
+        {
+            try
+            {
+                result = await client.GetStringAsync(Url + "_settings/DatePlantDataUpdatedOnServer");
+            }
+            catch
+            {
+                return null;
+            }
+            return JsonConvert.DeserializeObject<WoodySetting>(result);
+        }
 
         //public async Task<IEnumerable<WoodySetting>> GetImageZipFileSettings()
         //{

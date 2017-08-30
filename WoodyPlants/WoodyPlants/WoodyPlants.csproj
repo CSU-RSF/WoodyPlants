@@ -38,6 +38,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Assets\WoodySearchRepository.cs" />
     <Compile Include="Assets\WoodyPlantImageRepository.cs" />
     <Compile Include="Assets\WoodySettingRepository.cs" />
     <Compile Include="Assets\WoodyPlantRepository.cs" />
@@ -46,14 +47,18 @@
     <Compile Include="Data\ExternalDBConnection.cs" />
     <Compile Include="Helpers\Grouping.cs" />
     <Compile Include="Helpers\HTMLPage.cs" />
+    <Compile Include="Helpers\PredicateBuilder.cs" />
+    <Compile Include="Helpers\SearchCharacteristicIcon.cs" />
     <Compile Include="Helpers\ViewHelpers.cs" />
     <Compile Include="Helpers\ZoomImage.cs" />
     <Compile Include="MainPage.cs" />
+    <Compile Include="Models\WoodySearch.cs" />
     <Compile Include="Models\WoodyPlantImage.cs" />
     <Compile Include="Models\WoodySetting.cs" />
     <Compile Include="Models\WoodyPlant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\DownloadWoodyPlantsPage.cs" />
+    <Compile Include="Views\WoodyPlantsSearchPage.cs" />
     <Compile Include="Views\WoodyPlantImagesPage.cs" />
     <Compile Include="Views\WoodyPlantInfoPage.cs" />
     <Compile Include="Views\WoodyPlantDetailPage.cs" />

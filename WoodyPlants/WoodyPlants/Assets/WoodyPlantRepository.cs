@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System;
 using SQLiteNetExtensions.Extensions;
 using SQLiteNetExtensionsAsync.Extensions;
+using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 
 namespace PortableApp
 {
@@ -28,6 +30,13 @@ namespace PortableApp
             return conn.GetAllWithChildren<WoodyPlant>();
         }
 
+        // return a list of WoodyPlants saved to the WoodyPlant table in the database
+        public async Task<ObservableCollection<WoodyPlant>> GetAllWoodyPlantsAsync()
+        {
+            List<WoodyPlant> list = await connAsync.GetAllWithChildrenAsync<WoodyPlant>(); 
+            return new ObservableCollection<WoodyPlant>(list);     
+        }
+
         public void SeedDB()
         {
             // Add seven sample plants
@@ -44,6 +53,18 @@ namespace PortableApp
         {
             return GetAllWoodyPlants().Select(x => x.scientificNameWeber.ToString()).Distinct().ToList();
         }
+
+        //get all the selected search criteria
+        //public async Task<ObservableCollection<WoodyPlant>> FilterPlantsBySearchCriteria()
+        //{
+        //    // get search criteria and plants
+        //    List<WoodySearch> selectCritList = await App.WoodySearchRepo.GetQueryableSearchCriteriaAsync();
+        //    ObservableCollection<WoodyPlant> plants = await App.WoodyPlantRepo.GetAllWoodyPlantsAsync();
+
+        //    // execute filtering
+        //    Expression<Func<WoodyPlant, bool>> predicate = ConstructPredicate(plants, selectCritList);
+
+        //}
 
         //// return a specific WoodyPlant given an id
         //public WoodyPlant GetWoodyPlantByAltId(int Id)
@@ -63,30 +84,7 @@ namespace PortableApp
         {
             return GetAllWoodyPlants().Where(p => p.scientificNameWeber.ToLower().Contains(searchTerm.ToLower()) || p.commonName.ToLower().Contains(searchTerm.ToLower())).ToList();
         }
-
-        //// get current search criteria (saved in db) and return appropriate list of Woody Plants
-        //public IEnumerable<WoodyPlant> GetPlantsBySearchCriteria()
-        //{
-        //    IEnumerable<WoodyPlant> plants = GetAllWoodyPlants();
-        //    List<WoodySearch> searchCriteria = new List<WoodySearch>(App.WoodySearchRepo.GetQueryableSearchCriteria());
-        //    if (searchCriteria.Count > 0)
-        //    {
-        //        foreach (WoodySearch criterion in searchCriteria)
-        //        {
-        //            try
-        //            {
-        //                if (criterion.Name == "Bentgrass") { plants = plants.Where(x => x.commonname.Contains(criterion.SearchString1)); };
-        //                if (criterion.Name == "Poaceae") { plants = plants.Where(x => x.family.Contains(criterion.SearchString1)); };
-        //            }
-        //            catch
-        //            {
-        //                return null;
-        //            }
-        //        }
-        //    }
-        //    return plants;
-        //}
-
+        
         public async Task AddOrUpdatePlantAsync(WoodyPlant plant)
         {
             try
@@ -113,6 +111,21 @@ namespace PortableApp
                 StatusMessage = string.Format("Failed to update {0}. Error: {1}", plant, ex.Message);
             }
         }
+
+        //private PredicateBuilder ConstructPredicate(ObservableCollection<WoodyPlant> plants, List<WoodySearch> selectCritList)
+        //{
+        //    var leafTypeQuery = PredicateBuilder.False<WoodyPlant>();
+        //    var queryLeafTypes = selectCritList.Where(x => x.Characteristic.Contains("LeafType"));
+        //    if (queryLeafTypes.Count() > 0)
+        //    {
+        //        foreach (var leafType in queryLeafTypes)
+        //        {
+        //            leafTypeQuery.Or(x => x.leafType.Contains(leafType.SearchString1));
+        //        }
+        //    }
+
+        //    plants.Where(leafTypeQuery);
+        //}
 
     }
 }

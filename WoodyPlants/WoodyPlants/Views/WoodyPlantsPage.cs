@@ -104,10 +104,10 @@ namespace PortableApp
                 Style = Application.Current.Resources["plantFilterButton"] as Style,
                 Text = "Search"
             };
-           // var SearchPage = new WoodyPlantsSearchPage();
-            //searchFilter.Clicked += async (s, e) => { await Navigation.PushModalAsync(SearchPage); };
-            //SearchPage.InitRunSearch += HandleRunSearch;
-            //SearchPage.InitCloseSearch += HandleCloseSearch;
+            var SearchPage = new WoodyPlantsSearchPage();
+            searchFilter.Clicked += async (s, e) => { await Navigation.PushModalAsync(SearchPage); };
+            SearchPage.InitRunSearch += HandleRunSearch;
+            SearchPage.InitCloseSearch += HandleCloseSearch;
             plantFilterGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             plantFilterGroup.Children.Add(searchFilter, 2, 0);
 
@@ -414,6 +414,20 @@ namespace PortableApp
                 await Navigation.PushAsync(detailPage);
             }
         }
+        private async void HandleRunSearch(object sender, EventArgs e)
+        {
+            //plants = await App.WoodyPlantRepo.FilterPlantsBySearchCriteria();
+            woodyPlantsList.ItemsSource = plants;
+            cameFromSearch = true;
+            await App.Current.MainPage.Navigation.PopModalAsync();
+        }
+
+        private async void HandleCloseSearch(object sender, EventArgs e)
+        {
+            cameFromSearch = true;
+            await App.Current.MainPage.Navigation.PopModalAsync();
+        }
+
     }
 
     public class CustomSearchBar : SearchBar

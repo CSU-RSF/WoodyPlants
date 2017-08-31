@@ -55,16 +55,29 @@ namespace PortableApp
         }
 
         //get all the selected search criteria
-        //public async Task<ObservableCollection<WoodyPlant>> FilterPlantsBySearchCriteria()
-        //{
-        //    // get search criteria and plants
-        //    List<WoodySearch> selectCritList = await App.WoodySearchRepo.GetQueryableSearchCriteriaAsync();
-        //    ObservableCollection<WoodyPlant> plants = await App.WoodyPlantRepo.GetAllWoodyPlantsAsync();
+        public async Task<ObservableCollection<WoodyPlant>> FilterPlantsBySearchCriteria()
+        {
+            // get search criteria and plants
+            List<WoodySearch> selectCritList = await App.WoodySearchRepo.GetQueryableSearchCriteriaAsync();
+            List<WoodyPlant> plants;
 
-        //    // execute filtering
-        //    Expression<Func<WoodyPlant, bool>> predicate = ConstructPredicate(plants, selectCritList);
+            // execute filtering
+            if (selectCritList.Count() > 0)
+            {
+                var predicate = ConstructPredicate(selectCritList);
+                plants = conn.Table<WoodyPlant>().AsQueryable().Where(predicate).ToList();
+            }
+            else
+            {
+                plants = GetAllWoodyPlants();
+            }
 
-        //}
+            return new ObservableCollection<WoodyPlant>(plants);
+
+            
+            //(from p in conn.Table<WoodyPlant>().Where(predicate) select p).ToList();
+            
+        }
 
         //// return a specific WoodyPlant given an id
         //public WoodyPlant GetWoodyPlantByAltId(int Id)
@@ -112,20 +125,32 @@ namespace PortableApp
             }
         }
 
-        //private PredicateBuilder ConstructPredicate(ObservableCollection<WoodyPlant> plants, List<WoodySearch> selectCritList)
-        //{
-        //    var leafTypeQuery = PredicateBuilder.False<WoodyPlant>();
-        //    var queryLeafTypes = selectCritList.Where(x => x.Characteristic.Contains("LeafType"));
-        //    if (queryLeafTypes.Count() > 0)
-        //    {
-        //        foreach (var leafType in queryLeafTypes)
-        //        {
-        //            leafTypeQuery.Or(x => x.leafType.Contains(leafType.SearchString1));
-        //        }
-        //    }
+        // Construct Predicate for plants query, filtering based on selected criteria
+        // Solution taken from http://www.albahari.com/nutshell/predicatebuilder.aspx
+        private Expression<Func<WoodyPlant, bool>> ConstructPredicate(List<WoodySearch> selectCritList)
+        {
+            var overallQuery = PredicateBuilder.True<WoodyPlant>();
 
-        //    plants.Where(leafTypeQuery);
-        //}
+            // Add selected Leaf Type characteristics
+            var queryLeafTypes = selectCritList.Where(x => x.Characteristic.Contains("LeafType"));
+            if (queryLeafTypes.Count() > 0)
+            {
+                var leafTypeQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var leafType in queryLeafTypes) { leafTypeQuery = leafTypeQuery.Or(x => x.leafType.Contains(leafType.SearchString1)); }
+                overallQuery = overallQuery.And(leafTypeQuery);
+            }
+                
+            // Add selected Flower Color characteristics
+            var queryFlowerColor = selectCritList.Where(x => x.Characteristic.Contains("FlowerColor"));
+            if (queryFlowerColor.Count() > 0)
+            {
+                var flowerColorQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var flowerColor in queryFlowerColor) { flowerColorQuery = flowerColorQuery.Or(x => x.flowerColor.Contains(flowerColor.SearchString1)); }
+                overallQuery = overallQuery.And(flowerColorQuery);
+            }
+                
+            return overallQuery;
+        }
 
     }
 }

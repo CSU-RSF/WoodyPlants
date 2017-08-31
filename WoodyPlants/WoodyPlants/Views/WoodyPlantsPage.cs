@@ -416,7 +416,7 @@ namespace PortableApp
         }
         private async void HandleRunSearch(object sender, EventArgs e)
         {
-            //plants = await App.WoodyPlantRepo.FilterPlantsBySearchCriteria();
+            plants = await App.WoodyPlantRepo.FilterPlantsBySearchCriteria();
             woodyPlantsList.ItemsSource = plants;
             cameFromSearch = true;
             await App.Current.MainPage.Navigation.PopModalAsync();

@@ -13,14 +13,17 @@ namespace PortableApp
         public EventHandler InitRunSearch;
         public EventHandler InitCloseSearch;
 
+        public ObservableCollection<WoodyPlant> plants;
         public ObservableCollection<WoodySearch> searchCriteriaDB;
         public ObservableCollection<SearchCharacteristicIcon> searchCriteria;
 
         StackLayout leafTypesLayout;
         List<SearchCharacteristicIcon> leafTypes;
+        Button searchButton;
 
         public WoodyPlantsSearchPage()
         {
+            plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
             searchCriteriaDB = new ObservableCollection<WoodySearch>(App.WoodySearchRepo.GetAllWoodySearchCriteria());
             searchCriteria = SearchCharacteristicIconsCollection();
 
@@ -87,7 +90,8 @@ namespace PortableApp
             resetButton.Clicked += ResetSearchFilters;
             searchButtons.Children.Add(resetButton, 0, 0);
 
-            Button searchButton = new Button { Text = "SEARCH", Style = Application.Current.Resources["semiTransparentWhiteButton"] as Style };
+            searchButton = new Button { Style = Application.Current.Resources["semiTransparentWhiteButton"] as Style };
+            searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
             searchButton.Clicked += RunSearch;
             searchButtons.Children.Add(searchButton, 1, 0);
 
@@ -112,8 +116,7 @@ namespace PortableApp
 
         private void ResetSearchFilters(object sender, EventArgs e)
         {
-
-            var ten = 10;
+            
         }
 
         private async void ProcessSearchFilter(object sender, EventArgs e)
@@ -133,15 +136,8 @@ namespace PortableApp
             }
             await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord);
 
-            // Re-filter plants list
-            // .Where is and... records.Where().Where().Where()
-            // .Or .All
-            // for each category
-            // add where statement with nested Or/All statements
-            // end
-            // run query
-            // var plants = await App.WoodyPlantRepo.FilterPlantsBySearchCriteria();
-            //plants.Count() + " Result found";
+            plants = await App.WoodyPlantRepo.FilterPlantsBySearchCriteria();
+            searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
         }
 
         private void RunSearch(object sender, EventArgs e)

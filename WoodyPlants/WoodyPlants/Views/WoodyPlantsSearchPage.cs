@@ -47,13 +47,11 @@ namespace PortableApp
             searchFilters.Children.Add(leafTypeLabel);
 
             leafTypesLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
-
             SearchCharacteristicIcon simpleLeafType = searchCriteria.First(x => x.Characteristic == "LeafType-Simple");
-            simpleLeafType.Clicked += ProcessSearchFilter;
+           
             leafTypesLayout.Children.Add(simpleLeafType);
-
             SearchCharacteristicIcon spineLeafType = searchCriteria.First(x => x.Characteristic == "LeafType-Spine");
-            spineLeafType.Clicked += ProcessSearchFilter;
+           
             leafTypesLayout.Children.Add(spineLeafType);
             
             searchFilters.Children.Add(leafTypesLayout);
@@ -65,15 +63,12 @@ namespace PortableApp
             StackLayout flowerColorLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
 
             SearchCharacteristicIcon yellowFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Yellow");
-            yellowFlowerColor.Clicked += ProcessSearchFilter;
             flowerColorLayout.Children.Add(yellowFlowerColor);
 
             SearchCharacteristicIcon blueFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Blue");
-            blueFlowerColor.Clicked += ProcessSearchFilter;
             flowerColorLayout.Children.Add(blueFlowerColor);
 
             SearchCharacteristicIcon redFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Red");
-            redFlowerColor.Clicked += ProcessSearchFilter;
             flowerColorLayout.Children.Add(redFlowerColor);
 
             searchFilters.Children.Add(flowerColorLayout);
@@ -114,9 +109,18 @@ namespace PortableApp
             Content = pageContainer;
         }
 
-        private void ResetSearchFilters(object sender, EventArgs e)
+        private async void ResetSearchFilters(object sender, EventArgs e)
         {
-            
+            foreach(var searchCrit in searchCriteria)
+            {
+                searchCrit.BorderWidth = 0;
+                searchCrit.Query = false;
+                WoodySearch correspondingDBRecord = searchCriteriaDB.First(x => x.Characteristic == searchCrit.Characteristic);
+                correspondingDBRecord.Query = false;
+                await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord);
+            }
+            plants = await App.WoodyPlantRepo.GetAllWoodyPlantsAsync();
+            searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
         }
 
         private async void ProcessSearchFilter(object sender, EventArgs e)
@@ -159,9 +163,11 @@ namespace PortableApp
                 item.BindingContext = searchItem;
                 item.SetBinding(SearchCharacteristicIcon.CharacteristicProperty, new Binding("Characteristic"));
                 item.SetBinding(SearchCharacteristicIcon.TextProperty, new Binding("Name"));
+                item.SetBinding(SearchCharacteristicIcon.ImageProperty, new Binding("IconFileName"));
                 item.SetBinding(SearchCharacteristicIcon.QueryProperty, new Binding("Query"));
                 item.SetBinding(SearchCharacteristicIcon.Column1Property, new Binding("Column1"));
                 item.SetBinding(SearchCharacteristicIcon.SearchString1Property, new Binding("SearchString1"));
+                item.Clicked += ProcessSearchFilter;
                 item.BorderWidth = item.Query ? 1 : 0;
                 searchCriteria.Add(item);
             }            

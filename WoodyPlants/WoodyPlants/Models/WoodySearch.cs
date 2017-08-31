@@ -1,6 +1,7 @@
 ﻿using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace PortableApp.Models
 {
@@ -19,5 +20,6 @@ namespace PortableApp.Models
         public string SearchString1 { get; set; }
         public string SearchString2 { get; set; }
         public string SearchString3 { get; set; }
+        public string IconFileName { get; set; }
     }
 }

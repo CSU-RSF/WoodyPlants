@@ -64,11 +64,11 @@ namespace PortableApp
         // Seed database with Search Criteria
         public void SeedDB()
         {
-            conn.Insert(new WoodySearch() { Characteristic = "LeafType-Simple", Name = "Simple", Query = false, Column1 = "leafType", SearchString1 = "simple" });
-            conn.Insert(new WoodySearch() { Characteristic = "LeafType-Spine", Name = "Spine", Query = false, Column1 = "leafType", SearchString1 = "spine" });
-            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Yellow", Name = "Yellow", Query = false, Column1 = "flowerColor", SearchString1 = "yellow" });
-            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Blue", Name = "Blue", Query = false, Column1 = "flowerColor", SearchString1 = "blue" });
-            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Red", Name = "Red", Query = false, Column1 = "flowerColor", SearchString1 = "red" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafType-Simple", Name = "Simple", Query = false, Column1 = "leafType", SearchString1 = "simple", IconFileName = "simple.png" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafType-Spine", Name = "Spine", Query = false, Column1 = "leafType", SearchString1 = "spine"});
+            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Yellow", Name = "Yellow", Query = false, Column1 = "flowerColor", SearchString1 = "yellow"});
+            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Blue", Name = "Blue", Query = false, Column1 = "flowerColor", SearchString1 = "blue"});
+            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Red", Name = "Red", Query = false, Column1 = "flowerColor", SearchString1 = "red"});
         }
     }
 }

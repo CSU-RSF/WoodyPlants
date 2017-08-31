@@ -73,10 +73,7 @@ namespace PortableApp
             }
 
             return new ObservableCollection<WoodyPlant>(plants);
-
-            
-            //(from p in conn.Table<WoodyPlant>().Where(predicate) select p).ToList();
-            
+                        
         }
 
         //// return a specific WoodyPlant given an id

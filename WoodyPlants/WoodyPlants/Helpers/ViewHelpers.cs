@@ -59,6 +59,26 @@ namespace PortableApp
             return gridLayout;
         }
 
+        public Grid ConstructNavigationBarMain(string titleText)
+        {
+            Grid gridLayout = new Grid { VerticalOptions = LayoutOptions.FillAndExpand, HorizontalOptions = LayoutOptions.FillAndExpand, ColumnSpacing = 0 };
+            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
+
+            //BACK 
+            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            //gridLayout.Children.Add(BackImageConstructor(), 0, 0);
+
+            //Title
+            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(6, GridUnitType.Star) });
+            gridLayout.Children.Add(TitleConstructor(titleText), 1, 0);
+
+            //Home
+            gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridLayout.Children.Add(HomeImageConstructor(), 2, 0);
+
+            return gridLayout;
+        }
+
         public Grid ConstructPlantNavigationBar(string titleText, WoodyPlant plant, ObservableCollection<WoodyPlant> plants)
         {
             Grid gridLayout = new Grid { VerticalOptions = LayoutOptions.FillAndExpand, HorizontalOptions = LayoutOptions.FillAndExpand, ColumnSpacing = 0 };

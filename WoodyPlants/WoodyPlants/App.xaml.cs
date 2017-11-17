@@ -6,8 +6,6 @@ using Xamarin.Forms;
 
 namespace PortableApp
 {
-   
-
     public partial class App : Application
     {
         public static WoodyPlantRepository WoodyPlantRepo { get; private set; }
@@ -32,5 +30,7 @@ namespace PortableApp
             WoodySearchRepo = new WoodySearchRepository();
             this.MainPage = new NavigationPage(new MainPage());
         }
+
+
     }
 }

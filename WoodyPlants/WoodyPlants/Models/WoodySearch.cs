@@ -20,6 +20,14 @@ namespace PortableApp.Models
         public string SearchString1 { get; set; }
         public string SearchString2 { get; set; }
         public string SearchString3 { get; set; }
+        public string SearchString4 { get; set; }
+        public string SearchString5 { get; set; }
+        public string SearchString6 { get; set; }
+        public string SearchString7 { get; set; }
+        public string SearchString8 { get; set; }
+        public string SearchString9 { get; set; }
+        public string SearchString10 { get; set; }
+
         public string IconFileName { get; set; }
     }
 }

@@ -65,6 +65,7 @@ namespace PortableApp
             if (selectCritList.Count() > 0)
             {
                 var predicate = ConstructPredicate(selectCritList);
+                //plants = GetAllWoodyPlants();
                 plants = conn.Table<WoodyPlant>().AsQueryable().Where(predicate).ToList();
             }
             else
@@ -128,24 +129,74 @@ namespace PortableApp
         {
             var overallQuery = PredicateBuilder.True<WoodyPlant>();
 
-            // Add selected Leaf Type characteristics
-            var queryLeafTypes = selectCritList.Where(x => x.Characteristic.Contains("LeafType"));
-            if (queryLeafTypes.Count() > 0)
-            {
-                var leafTypeQuery = PredicateBuilder.False<WoodyPlant>();
-                foreach (var leafType in queryLeafTypes) { leafTypeQuery = leafTypeQuery.Or(x => x.leafType.Contains(leafType.SearchString1)); }
-                overallQuery = overallQuery.And(leafTypeQuery);
-            }
                 
             // Add selected Flower Color characteristics
             var queryFlowerColor = selectCritList.Where(x => x.Characteristic.Contains("FlowerColor"));
             if (queryFlowerColor.Count() > 0)
             {
                 var flowerColorQuery = PredicateBuilder.False<WoodyPlant>();
-                foreach (var flowerColor in queryFlowerColor) { flowerColorQuery = flowerColorQuery.Or(x => x.flowerColor.Contains(flowerColor.SearchString1)); }
+                foreach (var flowerColor in queryFlowerColor) { flowerColorQuery = flowerColorQuery.Or(x => x.flowerColor.Contains(flowerColor.SearchString1) || x.flowerColor.Contains(flowerColor.SearchString2) || x.flowerColor.Contains(flowerColor.SearchString3)); }
                 overallQuery = overallQuery.And(flowerColorQuery);
             }
-                
+
+            // Add selected Flower Color characteristics
+            var queryBarkTexture = selectCritList.Where(x => x.Characteristic.Contains("BarkTexture"));
+            if (queryBarkTexture.Count() > 0)
+            {
+                var barkTextureQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var barkTexture in queryBarkTexture)
+                {
+                    barkTextureQuery = barkTextureQuery.Or(x => x.barkDescription.Contains(barkTexture.SearchString1) || x.barkDescription.Contains(barkTexture.SearchString2) || x.barkDescription.Contains(barkTexture.SearchString3) || x.barkDescription.Contains(barkTexture.SearchString4) || x.barkDescription.Contains(barkTexture.SearchString5) || x.barkDescription.Contains(barkTexture.SearchString6) || x.barkDescription.Contains(barkTexture.SearchString7) || x.barkDescription.Contains(barkTexture.SearchString8) || x.barkDescription.Contains(barkTexture.SearchString9) || x.barkDescription.Contains(barkTexture.SearchString10));
+                }
+                overallQuery = overallQuery.And(barkTextureQuery);
+            }
+
+            // Add selected Flower Color characteristics
+            var queryFlowerCluster = selectCritList.Where(x => x.Characteristic.Contains("FlowerCluster"));
+            if (queryFlowerCluster.Count() > 0)
+            {
+                var flowerClusterQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var flowerCluster in queryFlowerCluster)
+                {
+                    flowerClusterQuery = flowerClusterQuery.Or(x => x.flowerSize.Contains(flowerCluster.SearchString1) || x.flowerSize.Contains(flowerCluster.SearchString2) || x.flowerSize.Contains(flowerCluster.SearchString3) || x.flowerSize.Contains(flowerCluster.SearchString4) || x.flowerSize.Contains(flowerCluster.SearchString5) || x.flowerSize.Contains(flowerCluster.SearchString6));
+                }
+                overallQuery = overallQuery.And(flowerClusterQuery);
+            }
+
+            // Add selected Flower Color characteristics
+            var queryFlowerShape = selectCritList.Where(x => x.Characteristic.Contains("FlowerShape"));
+            if (queryFlowerShape.Count() > 0)
+            {
+                var flowerShapeQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var flowerShape in queryFlowerShape)
+                {
+                    flowerShapeQuery = flowerShapeQuery.Or(x => x.flowerSymmetry.Contains(flowerShape.SearchString1) || x.flowerSymmetry.Contains(flowerShape.SearchString2) || x.flowerSymmetry.Contains(flowerShape.SearchString3) || x.flowerSymmetry.Contains(flowerShape.SearchString4) || x.flowerSymmetry.Contains(flowerShape.SearchString5) || x.flowerSymmetry.Contains(flowerShape.SearchString6));
+                }
+                overallQuery = overallQuery.And(flowerShapeQuery);
+            }
+
+            var queryFruitType = selectCritList.Where(x => x.Characteristic.Contains("FruitType"));
+            if (queryFruitType.Count() > 0)
+            {
+                var fruitTypeQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var fruitType in queryFruitType)
+                {
+                    fruitTypeQuery = fruitTypeQuery.Or(x => x.familyCharacteristics.Contains(fruitType.SearchString1) || x.familyCharacteristics.Contains(fruitType.SearchString2) || x.familyCharacteristics.Contains(fruitType.SearchString3) || x.familyCharacteristics.Contains(fruitType.SearchString4) || x.familyCharacteristics.Contains(fruitType.SearchString5));
+                }
+                overallQuery = overallQuery.And(fruitTypeQuery);
+            }
+            
+            var queryFruitColor = selectCritList.Where(x => x.Characteristic.Contains("FruitColor"));
+            if (queryFruitColor.Count() > 0)
+            {
+                var fruitColorQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var fruitColor in queryFruitColor)
+                {
+                    fruitColorQuery = fruitColorQuery.Or(x => x.fruitType.Contains(fruitColor.SearchString1) || x.fruitType.Contains(fruitColor.SearchString2));
+                }
+                overallQuery = overallQuery.And(fruitColorQuery);
+            }
+            
             return overallQuery;
         }
 

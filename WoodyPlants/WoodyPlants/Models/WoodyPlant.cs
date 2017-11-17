@@ -177,6 +177,8 @@ namespace PortableApp.Models
         
         public string shrubs { get; set; }
 
+        public string barkDescription { get; set; }
+
 
         public bool isFavorite { get; set; }
 

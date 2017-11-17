@@ -33,7 +33,17 @@ namespace PortableApp
             numberOfPlants = new List<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants()).Count;
             downloadImagesSetting = await App.WoodySettingsRepo.GetSettingAsync("Download Images");
             downloadImages = (bool)downloadImagesSetting.valuebool;
-            downloadImagesSwitch.IsToggled = downloadImages;
+            //downloadImagesSwitch.IsToggled = downloadImages;
+
+
+            if (numberOfPlants>0)
+            {
+                downloadImagesSwitch.IsToggled = true;
+            }
+            else
+            {
+                downloadImagesSwitch.IsToggled = false;
+            }
 
 
             // in order to go to the DownloadPage, must be connected to the internet (or cell data), did not just come from the download page
@@ -128,7 +138,7 @@ namespace PortableApp
             StackLayout downloadImagesLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Margin = new Thickness(20, 0, 20, 0), HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
             downloadImagesSwitch = new Switch { BackgroundColor = Color.FromHex("66000000") };
             downloadImagesSwitch.Toggled += ToggleDownloadImagesSwitch;
-            Label downloadImagesLabel = new Label { Text = "Download Images", TextColor = Color.White };
+            Label downloadImagesLabel = new Label { Text = "Download Plants", TextColor = Color.White };
             downloadImagesLayout.Children.Add(downloadImagesLabel);
             downloadImagesLayout.Children.Add(downloadImagesSwitch);
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
@@ -176,8 +186,9 @@ namespace PortableApp
         {
             if (downloadImagesSwitch.IsToggled == true)
             {
-                downloadImagesSetting.valuebool = true;
-                if (imageFilesToDownload.Count > 0)
+                //downloadImagesSetting.valuebool = true;
+                //ToDownloadPage();
+                if (imageFilesToDownload.Count > 0|| numberOfPlants ==0)
                     ToDownloadPage();
             }
             else

@@ -16,7 +16,7 @@ namespace PortableApp
     public class ExternalDBConnection
     {
         // Declare variables
-        public string Url = "http://sdt1.cas.colostate.edu/mobileapi/api/woody";
+        public string Url = "http://sdt1.agsci.colostate.edu/mobileapi/api/woody";
         //public string Url = (Debugger.IsAttached == true) ? "http://129.82.38.57:61045/api/woody" : "http://sdt1.cas.colostate.edu/mobileapi/api/woody";
         HttpClient client = new HttpClient();
         private string result;

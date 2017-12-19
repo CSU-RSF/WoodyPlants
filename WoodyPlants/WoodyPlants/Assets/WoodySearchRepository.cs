@@ -67,8 +67,8 @@ namespace PortableApp
            // conn.Insert(new WoodySearch() { Characteristic = "LeafType-Simple", Name = "Simple", Query = false, Column1 = "leafType", SearchString1 = "simple", IconFileName = "simple.png" });
             //conn.Insert(new WoodySearch() { Characteristic = "LeafType-Spine", Name = "Spine", Query = false, Column1 = "leafType", SearchString1 = "spine"});
 
-            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Yellow", Name = "Yellow", Query = false, Column1 = "flowerColor", SearchString1 = "yellow", SearchString2 = "null", SearchString3 = "null" });
-            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Blue", Name = "Blue", Query = false, Column1 = "flowerColor", SearchString1 = "blue", SearchString2 = "null", SearchString3 = "null" });
+            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Yellow", Name = "Yellow", Query = false, Column1 = "flowerColor", SearchString1 = "yellow", SearchString2 = "null", SearchString3 = "null"});
+            conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Blue", Name = "Blue", Query = false, Column1 = "flowerColor", SearchString1 = "blue", SearchString2 = "null", SearchString3 = "null", IconFileName = "simple.png" });
             conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Brown", Name = "Brown", Query = false, Column1 = "flowerColor", SearchString1 = "brown", SearchString2 = "tan", SearchString3 = "null" });
             conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-White", Name = "White", Query = false, Column1 = "flowerColor", SearchString1 = "white", SearchString2 = "cream", SearchString3 = "null" });
             conn.Insert(new WoodySearch() { Characteristic = "FlowerColor-Green", Name = "Green", Query = false, Column1 = "flowerColor", SearchString1 = "green", SearchString2 = "null", SearchString3 = "null" });

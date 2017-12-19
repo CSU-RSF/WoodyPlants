@@ -36,7 +36,7 @@ namespace PortableApp
             //downloadImagesSwitch.IsToggled = downloadImages;
 
 
-            if (numberOfPlants>0)
+          /*  if (numberOfPlants>0)
             {
                 downloadImagesSwitch.IsToggled = true;
             }
@@ -44,7 +44,7 @@ namespace PortableApp
             {
                 downloadImagesSwitch.IsToggled = false;
             }
-
+            */
 
             // in order to go to the DownloadPage, must be connected to the internet (or cell data), did not just come from the download page
             if (isConnected && !canceledDownload && !finishedDownload)
@@ -134,15 +134,43 @@ namespace PortableApp
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
             innerContainer.Children.Add(aboutButton, 0, 5);
 
-            // Switch for downloading images
-            StackLayout downloadImagesLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Margin = new Thickness(20, 0, 20, 0), HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
-            downloadImagesSwitch = new Switch { BackgroundColor = Color.FromHex("66000000") };
-            downloadImagesSwitch.Toggled += ToggleDownloadImagesSwitch;
-            Label downloadImagesLabel = new Label { Text = "Download Plants", TextColor = Color.White };
-            downloadImagesLayout.Children.Add(downloadImagesLabel);
-            downloadImagesLayout.Children.Add(downloadImagesSwitch);
+            Button linksButton = new Button
+            {
+                Style = Application.Current.Resources["semiTransparentButton"] as Style,
+                Text = "Links to Learn More"
+            };
+
+            linksButton.Clicked += ToLink;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-            innerContainer.Children.Add(downloadImagesLayout, 0, 6);
+            innerContainer.Children.Add(linksButton, 0, 6);
+
+            //button for downloading images
+            Button downloadImages = new Button
+            {
+                //BackgroundColor = Color.FromHex("#d3d3d3"),
+                BorderRadius = 2,//Device.OnPlatform(22, 22, 36),
+                Text = "Download Plants"
+
+            };
+
+                StackLayout downloadImagesLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Margin = new Thickness(20, 0, 20, 0), HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
+            // downloadImagesSwitch = new Switch { BackgroundColor = Color.FromHex("66000000") };
+            downloadImages.Clicked += ClickDownloadImages; // downloadImagesSwitch.Toggled += ToggleDownloadImagesSwitch; 
+            //Label downloadImagesLabel = new Label { Text = "Download Plants", TextColor = Color.ForestGreen };
+           // downloadImagesLayout.Children.Add(downloadImagesLabel);
+            downloadImagesLayout.Children.Add(downloadImages);
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.Children.Add(downloadImagesLayout, 0, 7);
+
+            // Switch for downloading images
+            /*  StackLayout downloadImagesLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Margin = new Thickness(20, 0, 20, 0), HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
+              downloadImagesSwitch = new Switch { BackgroundColor = Color.FromHex("66000000") };
+              downloadImagesSwitch.Toggled += ToggleDownloadImagesSwitch;
+              Label downloadImagesLabel = new Label { Text = "Download Plants", TextColor = Color.White };
+              downloadImagesLayout.Children.Add(downloadImagesLabel);
+              downloadImagesLayout.Children.Add(downloadImagesSwitch);
+              innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+              innerContainer.Children.Add(downloadImagesLayout, 0, 6); */
 
             // Add empty space
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
@@ -161,7 +189,7 @@ namespace PortableApp
             canceledDownload = true;
             await App.Current.MainPage.Navigation.PopModalAsync();
         }
-
+        
         private async void ToDownloadPage()
         {
             downloadPage = new DownloadWoodyPlantsPage(updatePlants, datePlantDataUpdatedLocally, datePlantDataUpdatedOnServer);
@@ -169,7 +197,7 @@ namespace PortableApp
             downloadPage.InitCancelDownload += HandleCancelDownload;
             downloadPage.InitFinishedDownload += HandleFinishedDownload;
             await Navigation.PushModalAsync(downloadPage);
-           
+
         }
 
         public void ImageFilesToDownload()
@@ -182,7 +210,7 @@ namespace PortableApp
             }
         }
 
-        private async void ToggleDownloadImagesSwitch(object sender, ToggledEventArgs e)
+       /* private async void ToggleDownloadImagesSwitch(object sender, ToggledEventArgs e)
         {
             if (downloadImagesSwitch.IsToggled == true)
             {
@@ -193,6 +221,32 @@ namespace PortableApp
             }
             else
                 downloadImagesSetting.valuebool = false;
+
+            await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
+        } */
+
+        private async void ClickDownloadImages(object sender, EventArgs e)
+        {
+
+            //downloadImagesSetting.valuebool = true;
+            //ToDownloadPage();
+            
+            if (imageFilesToDownload.Count > 0 || numberOfPlants == 0)
+            {
+                ToDownloadPage();
+                //ToDownloadPage();
+                if (!(imageFilesToDownload.Count > 0 || numberOfPlants == 0))
+                {
+                    ChangeDownloadText(sender, e);
+                    ChangeButtonColor(sender, e);
+                }
+            }
+            else {
+                downloadImagesSetting.valuebool = false;
+                ChangeDownloadText(sender, e);
+                ChangeButtonColor(sender, e);
+            }
+                    
 
             await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
         }

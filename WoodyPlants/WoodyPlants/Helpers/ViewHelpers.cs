@@ -272,6 +272,12 @@ namespace PortableApp
             await Navigation.PushAsync(new HTMLPage("HowToUse.html", "HOW TO USE"));
         }
 
+        public async void ToLink(object sender, EventArgs e)
+        {
+            ChangeButtonColor(sender, e);
+            await Navigation.PushAsync(new HTMLPage("Links.html", "LINKS TO LEARN MORE"));
+        }
+
         public WebView HTMLProcessor(string location)
         {
             // Generate WebView container
@@ -305,6 +311,14 @@ namespace PortableApp
             button.BackgroundColor = Color.FromHex("BBC9D845");
             await Task.Delay(100);
             button.BackgroundColor = Color.FromHex("CC1E4D2B");
+        }
+
+        protected async void ChangeDownloadText(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            button.Text = "Plants Downloaded";
+            await Task.Delay(100);
+           // button.BackgroundColor = Color.FromHex("CC1E4D2B");
         }
     }
 

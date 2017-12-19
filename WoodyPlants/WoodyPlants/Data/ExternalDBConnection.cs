@@ -24,7 +24,7 @@ namespace PortableApp
         // Set headers for client
         public ExternalDBConnection()
         {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", "p4OqMiplghVdWPlol5rx84jdlskdJk*jdlsKDIE42");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", "p4OqMiplghVdWPbVv5rx84jdlskdJk*jdlsKDIE84");
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         }
         

@@ -10,8 +10,8 @@ namespace PortableApp.Droid
     {
         protected override void OnCreate(Bundle bundle)
         {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
+            //TabLayoutResource = Resource.Layout.Tabbar;
+            //ToolbarResource = Resource.Layout.abc_screen_toolbar;
 
             base.OnCreate(bundle);
 

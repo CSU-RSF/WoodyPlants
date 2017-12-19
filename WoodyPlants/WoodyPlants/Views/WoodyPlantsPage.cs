@@ -27,7 +27,7 @@ namespace PortableApp
         Grid plantFilterGroup;
         string[] labelValues;
         Button browseFilter;
-        Button searchFilter;
+        public Button searchFilter;
         Button favoritesFilter;
         SearchBar searchBar;
 
@@ -36,9 +36,9 @@ namespace PortableApp
             // Get filtered plant list if came from search
             if (!cameFromSearch)
             {
-                if(App.WoodyPlantRepo.GetAllWoodyPlants().Count > 0)
+                if(App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
                 {
-                    plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
+                    plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
                 }
                else
                 {
@@ -64,6 +64,9 @@ namespace PortableApp
                 sortPicker.SelectedIndex = (int)sortField.valueint;
                 FilterJumpList(sortButton.Text);
             }
+
+            ChangeFilterColors(browseFilter);
+            base.OnAppearing();
         }
 
         public WoodyPlantsPage()
@@ -235,9 +238,9 @@ namespace PortableApp
         private void SearchBarOnChange(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(e.NewTextValue))
-                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
+                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
             else
-                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.WoodyPlantsQuickSearch(e.NewTextValue));
+                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.WoodyPlantsQuickSearch(e.NewTextValue));
 
             woodyPlantsList.ItemsSource = plants;
         }
@@ -386,10 +389,18 @@ namespace PortableApp
             Button filter = (Button)sender;
             ChangeFilterColors(filter);
             if (filter.Text == "Browse")
-                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants());
+                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
             else if (filter.Text == "Favorites")
-                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepo.GetFavoritePlants());
+                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetFavoritePlants());
 
+            woodyPlantsList.ItemsSource = plants;
+            FilterJumpList(sortButton.Text);
+        }
+
+        public void FilterPlantsByFavorites()
+        {
+            ChangeFilterColors(favoritesFilter);
+            plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetFavoritePlants());
             woodyPlantsList.ItemsSource = plants;
             FilterJumpList(sortButton.Text);
         }
@@ -420,15 +431,15 @@ namespace PortableApp
                 await Navigation.PushAsync(detailPage);
             }
         }
-        private async void HandleRunSearch(object sender, EventArgs e)
+        public async void HandleRunSearch(object sender, EventArgs e)
         {
-            plants = await App.WoodyPlantRepo.FilterPlantsBySearchCriteria();
+            plants = await App.WoodyPlantRepoLocal.FilterPlantsBySearchCriteria();
             woodyPlantsList.ItemsSource = plants;
             cameFromSearch = true;
             await App.Current.MainPage.Navigation.PopModalAsync();
         }
 
-        private async void HandleCloseSearch(object sender, EventArgs e)
+        public async void HandleCloseSearch(object sender, EventArgs e)
         {
             cameFromSearch = true;
             await App.Current.MainPage.Navigation.PopModalAsync();

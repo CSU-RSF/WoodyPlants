@@ -128,6 +128,8 @@ namespace PortableApp
                     await App.WoodyPlantRepo.AddOrUpdatePlantAsync(plant);
                     plantsSaved += 1;
                     await progressBar.ProgressTo((double)plantsSaved / (plants.Count), 1, Easing.Linear);
+                    Double percent = (double)plantsSaved / (plants.Count);
+                    downloadLabel.Text = "Downloading Plant Database..." + Math.Round(percent * 100) + "%";
                 }
                 //foreach (var term in terms)
                 //{
@@ -136,83 +138,24 @@ namespace PortableApp
                 //    plantsSaved += 1;
                 //    await progressBar.ProgressTo((double)plantsSaved / (plants.Count + terms.Count), 1, Easing.Linear);
                 //}
+
+                downloadLabel.Text = "Download Finished!";
                 datePlantDataUpdatedLocally.valuetimestamp = datePlantDataUpdatedOnServer.valuetimestamp;
                 await App.WoodySettingsRepo.AddOrUpdateSettingAsync(datePlantDataUpdatedLocally);
+
+                App.WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(App.WoodyPlantRepo.GetAllWoodyPlants());
             }
             catch (OperationCanceledException e)
             {
+                downloadLabel.Text = "Download Canceled!";
                 Debug.WriteLine("Canceled UpdatePlants {0}", e.Message);
             }
             catch (Exception e)
             {
+                downloadLabel.Text = "Error While Downloading Database!";
                 Debug.WriteLine("ex {0}", e.Message);
             }
         }
-
-        // Get plant images from MobileApi server and save locally
-        //public async Task UpdatePlantImages(CancellationToken token)
-        //{
-
-        //    // Download needed image files
-        //    if (imageFilesToDownload.Count > 0)
-        //    {
-        //        long receivedBytes = 0;
-        //        long? totalBytes = 0;
-
-        //        // Set progressBar to 0 and downloadLabel text to "Downloading Images..."
-        //        await progressBar.ProgressTo(0, 1, Easing.Linear);
-        //        downloadLabel.Text = "Downloading Images...";
-
-        //        try
-        //        {
-        //            // IFolder interface from PCLStorage; create or open imagesZipped folder (in Library/Images)    
-        //            IFolder rootFolder = FileSystem.Current.LocalStorage;
-        //            IFolder folder = await rootFolder.CreateFolderAsync("Images", CreationCollisionOption.OpenIfExists);
-        //            string folderPath = rootFolder.Path;
-
-        //            // Get image file setting records from MobileApi to determine which files to download
-        //            // TODO: Limit this to only the files needed, not just every file
-        //            totalBytes = imageFilesToDownload.Sum(x => x.valueint);
-
-        //            // For each setting, get the corresponding zip file and save it locally
-        //            foreach (WoodySetting imageFileToDownload in imageFilesToDownload)
-        //            {
-        //                Stream webStream = await externalConnection.GetImageZipFiles(imageFileToDownload.valuetext.Replace(".zip", ""));
-        //                ZipInputStream zipInputStream = new ZipInputStream(webStream);
-        //                ZipEntry zipEntry = zipInputStream.GetNextEntry();
-        //                while (zipEntry != null)
-        //                {
-        //                    if (token.IsCancellationRequested) { token.ThrowIfCancellationRequested(); };
-        //                    String entryFileName = zipEntry.Name;
-        //                    // to remove the folder from the entry:- entryFileName = Path.GetFileName(entryFileName);
-        //                    // Optionally match entrynames against a selection list here to skip as desired.
-
-        //                    byte[] buffer = new byte[4096];
-
-        //                    IFile file = await folder.CreateFileAsync(entryFileName, CreationCollisionOption.OpenIfExists);
-        //                    using (Stream localStream = await file.OpenAsync(FileAccess.ReadAndWrite))
-        //                    {
-        //                        StreamUtils.Copy(zipInputStream, localStream, buffer);
-        //                    }
-        //                    receivedBytes += zipEntry.Size;
-        //                    double percentage = (double)receivedBytes / (double)totalBytes;
-        //                    await progressBar.ProgressTo(percentage, 1, Easing.Linear);
-        //                    zipEntry = zipInputStream.GetNextEntry();
-        //                }
-        //                await App.WoodySettingsRepo.AddSettingAsync(new WoodySetting { name = "ImagesZipFile", valuetimestamp = imageFileToDownload.valuetimestamp, valuetext = imageFileToDownload.valuetext });
-        //            }
-        //        }
-        //        catch (OperationCanceledException e)
-        //        {
-        //            Debug.WriteLine("Canceled Downloading of Images {0}", e.Message);
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Debug.WriteLine("ex {0}", e.Message);
-        //        }
-        //   }
-
-        //}
 
     }
 }

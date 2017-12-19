@@ -46,8 +46,9 @@ namespace PortableApp
             {
                 result = await client.GetStringAsync(Url + "_settings/DatePlantDataUpdatedOnServer");
             }
-            catch
+            catch(Exception e)
             {
+                Debug.WriteLine("Error", e.Message);
                 return null;
             }
             return JsonConvert.DeserializeObject<WoodySetting>(result);

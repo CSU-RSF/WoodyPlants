@@ -257,13 +257,35 @@ namespace PortableApp
         public async void ToPlants(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
+            var plantsPage = new WoodyPlantsPage();
+            await Navigation.PushAsync(plantsPage);
+
+        }
+        public async void ToFavorites(object sender, EventArgs e)
+        {
+            ChangeButtonColor(sender, e);
+            var plantsPage = new WoodyPlantsPage();
+            await Navigation.PushAsync(plantsPage);
+            plantsPage.FilterPlantsByFavorites();
+        }
+
+        public async void ToSearch(object sender, EventArgs e)
+        {
+            ChangeButtonColor(sender, e);
+            var plantsPage = new WoodyPlantsPage();
             await Navigation.PushAsync(new WoodyPlantsPage());
+            var SearchPage = new WoodyPlantsSearchPage();
+            await Navigation.PushModalAsync(SearchPage);
+
+            SearchPage.InitRunSearch += plantsPage.HandleRunSearch;
+            SearchPage.InitCloseSearch += plantsPage.HandleCloseSearch;
         }
 
         public async void ToAbout(object sender, EventArgs e)
         {
+            
             ChangeButtonColor(sender, e);
-            await Navigation.PushAsync(new HTMLPage("About.html", "ABOUT/CONTACT"));
+            await Navigation.PushAsync(new HTMLPage("About.html", "ABOUT"));
         }
 
         public async void ToHowToUse(object sender, EventArgs e)
@@ -272,10 +294,11 @@ namespace PortableApp
             await Navigation.PushAsync(new HTMLPage("HowToUse.html", "HOW TO USE"));
         }
 
-        public async void ToLink(object sender, EventArgs e)
+        public void ToLink(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            await Navigation.PushAsync(new HTMLPage("Links.html", "LINKS TO LEARN MORE"));
+
+             Device.OpenUri(new Uri("https://warnercnr.colostate.edu/career-services/"));
         }
 
         public WebView HTMLProcessor(string location)
@@ -312,6 +335,7 @@ namespace PortableApp
             await Task.Delay(100);
             button.BackgroundColor = Color.FromHex("CC1E4D2B");
         }
+
 
         protected async void ChangeDownloadText(object sender, EventArgs e)
         {

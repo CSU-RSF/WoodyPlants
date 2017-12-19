@@ -38,6 +38,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Assets\WoodyPlantRepositoryLocal.cs" />
     <Compile Include="Assets\WoodySearchRepository.cs" />
     <Compile Include="Assets\WoodyPlantImageRepository.cs" />
     <Compile Include="Assets\WoodySettingRepository.cs" />

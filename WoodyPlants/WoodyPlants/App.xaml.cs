@@ -9,6 +9,7 @@ namespace PortableApp
     public partial class App : Application
     {
         public static WoodyPlantRepository WoodyPlantRepo { get; private set; }
+        public static WoodyPlantRepositoryLocal WoodyPlantRepoLocal { get; set; }
         public static WoodyPlantImageRepository WoodyPlantImageRepo { get; private set; }
         public static WoodySettingRepository WoodySettingsRepo { get; private set; }
         public static WoodySearchRepository WoodySearchRepo { get; private set; }
@@ -28,6 +29,9 @@ namespace PortableApp
             WoodyPlantRepo = new WoodyPlantRepository();
             WoodySettingsRepo = new WoodySettingRepository();
             WoodySearchRepo = new WoodySearchRepository();
+
+            WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(WoodyPlantRepo.GetAllWoodyPlants());
+
             this.MainPage = new NavigationPage(new MainPage());
         }
 

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using PortableApp.Models;
+using System.ComponentModel;
+using XLabs.Forms.Controls;
+using System.Diagnostics;
 
 namespace PortableApp
 {
@@ -24,52 +27,108 @@ namespace PortableApp
         private WoodySetting datePlantDataUpdatedOnServer;
         private List<WoodySetting> imageFilesToDownload = new List<WoodySetting>();
         private IEnumerable<WoodySetting> imageFileSettingsOnServer;
+        private Button downloadImagesButton = new Button { Style = Application.Current.Resources["semiTransparentButton"] as Style, Text = "Trying To Connect To Server..." };
+        private Label downloadImagesLabel = new Label { TextColor = Color.White, BackgroundColor = Color.Transparent };
 
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, e);
+            }
+        }
+        private string downloadButtonText = "Download Plant DB";
+        public string DownloadButtonText
+        {
+            get
+            {
+                return this.downloadButtonText;
+            }
+
+            set
+            {
+                this.downloadButtonText = value;
+                downloadImagesLabel.Text = this.downloadButtonText;
+                OnPropertyChanged(new PropertyChangedEventArgs("DownloadButtonText"));
+            }
+        }
+
+
+        //Start here
         protected override async void OnAppearing()
         {
-            // Initialize variables
+            if (!canceledDownload)
+            {
+                // Initialize variables
             isConnected = Connectivity.checkConnection();
             isConnectedToWiFi = Connectivity.checkWiFiConnection();
-            numberOfPlants = new List<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants()).Count;
-            downloadImagesSetting = await App.WoodySettingsRepo.GetSettingAsync("Download Images");
-            downloadImages = (bool)downloadImagesSetting.valuebool;
-            //downloadImagesSwitch.IsToggled = downloadImages;
+            numberOfPlants = new List<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants()).Count;
+            //downloadImagesSetting = await App.WoodySettingsRepo.GetSettingAsync("Download Images");
+           //downloadImages = (bool)downloadImagesSetting.valuebool;
 
+                // if connected to WiFi and updates are needed
+                if (isConnected)
+                {
+                    datePlantDataUpdatedLocally = App.WoodySettingsRepo.GetSetting("Date Plants Downloaded");
+                    try
+                    {
+                        datePlantDataUpdatedOnServer = await externalConnection.GetDateUpdatedDataOnServer();
+                        //imageFileSettingsOnServer = await externalConnection.GetImageZipFileSettings();
+                       // ImageFilesToDownload();
 
-          /*  if (numberOfPlants>0)
-            {
-                downloadImagesSwitch.IsToggled = true;
+                        if (datePlantDataUpdatedLocally.valuetimestamp == datePlantDataUpdatedOnServer.valuetimestamp)
+                        {
+                            DownloadButtonText = "Plant DB Up To Date";
+                            downloadImagesButton.Text = "(Local Database Up To Date)";
+                            downloadImagesLabel.TextColor = Color.Green;
+                            updatePlants = false;
+                        }
+                        else
+                        {
+                            if (numberOfPlants == 0)
+                            {
+                                DownloadButtonText = "Download Plant DB";
+                                downloadImagesButton.Text = "Download Plants (No Local Database)";
+                                downloadImagesLabel.TextColor = Color.Red;
+                                updatePlants = true;
+                            }
+                            else
+                            {
+                                DownloadButtonText = "New Plant DB Available";
+                                downloadImagesButton.Text = "Re-Sync Plants (New Database Available)";
+                                downloadImagesLabel.TextColor = Color.Yellow;
+                                updatePlants = true;
+                            }
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Canceled UpdatePlants {0}", e.Message);
+                    }
+                }
+                else
+                {
+                    if (numberOfPlants == 0)
+                    {
+                        await DisplayAlert("No Local Database Detected", "Please connect to WiFi or cell network to download or use CO Wetlands App", "OK");
+                        updatePlants = false;
+                    }
+                    else
+                    {
+                        downloadImagesButton.Text = "No Internet Connection";
+                    }
+                }
             }
             else
             {
-                downloadImagesSwitch.IsToggled = false;
+                canceledDownload = false;
             }
-            */
 
-            // in order to go to the DownloadPage, must be connected to the internet (or cell data), did not just come from the download page
-            if (isConnected && !canceledDownload && !finishedDownload)
-            {
-                datePlantDataUpdatedLocally = App.WoodySettingsRepo.GetSetting("Date Plants Downloaded");
-                try
-                {
-                    datePlantDataUpdatedOnServer = await externalConnection.GetDateUpdatedDataOnServer();
-                    imageFileSettingsOnServer = await externalConnection.GetImageZipFileSettings();
-                    ImageFilesToDownload();
-                }
-                catch { }
-
-                // If valid date comparison and date on server is more recent than local date, show download button
-                if (datePlantDataUpdatedLocally != null && datePlantDataUpdatedOnServer != null)
-                {
-                    if (datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp || numberOfPlants == 0)
-                    {
-                        updatePlants = true;
-                        ToDownloadPage();
-                    }
-                }
-                
-            }
             base.OnAppearing();
+
         }
 
         public MainPage()
@@ -93,41 +152,42 @@ namespace PortableApp
 
             // Add empty space
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+     
 
+            Button searchButton = new Button
+            {
+                Style = Application.Current.Resources["semiTransparentButton"] as Style,
+                Text = "Id By Plant Characteristic"
+            };
+            searchButton.Clicked += ToSearch;
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.Children.Add(searchButton, 0, 2);
 
             // Add navigation buttons
             Button plantsButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "PLANTS"
+                Text = "Id by Family/Species"
             };
             plantsButton.Clicked += ToPlants;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-            innerContainer.Children.Add(plantsButton, 0, 2);
+            innerContainer.Children.Add(plantsButton, 0, 3);
 
-            Button helpButton = new Button
-            {
-                Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "BOTANICAL HELP"
-            };
-            helpButton.Clicked += ToHelp;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-            innerContainer.Children.Add(helpButton, 0, 3);
 
             Button howToUseButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "HOW TO USE"
+                Text = "Favorites/Browse"
             };
 
-            howToUseButton.Clicked += ToHowToUse;
+            howToUseButton.Clicked += ToFavorites;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
             innerContainer.Children.Add(howToUseButton, 0, 4);
 
             Button aboutButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "ABOUT/CONTACT"
+                Text = "HOW TO USE"
             };
 
             aboutButton.Clicked += ToAbout;
@@ -137,42 +197,21 @@ namespace PortableApp
             Button linksButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "Links to Learn More"
+                Text = "Careers in Natural Resources"
             };
 
             linksButton.Clicked += ToLink;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
             innerContainer.Children.Add(linksButton, 0, 6);
+ 
 
-            //button for downloading images
-            Button downloadImages = new Button
-            {
-                //BackgroundColor = Color.FromHex("#d3d3d3"),
-                BorderRadius = 2,//Device.OnPlatform(22, 22, 36),
-                Text = "Download Plants"
-
-            };
-
-                StackLayout downloadImagesLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Margin = new Thickness(20, 0, 20, 0), HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
-            // downloadImagesSwitch = new Switch { BackgroundColor = Color.FromHex("66000000") };
-            downloadImages.Clicked += ClickDownloadImages; // downloadImagesSwitch.Toggled += ToggleDownloadImagesSwitch; 
-            //Label downloadImagesLabel = new Label { Text = "Download Plants", TextColor = Color.ForestGreen };
-           // downloadImagesLayout.Children.Add(downloadImagesLabel);
-            downloadImagesLayout.Children.Add(downloadImages);
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            StackLayout downloadImagesLayout = new StackLayout { BackgroundColor = Color.Transparent, Orientation = StackOrientation.Vertical, Padding = new Thickness(5, 5, 5, 5), HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
+            downloadImagesButton.Clicked += ClickDownloadImages;
+            downloadImagesLayout.Children.Add(downloadImagesButton);
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(85) });
             innerContainer.Children.Add(downloadImagesLayout, 0, 7);
 
-            // Switch for downloading images
-            /*  StackLayout downloadImagesLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Margin = new Thickness(20, 0, 20, 0), HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
-              downloadImagesSwitch = new Switch { BackgroundColor = Color.FromHex("66000000") };
-              downloadImagesSwitch.Toggled += ToggleDownloadImagesSwitch;
-              Label downloadImagesLabel = new Label { Text = "Download Plants", TextColor = Color.White };
-              downloadImagesLayout.Children.Add(downloadImagesLabel);
-              downloadImagesLayout.Children.Add(downloadImagesSwitch);
-              innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-              innerContainer.Children.Add(downloadImagesLayout, 0, 6); */
 
-            // Add empty space
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
 
@@ -189,18 +228,19 @@ namespace PortableApp
             canceledDownload = true;
             await App.Current.MainPage.Navigation.PopModalAsync();
         }
+
+
         
         private async void ToDownloadPage()
         {
             downloadPage = new DownloadWoodyPlantsPage(updatePlants, datePlantDataUpdatedLocally, datePlantDataUpdatedOnServer);
-            updatePlants = true;
             downloadPage.InitCancelDownload += HandleCancelDownload;
             downloadPage.InitFinishedDownload += HandleFinishedDownload;
             await Navigation.PushModalAsync(downloadPage);
 
         }
 
-        public void ImageFilesToDownload()
+        /*public void ImageFilesToDownload()
         {
             foreach (WoodySetting imageFile in imageFileSettingsOnServer)
             {
@@ -208,47 +248,25 @@ namespace PortableApp
                 if (imageFileLocalSetting == null)
                     imageFilesToDownload.Add(imageFile);
             }
-        }
-
-       /* private async void ToggleDownloadImagesSwitch(object sender, ToggledEventArgs e)
-        {
-            if (downloadImagesSwitch.IsToggled == true)
-            {
-                //downloadImagesSetting.valuebool = true;
-                //ToDownloadPage();
-                if (imageFilesToDownload.Count > 0|| numberOfPlants ==0)
-                    ToDownloadPage();
-            }
-            else
-                downloadImagesSetting.valuebool = false;
-
-            await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
-        } */
+        }*/
 
         private async void ClickDownloadImages(object sender, EventArgs e)
         {
 
-            //downloadImagesSetting.valuebool = true;
-            //ToDownloadPage();
-            
-            if (imageFilesToDownload.Count > 0 || numberOfPlants == 0)
+            // If valid date comparison and date on server is more recent than local date, show download button
+            if (datePlantDataUpdatedLocally != null && datePlantDataUpdatedOnServer != null)
             {
-                ToDownloadPage();
-                //ToDownloadPage();
-                if (!(imageFilesToDownload.Count > 0 || numberOfPlants == 0))
+                if (datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp || numberOfPlants == 0)
                 {
-                    ChangeDownloadText(sender, e);
-                    ChangeButtonColor(sender, e);
+                    updatePlants = true;
+                    ToDownloadPage();
                 }
             }
-            else {
-                downloadImagesSetting.valuebool = false;
-                ChangeDownloadText(sender, e);
-                ChangeButtonColor(sender, e);
-            }
-                    
+
+
 
             await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
         }
+    
     }
 }

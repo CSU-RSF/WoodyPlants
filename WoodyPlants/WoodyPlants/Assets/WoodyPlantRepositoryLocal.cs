@@ -98,6 +98,35 @@ namespace PortableApp
         {
             var overallQuery = PredicateBuilder.True<WoodyPlant>();
 
+            // Add selected Flower Color characteristics
+            var queryLeafShape = selectCritList.Where(x => x.Characteristic.Contains("LeafShape"));
+            if (queryLeafShape.Count() > 0)
+            {
+                var leafShapeQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var leafShape in queryLeafShape) { leafShapeQuery = leafShapeQuery.Or(x => x.leafShape.Contains(leafShape.SearchString1) || x.leafShape.Contains(leafShape.SearchString2) || x.leafShape.Contains(leafShape.SearchString3) || x.leafShape.Contains(leafShape.SearchString4) || x.leafShape.Contains(leafShape.SearchString5) || x.leafShape.Contains(leafShape.SearchString6)); }
+                overallQuery = overallQuery.And(leafShapeQuery);
+            }
+
+            // Add selected Flower Color characteristics
+            var queryLeafArrangement = selectCritList.Where(x => x.Characteristic.Contains("LeafArrangement"));
+            if (queryLeafArrangement.Count() > 0)
+            {
+                var leafArrangementQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var leafArrangement in queryLeafArrangement) { leafArrangementQuery = leafArrangementQuery.Or(x => x.leafArrangement.Contains(leafArrangement.SearchString1)); }
+                overallQuery = overallQuery.And(leafArrangementQuery);
+            }
+
+            // Add selected Flower Color characteristics
+            var queryTwigTexture = selectCritList.Where(x => x.Characteristic.Contains("TwigTexture"));
+            if (queryTwigTexture.Count() > 0)
+            {
+                var twigTextureQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var twigTexture in queryTwigTexture)
+                {
+                    twigTextureQuery = twigTextureQuery.Or(x => x.twigTexture.Contains(twigTexture.SearchString1) || x.twigTexture.Contains(twigTexture.SearchString2) || x.twigTexture.Contains(twigTexture.SearchString3) || x.twigTexture.Contains(twigTexture.SearchString4) || x.twigTexture.Contains(twigTexture.SearchString5) || x.twigTexture.Contains(twigTexture.SearchString6) || x.twigTexture.Contains(twigTexture.SearchString7) || x.twigTexture.Contains(twigTexture.SearchString8) || x.twigTexture.Contains(twigTexture.SearchString9));
+                }
+                overallQuery = overallQuery.And(twigTextureQuery);
+            }
 
             // Add selected Flower Color characteristics
             var queryFlowerColor = selectCritList.Where(x => x.Characteristic.Contains("FlowerColor"));
@@ -115,7 +144,7 @@ namespace PortableApp
                 var barkTextureQuery = PredicateBuilder.False<WoodyPlant>();
                 foreach (var barkTexture in queryBarkTexture)
                 {
-                    barkTextureQuery = barkTextureQuery.Or(x => x.barkDescription.Contains(barkTexture.SearchString1) || x.barkDescription.Contains(barkTexture.SearchString2) || x.barkDescription.Contains(barkTexture.SearchString3) || x.barkDescription.Contains(barkTexture.SearchString4) || x.barkDescription.Contains(barkTexture.SearchString5) || x.barkDescription.Contains(barkTexture.SearchString6) || x.barkDescription.Contains(barkTexture.SearchString7) || x.barkDescription.Contains(barkTexture.SearchString8) || x.barkDescription.Contains(barkTexture.SearchString9) || x.barkDescription.Contains(barkTexture.SearchString10));
+                    barkTextureQuery = barkTextureQuery.Or(x => x.barkTexture.Contains(barkTexture.SearchString1) || x.barkTexture.Contains(barkTexture.SearchString2) || x.barkTexture.Contains(barkTexture.SearchString3) || x.barkTexture.Contains(barkTexture.SearchString4) || x.barkTexture.Contains(barkTexture.SearchString5) || x.barkTexture.Contains(barkTexture.SearchString6) || x.barkTexture.Contains(barkTexture.SearchString7) || x.barkTexture.Contains(barkTexture.SearchString8) || x.barkTexture.Contains(barkTexture.SearchString9) || x.barkTexture.Contains(barkTexture.SearchString10));
                 }
                 overallQuery = overallQuery.And(barkTextureQuery);
             }
@@ -127,7 +156,7 @@ namespace PortableApp
                 var flowerClusterQuery = PredicateBuilder.False<WoodyPlant>();
                 foreach (var flowerCluster in queryFlowerCluster)
                 {
-                    flowerClusterQuery = flowerClusterQuery.Or(x => x.flowerSize.Contains(flowerCluster.SearchString1) || x.flowerSize.Contains(flowerCluster.SearchString2) || x.flowerSize.Contains(flowerCluster.SearchString3) || x.flowerSize.Contains(flowerCluster.SearchString4) || x.flowerSize.Contains(flowerCluster.SearchString5) || x.flowerSize.Contains(flowerCluster.SearchString6));
+                    flowerClusterQuery = flowerClusterQuery.Or(x => x.flowerCluster.Contains(flowerCluster.SearchString1) || x.flowerCluster.Contains(flowerCluster.SearchString2) || x.flowerCluster.Contains(flowerCluster.SearchString3) || x.flowerCluster.Contains(flowerCluster.SearchString4) || x.flowerCluster.Contains(flowerCluster.SearchString5) || x.flowerCluster.Contains(flowerCluster.SearchString6));
                 }
                 overallQuery = overallQuery.And(flowerClusterQuery);
             }
@@ -139,7 +168,7 @@ namespace PortableApp
                 var flowerShapeQuery = PredicateBuilder.False<WoodyPlant>();
                 foreach (var flowerShape in queryFlowerShape)
                 {
-                    flowerShapeQuery = flowerShapeQuery.Or(x => x.flowerSymmetry.Contains(flowerShape.SearchString1) || x.flowerSymmetry.Contains(flowerShape.SearchString2) || x.flowerSymmetry.Contains(flowerShape.SearchString3) || x.flowerSymmetry.Contains(flowerShape.SearchString4) || x.flowerSymmetry.Contains(flowerShape.SearchString5) || x.flowerSymmetry.Contains(flowerShape.SearchString6));
+                    flowerShapeQuery = flowerShapeQuery.Or(x => x.flowerShape.Contains(flowerShape.SearchString1) || x.flowerShape.Contains(flowerShape.SearchString2) || x.flowerShape.Contains(flowerShape.SearchString3) || x.flowerShape.Contains(flowerShape.SearchString4) || x.flowerShape.Contains(flowerShape.SearchString5) || x.flowerShape.Contains(flowerShape.SearchString6));
                 }
                 overallQuery = overallQuery.And(flowerShapeQuery);
             }
@@ -150,7 +179,7 @@ namespace PortableApp
                 var fruitTypeQuery = PredicateBuilder.False<WoodyPlant>();
                 foreach (var fruitType in queryFruitType)
                 {
-                    fruitTypeQuery = fruitTypeQuery.Or(x => x.familyCharacteristics.Contains(fruitType.SearchString1) || x.familyCharacteristics.Contains(fruitType.SearchString2) || x.familyCharacteristics.Contains(fruitType.SearchString3) || x.familyCharacteristics.Contains(fruitType.SearchString4) || x.familyCharacteristics.Contains(fruitType.SearchString5));
+                    fruitTypeQuery = fruitTypeQuery.Or(x => x.fruitType.Contains(fruitType.SearchString1) || x.fruitType.Contains(fruitType.SearchString2) || x.fruitType.Contains(fruitType.SearchString3) || x.fruitType.Contains(fruitType.SearchString4) || x.fruitType.Contains(fruitType.SearchString5));
                 }
                 overallQuery = overallQuery.And(fruitTypeQuery);
             }
@@ -161,7 +190,7 @@ namespace PortableApp
                 var fruitColorQuery = PredicateBuilder.False<WoodyPlant>();
                 foreach (var fruitColor in queryFruitColor)
                 {
-                    fruitColorQuery = fruitColorQuery.Or(x => x.fruitType.Contains(fruitColor.SearchString1) || x.fruitType.Contains(fruitColor.SearchString2));
+                    fruitColorQuery = fruitColorQuery.Or(x => x.fruitColor.Contains(fruitColor.SearchString1) || x.fruitColor.Contains(fruitColor.SearchString2));
                 }
                 overallQuery = overallQuery.And(fruitColorQuery);
             }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.RSF.woodyplants" android:versionName="1.1" android:versionCode="4">
-	<uses-sdk android:minSdkVersion="19" />
-	<application android:label="WoodyPlants.Droid" android:icon="@drawable/icon"></application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.RSF.woodyplants" android:versionName="1.2" android:versionCode="5">
+	<uses-sdk android:minSdkVersion="14" />
+	<application android:label="WoodyPlants" android:icon="@drawable/icon"></application>
 </manifest>

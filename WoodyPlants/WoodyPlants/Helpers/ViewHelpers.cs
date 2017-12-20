@@ -248,23 +248,17 @@ namespace PortableApp
             return favoriteImage;
         }
 
-        public async void ToHelp(object sender, EventArgs e)
-        {
-            ChangeButtonColor(sender, e);
-            await Navigation.PushAsync(new HTMLPage("Help.html", "BOTANICAL HELP"));
-        }
-
         public async void ToPlants(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage();
+            var plantsPage = new WoodyPlantsPage(false);
             await Navigation.PushAsync(plantsPage);
 
         }
         public async void ToFavorites(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage();
+            var plantsPage = new WoodyPlantsPage(false);
             await Navigation.PushAsync(plantsPage);
             plantsPage.FilterPlantsByFavorites();
         }
@@ -272,13 +266,9 @@ namespace PortableApp
         public async void ToSearch(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage();
-            await Navigation.PushAsync(new WoodyPlantsPage());
-            var SearchPage = new WoodyPlantsSearchPage();
-            await Navigation.PushModalAsync(SearchPage);
+            var plantsPage = new WoodyPlantsPage(true);
+            await Navigation.PushAsync(plantsPage);
 
-            SearchPage.InitRunSearch += plantsPage.HandleRunSearch;
-            SearchPage.InitCloseSearch += plantsPage.HandleCloseSearch;
         }
 
         public async void ToAbout(object sender, EventArgs e)
@@ -294,11 +284,10 @@ namespace PortableApp
             await Navigation.PushAsync(new HTMLPage("HowToUse.html", "HOW TO USE"));
         }
 
-        public void ToLink(object sender, EventArgs e)
+        public async void ToLink(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-
-             Device.OpenUri(new Uri("https://warnercnr.colostate.edu/career-services/"));
+            await Navigation.PushAsync(new HTMLPage("Links.html", "ABOUT"));
         }
 
         public WebView HTMLProcessor(string location)

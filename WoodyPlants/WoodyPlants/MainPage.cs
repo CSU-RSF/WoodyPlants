@@ -160,7 +160,7 @@ namespace PortableApp
                 Text = "Id By Plant Characteristic"
             };
             searchButton.Clicked += ToSearch;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
             innerContainer.Children.Add(searchButton, 0, 2);
 
             // Add navigation buttons
@@ -170,7 +170,7 @@ namespace PortableApp
                 Text = "Id by Family/Species"
             };
             plantsButton.Clicked += ToPlants;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
             innerContainer.Children.Add(plantsButton, 0, 3);
 
 
@@ -181,27 +181,27 @@ namespace PortableApp
             };
 
             howToUseButton.Clicked += ToFavorites;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
             innerContainer.Children.Add(howToUseButton, 0, 4);
 
             Button aboutButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "HOW TO USE"
+                Text = "About"
             };
 
             aboutButton.Clicked += ToAbout;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
             innerContainer.Children.Add(aboutButton, 0, 5);
 
             Button linksButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "Careers in Natural Resources"
+                Text = "Links and Careers in Natural Resources"
             };
 
             linksButton.Clicked += ToLink;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
             innerContainer.Children.Add(linksButton, 0, 6);
  
 

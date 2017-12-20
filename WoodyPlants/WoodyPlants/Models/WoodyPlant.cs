@@ -179,6 +179,12 @@ namespace PortableApp.Models
 
         public string barkDescription { get; set; }
 
+        public string barkTexture { get; set; }
+
+        public string twigTexture { get; set; }
+
+        public string leafArrangement { get; set; }
+
 
         public bool isFavorite { get; set; }
 

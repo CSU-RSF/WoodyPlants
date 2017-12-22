@@ -98,6 +98,31 @@ namespace PortableApp
         {
             var overallQuery = PredicateBuilder.True<WoodyPlant>();
 
+            var queryPlantType = selectCritList.Where(x => x.Characteristic.Contains("PlantType"));
+            var queryDeciduousType = selectCritList.Where(x => x.Characteristic.Contains("PlantType-Deciduous"));
+            if (queryPlantType.Count() > 0 || queryDeciduousType.Count() > 0)
+            {
+               if (queryDeciduousType.Count() > 0)
+                {
+                    var plantTypeQuery = PredicateBuilder.False<WoodyPlant>();
+                    var plantType = queryDeciduousType.ElementAt(0);
+
+
+                    plantTypeQuery = (x => ((!x.family.Contains(plantType.SearchString1) && !x.family.Contains(plantType.SearchString2) && !x.family.Contains(plantType.SearchString3) && !x.family.Contains(plantType.SearchString4) && !x.family.Contains(plantType.SearchString5) && !x.family.Contains(plantType.SearchString6))));
+                    
+                    overallQuery = overallQuery.And(plantTypeQuery);
+                }
+               else
+               {
+                    var plantTypeQuery = PredicateBuilder.False<WoodyPlant>();
+                    foreach (var plantType in queryPlantType)
+                    {
+                        plantTypeQuery = (x => x.family.Contains(plantType.SearchString1) || x.family.Contains(plantType.SearchString2) || x.family.Contains(plantType.SearchString3) || x.family.Contains(plantType.SearchString4) || x.family.Contains(plantType.SearchString5) || x.family.Contains(plantType.SearchString6));
+                    }
+                    overallQuery = overallQuery.And(plantTypeQuery);
+                }
+            }
+
             // Add selected Flower Color characteristics
             var queryLeafShape = selectCritList.Where(x => x.Characteristic.Contains("LeafShape"));
             if (queryLeafShape.Count() > 0)

@@ -55,25 +55,25 @@ namespace PortableApp
             WrapLayout plantTypeLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
 
             deciduousPlantType = searchCriteria.First(x => x.Characteristic == "PlantType-Deciduous");
-            deciduousPlantType.Clicked += ChangeSearchCharacteristics;
+            //deciduousPlantType.Clicked += ChangeSearchCharacteristics;
             plantTypeLayout.Children.Add(deciduousPlantType);
 
             coniferPlantType = searchCriteria.First(x => x.Characteristic == "PlantType-Conifer");
-            coniferPlantType.Clicked += ChangeSearchCharacteristics;
+            //coniferPlantType.Clicked += ChangeSearchCharacteristics;
             plantTypeLayout.Children.Add(coniferPlantType);
 
             vinePlantType = searchCriteria.First(x => x.Characteristic == "PlantType-Vine");
-            vinePlantType.Clicked += ChangeSearchCharacteristics;
+            //vinePlantType.Clicked += ChangeSearchCharacteristics;
             plantTypeLayout.Children.Add(vinePlantType);
 
             cactiPlantType = searchCriteria.First(x => x.Characteristic == "PlantType-Cacti");
-            cactiPlantType.Clicked += ChangeSearchCharacteristics;
+            //cactiPlantType.Clicked += ChangeSearchCharacteristics;
             plantTypeLayout.Children.Add(cactiPlantType);
 
             searchFilters.Children.Add(plantTypeLayout);
 
 
-          
+
 
             ScrollView scrollView = new ScrollView()
             {
@@ -118,12 +118,12 @@ namespace PortableApp
 
             Content = pageContainer;
 
-          
+
         }
 
         private async void ResetSearchFilters(object sender, EventArgs e)
         {
-            foreach(var searchCrit in searchCriteria)
+            foreach (var searchCrit in searchCriteria)
             {
                 searchCrit.BorderWidth = 0;
                 searchCrit.Query = false;
@@ -144,10 +144,38 @@ namespace PortableApp
             searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
         }
 
+        private async void ResetTypeButtons(object sender, EventArgs e)
+        {
+            WoodySearch correspondingDBRecord1 = searchCriteriaDB.First(x => x.Characteristic == deciduousPlantType.Characteristic);
+            WoodySearch correspondingDBRecord2 = searchCriteriaDB.First(x => x.Characteristic == coniferPlantType.Characteristic);
+            WoodySearch correspondingDBRecord3 = searchCriteriaDB.First(x => x.Characteristic == vinePlantType.Characteristic);
+            WoodySearch correspondingDBRecord4 = searchCriteriaDB.First(x => x.Characteristic == cactiPlantType.Characteristic);
+
+            deciduousPlantType.BorderWidth = 0;
+            coniferPlantType.BorderWidth = 0;
+            vinePlantType.BorderWidth = 0;
+            cactiPlantType.BorderWidth = 0;
+
+            correspondingDBRecord1.Query = deciduousPlantType.Query = false;
+            correspondingDBRecord2.Query = deciduousPlantType.Query = false;
+            correspondingDBRecord3.Query = deciduousPlantType.Query = false;
+            correspondingDBRecord4.Query = deciduousPlantType.Query = false;
+
+            await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord1);
+            await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord2);
+            await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord3);
+            await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord4);
+            
+        }
+
+
         private async void ChangeSearchCharacteristics(object sender, EventArgs e)
         {
+            //MightHaveTo Delete
+            //ResetSearchFilters(sender, e);
+
             plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
-            
+
             int count = searchFilters.Children.Count();
 
             for (int i = 2; i < count;)
@@ -157,19 +185,9 @@ namespace PortableApp
             }
 
             SearchCharacteristicIcon button = (SearchCharacteristicIcon)sender;
-            WoodySearch correspondingDBRecord = searchCriteriaDB.First(x => x.Characteristic == button.Characteristic);
+            //WoodySearch correspondingDBRecord = searchCriteriaDB.First(x => x.Characteristic == button.Characteristic);
             if (button.Characteristic.Equals("PlantType-Deciduous"))
             {
-                if (button.Query == true)
-                {
-                    coniferPlantType.BorderWidth = 0;
-                    vinePlantType.BorderWidth = 0;
-                    cactiPlantType.BorderWidth = 0;
-
-                    searchCriteriaDB.First(x => x.Characteristic == coniferPlantType.Characteristic).Query = coniferPlantType.Query = false;
-                    searchCriteriaDB.First(x => x.Characteristic == vinePlantType.Characteristic).Query = vinePlantType.Query = false;
-                    searchCriteriaDB.First(x => x.Characteristic == cactiPlantType.Characteristic).Query = cactiPlantType.Query = false;
-
                     LeafShapeSearch();
                     LeafArrangementSearch();
                     TwigTextureSearch();
@@ -177,78 +195,29 @@ namespace PortableApp
                     FruitTypeSearch();
                     FlowerShapeSearch();
                     FlowerColorSearch();
-                } 
-                else if(button.Query == false)
-                {
-                    ResetSearchFilters(sender,e);
-                }        
+
             }
             else if (button.Characteristic.Equals("PlantType-Conifer"))
             {
-
-                if (button.Query == true)
-                {
-                    deciduousPlantType.BorderWidth = 0;
-                    vinePlantType.BorderWidth = 0;
-                    cactiPlantType.BorderWidth = 0;
-
-                    searchCriteriaDB.First(x => x.Characteristic == deciduousPlantType.Characteristic).Query = deciduousPlantType.Query = false;
-                    searchCriteriaDB.First(x => x.Characteristic == vinePlantType.Characteristic).Query = vinePlantType.Query = false;
-                    searchCriteriaDB.First(x => x.Characteristic == cactiPlantType.Characteristic).Query = cactiPlantType.Query = false;
-
                     LeafShapeSearch();
                     FruitTypeSearch();
                     FruitColorSearch();
 
-                }
-                else if (button.Query == false)
-                {
-                    ResetSearchFilters(sender, e);
-                }
             }
             else if (button.Characteristic.Equals("PlantType-Vine"))
             {
-                if (button.Query == true)
-                {
-                    deciduousPlantType.BorderWidth = 0;
-                    coniferPlantType.BorderWidth = 0;
-                    cactiPlantType.BorderWidth = 0;
-
-                    searchCriteriaDB.First(x => x.Characteristic == deciduousPlantType.Characteristic).Query = deciduousPlantType.Query = false;
-                    searchCriteriaDB.First(x => x.Characteristic == coniferPlantType.Characteristic).Query = coniferPlantType.Query = false;
-                    searchCriteriaDB.First(x => x.Characteristic == cactiPlantType.Characteristic).Query = cactiPlantType.Query = false;
-
                     LeafShapeSearch();
                     LeafArrangementSearch();
                     FruitTypeSearch();
                     FlowerShapeSearch();
                     FlowerColorSearch();
-                }
-                else if (button.Query == false)
-                {
-                    ResetSearchFilters(sender, e);
-                }
+                
             }
             else if (button.Characteristic.Equals("PlantType-Cacti"))
             {
-                if (button.Query == true)
-                {
-                    deciduousPlantType.BorderWidth = 0;
-                    coniferPlantType.BorderWidth = 0;
-                    vinePlantType.BorderWidth = 0;
-
-                    searchCriteriaDB.First(x => x.Characteristic == deciduousPlantType.Characteristic).Query = deciduousPlantType.Query = false;
-                    searchCriteriaDB.First(x => x.Characteristic == coniferPlantType.Characteristic).Query = coniferPlantType.Query = false;
-                    searchCriteriaDB.First(x => x.Characteristic == vinePlantType.Characteristic).Query = vinePlantType.Query = false;
-
                     LeafShapeSearch();
                     FlowerColorSearch();
 
-                }
-                else if (button.Query == false)
-                {
-                    ResetSearchFilters(sender, e);
-                }
             }
         }
 
@@ -257,15 +226,35 @@ namespace PortableApp
             // Update record in database and add or remove border
             SearchCharacteristicIcon button = (SearchCharacteristicIcon)sender;
             WoodySearch correspondingDBRecord = searchCriteriaDB.First(x => x.Characteristic == button.Characteristic);
-            if (button.Query == true)
+
+            if (!button.Characteristic.Equals("PlantType-Deciduous") && !button.Characteristic.Equals("PlantType-Cacti") && !button.Characteristic.Equals("PlantType-Vine") && !button.Characteristic.Equals("PlantType-Conifer"))
             {
-                correspondingDBRecord.Query = button.Query = false;
-                button.BorderWidth = 0;
+                if (button.Query == true)
+                {
+                    correspondingDBRecord.Query = button.Query = false;
+                    button.BorderWidth = 0;
+                }
+                else if (button.Query == false)
+                {
+                    correspondingDBRecord.Query = button.Query = true;
+                    button.BorderWidth = 1;
+                }
             }
-            else if (button.Query == false)
+            else
             {
-                correspondingDBRecord.Query = button.Query = true;
-                button.BorderWidth = 1;
+                if (button.Query == true)
+                {
+                    ResetSearchFilters(sender,e);
+                    correspondingDBRecord.Query = button.Query = false;
+                }
+                else if (button.Query == false)
+                {
+                    ResetTypeButtons(sender, e);
+                    //ResetSearchFilters(sender, e);
+                    button.BorderWidth = 1;
+                    correspondingDBRecord.Query = button.Query = true;
+                    ChangeSearchCharacteristics(sender, e);
+                }
             }
             await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord);
 

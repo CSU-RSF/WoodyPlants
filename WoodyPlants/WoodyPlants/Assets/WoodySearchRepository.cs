@@ -64,10 +64,10 @@ namespace PortableApp
         // Seed database with Search Criteria
         public void SeedDB()
         {
-            conn.Insert(new WoodySearch() { Characteristic = "PlantType-Deciduous", Name = "Deciduous", Query = false, Column1 = "", SearchString1 = "", SearchString2 = "", SearchString3 = "" });
-            conn.Insert(new WoodySearch() { Characteristic = "PlantType-Conifer", Name = "Conifer", Query = false, Column1 = "", SearchString1 = "", SearchString2 = "", SearchString3 = "" });
-            conn.Insert(new WoodySearch() { Characteristic = "PlantType-Vine", Name = "Vine", Query = false, Column1 = "", SearchString1 = "", SearchString2 = "", SearchString3 = "" });
-            conn.Insert(new WoodySearch() { Characteristic = "PlantType-Cacti", Name = "Cacti", Query = false, Column1 = "", SearchString1 = "", SearchString2 = "", SearchString3 = "" });
+            conn.Insert(new WoodySearch() { Characteristic = "PlantType-Deciduous", Name = "Deciduous", Query = false, Column1 = "family", SearchString1 = "Pine", SearchString2 = "Cypress", SearchString3 = "Grape", SearchString4 = "Buttercup", SearchString5 = "Barberry", SearchString6 = "Cactus" });
+            conn.Insert(new WoodySearch() { Characteristic = "PlantType-Conifer", Name = "Conifer", Query = false, Column1 = "family", SearchString1 = "Pine", SearchString2 = "Cypress", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null" });
+            conn.Insert(new WoodySearch() { Characteristic = "PlantType-Vine", Name = "Vine", Query = false, Column1 = "family", SearchString1 = "Grape", SearchString2 = "Buttercup", SearchString3 = "Barberry", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null" });
+            conn.Insert(new WoodySearch() { Characteristic = "PlantType-Cacti", Name = "Cacti", Query = false, Column1 = "family", SearchString1 = "Cactus", SearchString2 = "null", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null" });
 
             conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Narrow", Name = "Narrow", Query = false, Column1 = "leafShape", SearchString1 = "narrow", SearchString2 = "linear", SearchString3 = "lanceolate", SearchString4 = "oblong", SearchString5 = "elliptic", SearchString6 = "oval"});
             conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Deltoid", Name = "Deltoid", Query = false, Column1 = "leafShape", SearchString1 = "deltoid", SearchString2 = "ovate", SearchString3 = "triangular", SearchString4 = "cordate", SearchString5 = "null", SearchString6 = "null"});

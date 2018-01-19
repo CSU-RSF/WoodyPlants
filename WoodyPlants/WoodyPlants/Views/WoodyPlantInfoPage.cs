@@ -50,11 +50,52 @@ namespace PortableApp
             html += "<!DOCTYPE html><html lang='en' xmlns='http://www.w3.org/1999/xhtml'><head><meta charset = 'utf-8' /><title>Plant Info Page</title></head><body>";
             html += "<style>body { color: white; font-size: 0.9em; } .section_header { font-weight: bold; border-bottom: 1px solid white; margin: 10px 0; } .embedded_table { width: 100%; margin-left: 10px; }</style>";
 
-            html += "<div class='section_header'>NOMENCLATURE</div>";
-            html += "<strong>Scientific Name: </strong>" + plant.scientificNameWeber + "<br/>";
-            html += "<strong>Family: </strong>" + plant.family + "<br/>";
-            html += "<strong>Common Name: </strong>" + plant.commonName + "<br/>";
-            html += "<strong>Other Common Names: </strong>" + plant.scientificNameOther + "<br/>";
+            html += "<div class='section_header'>NAME</div>";
+            if (plant.commonName != null && plant.commonName.Length != 0)
+            {
+                html += "<strong>Common Name: </strong>" + plant.commonName + "<br/>";
+            }
+            if (plant.scientificNameWeber != null && plant.scientificNameWeber.Length != 0)
+            {
+                html += "<strong>Scientific Name: </strong>" + plant.scientificNameWeber + "<br/>";
+            }
+            if (plant.scientificNameOther != null && plant.scientificNameOther.Length != 0)
+            {
+                html += "<strong>Synonyms: </strong>" + plant.scientificNameOther + "<br/>";
+            }
+            if (plant.family != null && plant.family.Length != 0)
+            {
+                html += "<strong>Family: </strong>" + plant.family + "<br/>";
+            }
+            if (plant.keyCharacteristics != null && plant.keyCharacteristics.Length != 0)
+            {
+                html += "<div class='section_header'>KEY CHARACTERISTICS</div>";
+                html += plant.keyCharacteristics;
+            }
+
+            if (plant.flowerDescription != null && plant.flowerDescription.Length != 0)
+            {
+                html += "<div class='section_header'>FLOWER</div>";
+                html += plant.flowerDescription;
+            }
+
+            if (plant.seasonOfBloom != null && plant.seasonOfBloom.Length !=0)
+            { 
+                html += "<div class='section_header'>SEASON OF BLOOM</div>";
+                html += plant.seasonOfBloom;
+            }
+
+            if (plant.fruitDescription != null && plant.fruitDescription.Length != 0)
+            {
+                html += "<div class='section_header'>FRUIT/CONE DESCRIPTION</div>";
+                html += plant.fruitDescription;
+            }
+
+            if (plant.barkDescription != null && plant.barkDescription.Length != 0)
+            {
+                html += "<div class='section_header'>BARK/STEM DESCRIPTION</div>";
+                html += plant.barkDescription;
+            }
 
             html += "</body></html>";
 

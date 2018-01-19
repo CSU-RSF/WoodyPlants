@@ -18,11 +18,9 @@ namespace PortableApp.Views
             Children.Add(new WoodyPlantImagesPage(plant, plants) { Title = "IMAGES", Icon = "images.png" });
             Children.Add(new WoodyPlantInfoPage(plant, plants) { Title = "INFO", Icon = "info.png" });
             Children.Add(new WoodyPlantEcologyPage(plant, plants) { Title = "ECOLOGY", Icon = "ecology.png" });
-            //Children.Add(new WoodyPlantRangePage(plant, plants) { Title = "RANGE", Icon = "range.png" });
-            //Children.Add(new WoodyPlantSimilarPage(plant, plants) { Title = "SIMILAR", Icon = "similar.png" });
             BarBackgroundColor = Color.Black;
             BarTextColor = Color.White;
-
+            BackgroundColor = Color.Black;
             if (selectedTabSetting != null)
                 SelectedItem = Children[Convert.ToInt32(selectedTabSetting.valueint)];
             else

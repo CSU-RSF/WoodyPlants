@@ -62,7 +62,9 @@ namespace PortableApp.Models
         public string scientificNameNelson { get; set; }
         
         public string scientificNameMeaningNelson { get; set; }
-        
+
+        public string scientificNameMeaning { get; set; }
+
         public string seasonOfBloom { get; set; }
         
         public string familyCharacteristics { get; set; }
@@ -184,6 +186,23 @@ namespace PortableApp.Models
         public string twigTexture { get; set; }
 
         public string leafArrangement { get; set; }
+
+        public string flowerDescription { get; set; }
+
+        public string fruitDescription { get; set; }
+
+        public string otherUses { get; set; }
+
+        public string alien { get; set; }
+
+        public string siteRequirements { get; set; }
+
+        public string derivation { get; set; }
+
+        public string comments { get; set; }
+
+        public string cultivar { get; set; }
+
 
 
         public bool isFavorite { get; set; }

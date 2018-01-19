@@ -49,6 +49,7 @@
     <Compile Include="Helpers\Grouping.cs" />
     <Compile Include="Helpers\HTMLPage.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
+    <Compile Include="Helpers\SearchCharactericticBuilder.cs" />
     <Compile Include="Helpers\SearchCharacteristicIcon.cs" />
     <Compile Include="Helpers\ViewHelpers.cs" />
     <Compile Include="Helpers\ZoomImage.cs" />

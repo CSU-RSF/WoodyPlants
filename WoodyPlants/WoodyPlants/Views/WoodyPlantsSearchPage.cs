@@ -199,24 +199,25 @@ namespace PortableApp
             }
             else if (button.Characteristic.Equals("PlantType-Conifer"))
             {
-                    LeafShapeSearch();
-                    FruitTypeSearch();
-                    FruitColorSearch();
+                    NeedleShapeSearch();
+                    ConeTypeSearch();
+                    //FruitColorSearch();
 
             }
             else if (button.Characteristic.Equals("PlantType-Vine"))
             {
-                    LeafShapeSearch();
-                    LeafArrangementSearch();
-                    FruitTypeSearch();
-                    FlowerShapeSearch();
-                    FlowerColorSearch();
-                
+                    VineLeafShapeSearch();
+                    VineLeafArrangementSearch();
+                    VineFruitTypeSearch();
+                    VineFlowerShapeSearch();
+                    VineFlowerColorSearch();
+
+
             }
             else if (button.Characteristic.Equals("PlantType-Cacti"))
             {
-                    LeafShapeSearch();
-                    FlowerColorSearch();
+                    CactusShapeSearch();
+                    CactusFlowerColorSearch();
 
             }
         }
@@ -313,6 +314,47 @@ namespace PortableApp
             searchFilters.Children.Add(leafShapeLayout);
         }
 
+        private void VineLeafShapeSearch()
+        {
+            Label vineLeafShapeLabel = new Label { Text = "Leaf Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
+            searchFilters.Children.Add(vineLeafShapeLabel);
+
+            WrapLayout vineLeafShapeLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
+
+            SearchCharacteristicIcon oneLeafShape = searchCriteria.First(x => x.Characteristic == "ShapeVineLeaf-Shape1");
+            vineLeafShapeLayout.Children.Add(oneLeafShape);
+
+            SearchCharacteristicIcon twoLeafShape = searchCriteria.First(x => x.Characteristic == "ShapeVineLeaf-Shape2");
+            vineLeafShapeLayout.Children.Add(twoLeafShape);
+
+            searchFilters.Children.Add(vineLeafShapeLayout);
+        }
+
+        private void NeedleShapeSearch()
+        {
+            Label needleShapeLabel = new Label { Text = "Needle Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
+            searchFilters.Children.Add(needleShapeLabel);
+
+            WrapLayout needleLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
+
+            SearchCharacteristicIcon twoClusterShape = searchCriteria.First(x => x.Characteristic == "NeedleShape-TwoCluster");
+            needleLayout.Children.Add(twoClusterShape);
+
+            SearchCharacteristicIcon fiveClusterShape = searchCriteria.First(x => x.Characteristic == "NeedleShape-FiveCluster");
+            needleLayout.Children.Add(fiveClusterShape);
+
+            SearchCharacteristicIcon flatShape = searchCriteria.First(x => x.Characteristic == "NeedleShape-Flat");
+            needleLayout.Children.Add(flatShape);
+
+            SearchCharacteristicIcon sharpShape = searchCriteria.First(x => x.Characteristic == "NeedleShape-Sharp");
+            needleLayout.Children.Add(sharpShape);
+
+            SearchCharacteristicIcon scaleShape = searchCriteria.First(x => x.Characteristic == "NeedleShape-Scale");
+            needleLayout.Children.Add(scaleShape);
+
+            searchFilters.Children.Add(needleLayout);
+        }
+
         private void LeafArrangementSearch()
         {
             // Add Type of Plant
@@ -332,6 +374,26 @@ namespace PortableApp
 
             SearchCharacteristicIcon basalLeafArrangement = searchCriteria.First(x => x.Characteristic == "LeafArrangement-Basal");
             leafArrangementLayout.Children.Add(basalLeafArrangement);
+
+            searchFilters.Children.Add(leafArrangementLayout);
+        }
+
+        private void VineLeafArrangementSearch()
+        {
+            // Add Type of Plant
+            Label leafArrangementLabel = new Label { Text = "Leaf Arrangement:", Style = Application.Current.Resources["sectionHeader"] as Style };
+            searchFilters.Children.Add(leafArrangementLabel);
+
+            WrapLayout leafArrangementLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
+
+            SearchCharacteristicIcon alternateLeafArrangement = searchCriteria.First(x => x.Characteristic == "LeafArrangement-Alternate");
+            leafArrangementLayout.Children.Add(alternateLeafArrangement);
+
+            SearchCharacteristicIcon oppositeLeafArrangement = searchCriteria.First(x => x.Characteristic == "LeafArrangement-Opposite");
+            leafArrangementLayout.Children.Add(oppositeLeafArrangement);
+
+            SearchCharacteristicIcon whorledLeafArrangement = searchCriteria.First(x => x.Characteristic == "LeafArrangement-Whorled");
+            leafArrangementLayout.Children.Add(whorledLeafArrangement);
 
             searchFilters.Children.Add(leafArrangementLayout);
         }
@@ -440,6 +502,26 @@ namespace PortableApp
             searchFilters.Children.Add(flowerShapeLayout);
         }
 
+        private void VineFlowerShapeSearch()
+        {
+            // Add Type of PlantFIXXXXXXXXXXXXXX
+            Label flowerShapeLabel = new Label { Text = "Flower Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
+            searchFilters.Children.Add(flowerShapeLabel);
+
+            WrapLayout flowerShapeLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
+
+            SearchCharacteristicIcon flowerShapeInconspicuous = searchCriteria.First(x => x.Characteristic == "FlowerVineShape-Shape1");
+            flowerShapeLayout.Children.Add(flowerShapeInconspicuous);
+
+            SearchCharacteristicIcon flowerShapeRound = searchCriteria.First(x => x.Characteristic == "FlowerVineShape-Shape2");
+            flowerShapeLayout.Children.Add(flowerShapeRound);
+
+            SearchCharacteristicIcon flowerShapeBellShaped = searchCriteria.First(x => x.Characteristic == "FlowerVineShape-Shape3");
+            flowerShapeLayout.Children.Add(flowerShapeBellShaped);           
+
+            searchFilters.Children.Add(flowerShapeLayout);
+        }
+
         private void FruitTypeSearch()
         {
             
@@ -470,6 +552,48 @@ namespace PortableApp
                 searchFilters.Children.Add(fruitTypeLayout);
 
         }
+
+        private void VineFruitTypeSearch()
+        {
+
+            // Add Type of PlantFIXXXXXXXXXXXXXX
+            Label fruitTypeLabel = new Label { Text = "Fruit Type:", Style = Application.Current.Resources["sectionHeader"] as Style };
+            searchFilters.Children.Add(fruitTypeLabel);
+
+            WrapLayout fruitTypeLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };          
+
+            SearchCharacteristicIcon fruitTypeFleshy = searchCriteria.First(x => x.Characteristic == "FruitType-Fleshy");
+            fruitTypeLayout.Children.Add(fruitTypeFleshy);
+        
+            SearchCharacteristicIcon fruitTypeCapsule = searchCriteria.First(x => x.Characteristic == "FruitType-Capsule");
+            fruitTypeLayout.Children.Add(fruitTypeCapsule);
+     
+            searchFilters.Children.Add(fruitTypeLayout);
+
+        }
+
+        private void ConeTypeSearch()
+        {
+
+            // Add Type of PlantFIXXXXXXXXXXXXXX
+            Label coneTypeLabel = new Label { Text = "Cone Type:", Style = Application.Current.Resources["sectionHeader"] as Style };
+            searchFilters.Children.Add(coneTypeLabel);
+
+            WrapLayout coneTypeLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
+
+            SearchCharacteristicIcon coneTypeCone = searchCriteria.First(x => x.Characteristic == "ConeType-SolidCone");
+            coneTypeLayout.Children.Add(coneTypeCone);
+
+            SearchCharacteristicIcon conePapTypeCone = searchCriteria.First(x => x.Characteristic == "ConeType-PaperyCone");
+            coneTypeLayout.Children.Add(conePapTypeCone);
+
+            SearchCharacteristicIcon coneTypeBerry = searchCriteria.First(x => x.Characteristic == "ConeType-Berry");
+            coneTypeLayout.Children.Add(coneTypeBerry);
+
+            searchFilters.Children.Add(coneTypeLayout);
+        }
+
+
 
         private void FruitColorSearch()
         {
@@ -548,6 +672,88 @@ namespace PortableApp
             flowerColorLayout.Children.Add(purpleFlowerColor);
 
             searchFilters.Children.Add(flowerColorLayout);
+        }
+
+        private void CactusFlowerColorSearch()
+        {
+            // Add Type of Plant
+            Label flowerColorLabel = new Label { Text = "Flower Color:", Style = Application.Current.Resources["sectionHeader"] as Style };
+            searchFilters.Children.Add(flowerColorLabel);
+
+            WrapLayout flowerColorLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
+
+            SearchCharacteristicIcon yellowFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Yellow");
+            flowerColorLayout.Children.Add(yellowFlowerColor);
+
+            SearchCharacteristicIcon brownFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Brown");
+            flowerColorLayout.Children.Add(brownFlowerColor);
+
+            SearchCharacteristicIcon whiteFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-White");
+            flowerColorLayout.Children.Add(whiteFlowerColor);
+       
+            SearchCharacteristicIcon orangeFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Orange");
+            flowerColorLayout.Children.Add(orangeFlowerColor);
+
+            SearchCharacteristicIcon pinkFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Pink");
+            flowerColorLayout.Children.Add(pinkFlowerColor);
+
+            SearchCharacteristicIcon purpleFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Purple");
+            flowerColorLayout.Children.Add(purpleFlowerColor);
+
+            searchFilters.Children.Add(flowerColorLayout);
+        }
+
+        private void VineFlowerColorSearch()
+        {
+            // Add Type of Plant
+            Label flowerColorLabel = new Label { Text = "Flower Color:", Style = Application.Current.Resources["sectionHeader"] as Style };
+            searchFilters.Children.Add(flowerColorLabel);
+
+            WrapLayout flowerColorLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
+
+            SearchCharacteristicIcon yellowFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Yellow");
+            flowerColorLayout.Children.Add(yellowFlowerColor);
+
+            SearchCharacteristicIcon blueFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Blue");
+            flowerColorLayout.Children.Add(blueFlowerColor);
+
+            SearchCharacteristicIcon greenFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Green");
+            flowerColorLayout.Children.Add(greenFlowerColor);
+
+            SearchCharacteristicIcon purpleFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Purple");
+            flowerColorLayout.Children.Add(purpleFlowerColor);
+
+            searchFilters.Children.Add(flowerColorLayout);
+        }
+
+       
+
+        private void CactusShapeSearch()
+        {
+            Label cactusShapeLabel = new Label { Text = "Cactus Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
+            searchFilters.Children.Add(cactusShapeLabel);
+
+            WrapLayout cactusShapeLayout = new WrapLayout { Orientation = StackOrientation.Horizontal, Spacing = 5 };
+
+            SearchCharacteristicIcon flatOneCactusShape = searchCriteria.First(x => x.Characteristic == "CactusShape-Flat1");
+            cactusShapeLayout.Children.Add(flatOneCactusShape);
+
+            SearchCharacteristicIcon flatTwoCactusShape = searchCriteria.First(x => x.Characteristic == "CactusShape-Flat2");
+            cactusShapeLayout.Children.Add(flatTwoCactusShape);
+
+            SearchCharacteristicIcon roundOneCactusShape = searchCriteria.First(x => x.Characteristic == "CactusShape-Round1");
+            cactusShapeLayout.Children.Add(roundOneCactusShape);
+
+            SearchCharacteristicIcon roundTwoCactusShape = searchCriteria.First(x => x.Characteristic == "CactusShape-Round2");
+            cactusShapeLayout.Children.Add(roundTwoCactusShape);
+
+            SearchCharacteristicIcon branchedCactusShape = searchCriteria.First(x => x.Characteristic == "CactusShape-Branched");
+            cactusShapeLayout.Children.Add(branchedCactusShape);
+
+            SearchCharacteristicIcon flatRoundCactusShape = searchCriteria.First(x => x.Characteristic == "CactusShape-FlatRound");
+            cactusShapeLayout.Children.Add(flatRoundCactusShape);
+
+            searchFilters.Children.Add(cactusShapeLayout);
         }
 
 

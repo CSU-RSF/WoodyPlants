@@ -69,17 +69,17 @@ namespace PortableApp
             conn.Insert(new WoodySearch() { Characteristic = "PlantType-Vine", Name = "Vine", Query = false, Column1 = "family", SearchString1 = "Grape", SearchString2 = "Buttercup", SearchString3 = "Barberry", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null" });
             conn.Insert(new WoodySearch() { Characteristic = "PlantType-Cacti", Name = "Cacti", Query = false, Column1 = "family", SearchString1 = "Cactus", SearchString2 = "null", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null" });
 
-            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Narrow", Name = "Narrow", Query = false, Column1 = "leafShape", SearchString1 = "narrow", SearchString2 = "linear", SearchString3 = "lanceolate", SearchString4 = "oblong", SearchString5 = "elliptic", SearchString6 = "oval"});
-            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Deltoid", Name = "Deltoid", Query = false, Column1 = "leafShape", SearchString1 = "deltoid", SearchString2 = "ovate", SearchString3 = "triangular", SearchString4 = "cordate", SearchString5 = "null", SearchString6 = "null"});
-            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Orbicular", Name = "Orbicular", Query = false, Column1 = "leafShape", SearchString1 = "orbicular", SearchString2 = "reniform", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null"});
-            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Oblanceolate", Name = "Oblanceolate", Query = false, Column1 = "leafShape", SearchString1 = "oblanceolate", SearchString2 = "obovate", SearchString3 = "spatulate", SearchString4 = "cuneate", SearchString5 = "null", SearchString6 = "null"});
-            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Palmately", Name = "Palmately", Query = false, Column1 = "leafShape", SearchString1 = "palmately", SearchString2 = "lobed", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null"});
-            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Lobed", Name = "Lobed", Query = false, Column1 = "leafShape", SearchString1 = "lobed", SearchString2 = "lyrate", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null"});
-            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Pinnate", Name = "Pinnate", Query = false, Column1 = "leafShape", SearchString1 = "pinnate", SearchString2 = "palmate", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null"});
+            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Narrow", Name = "Narrow", Query = false, Column1 = "leafShape", SearchString1 = "narrow", SearchString2 = "linear", SearchString3 = "lanceolate", SearchString4 = "oblong", SearchString5 = "elliptic", SearchString6 = "oval", IconFileName = "narrow.png"});
+            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Deltoid", Name = "Deltoid", Query = false, Column1 = "leafShape", SearchString1 = "deltoid", SearchString2 = "ovate", SearchString3 = "triangular", SearchString4 = "cordate", SearchString5 = "null", SearchString6 = "null", IconFileName = "deltoid.png" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Orbicular", Name = "Orbicular", Query = false, Column1 = "leafShape", SearchString1 = "orbicular", SearchString2 = "reniform", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null", IconFileName = "orbicular.png" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Oblanceolate", Name = "Oblanceolate", Query = false, Column1 = "leafShape", SearchString1 = "oblanceolate", SearchString2 = "obovate", SearchString3 = "spatulate", SearchString4 = "cuneate", SearchString5 = "null", SearchString6 = "null", IconFileName = "oblanceolate.png" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Palmately", Name = "Palmately", Query = false, Column1 = "leafShape", SearchString1 = "palmately", SearchString2 = "lobed", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null", IconFileName = "palmate.png" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Lobed", Name = "Lobed", Query = false, Column1 = "leafShape", SearchString1 = "lobed", SearchString2 = "lyrate", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null", IconFileName = "lobedcombined.png" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafShape-Pinnate", Name = "Pinnate", Query = false, Column1 = "leafShape", SearchString1 = "pinnate", SearchString2 = "palmate", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null", IconFileName = "pinnate.png" });
 
             //HERE
-            conn.Insert(new WoodySearch() { Characteristic = "ShapeVineLeaf-Shape1", Name = "Vine Leaf Shape 1", Query = false, Column1 = "leafShape", SearchString1 = "null"});
-            conn.Insert(new WoodySearch() { Characteristic = "ShapeVineLeaf-Shape2", Name = "Vine Leaf Shape 2", Query = false, Column1 = "leafShape", SearchString1 = "null"});
+            conn.Insert(new WoodySearch() { Characteristic = "ShapeVineLeaf-Shape1", Name = "Simple", Query = false, Column1 = "leafType", SearchString1 = "simple", SearchString2 = "null", SearchString3 = "null" });
+            conn.Insert(new WoodySearch() { Characteristic = "ShapeVineLeaf-Shape2", Name = "Compound", Query = false, Column1 = "leafType", SearchString1 = "compound", SearchString2 = "pinnate", SearchString3 = "bipinnate" });
 
             //HERE
             conn.Insert(new WoodySearch() { Characteristic = "NeedleShape-TwoCluster", Name = "Clusters of 2-3", Query = false, Column1 = "leafShape", SearchString1 = "fascicles of 2", SearchString2 = "null"});
@@ -89,14 +89,14 @@ namespace PortableApp
             conn.Insert(new WoodySearch() { Characteristic = "NeedleShape-Scale", Name = "Scale", Query = false, Column1 = "leafShape", SearchString1 = "scale", SearchString2 = "null"});
 
             //HERE
-            conn.Insert(new WoodySearch() { Characteristic = "ConeType-SolidCone", Name = "Solid Woody Cone", Query = false, Column1 = "fruitType", SearchString1 = "cone", SearchString2 = "berry" });
-            conn.Insert(new WoodySearch() { Characteristic = "ConeType-PaperyCone", Name = "Papery Cone", Query = false, Column1 = "fruitType", SearchString1 = "cone", SearchString2 = "berry" });
-            conn.Insert(new WoodySearch() { Characteristic = "ConeType-Berry", Name = "Berry", Query = false, Column1 = "fruitType", SearchString1 = "berry", SearchString2 = "null" });                   
+            conn.Insert(new WoodySearch() { Characteristic = "ConeType-SolidCone", Name = "Solid Woody Cone", Query = false, Column1 = "fruitType", SearchString1 = "woody", SearchString2 = "null" });
+            conn.Insert(new WoodySearch() { Characteristic = "ConeType-PaperyCone", Name = "Papery Cone", Query = false, Column1 = "fruitType", SearchString1 = "papery", SearchString2 = "null" });
+            conn.Insert(new WoodySearch() { Characteristic = "ConeType-Berry", Name = "Berry", Query = false, Column1 = "fruitType", SearchString1 = "berry", SearchString2 = "berries" });                   
 
-            conn.Insert(new WoodySearch() { Characteristic = "LeafArrangement-Alternate", Name = "Alternate", Query = false, Column1 = "leafArrangement", SearchString1 = "alternate" });
-            conn.Insert(new WoodySearch() { Characteristic = "LeafArrangement-Opposite", Name = "Opposite", Query = false, Column1 = "leafArrangement", SearchString1 = "opposite" });
-            conn.Insert(new WoodySearch() { Characteristic = "LeafArrangement-Whorled", Name = "Whorled", Query = false, Column1 = "leafArrangement", SearchString1 = "whorled" });
-            conn.Insert(new WoodySearch() { Characteristic = "LeafArrangement-Basal", Name = "Basal", Query = false, Column1 = "leafArrangement", SearchString1 = "basal" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafArrangement-Alternate", Name = "Alternate", Query = false, Column1 = "leafArrangement", SearchString1 = "alternate", IconFileName = "alternate.png" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafArrangement-Opposite", Name = "Opposite", Query = false, Column1 = "leafArrangement", SearchString1 = "opposite", IconFileName = "opposite.png" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafArrangement-Whorled", Name = "Whorled", Query = false, Column1 = "leafArrangement", SearchString1 = "whorled", IconFileName = "whorled.png" });
+            conn.Insert(new WoodySearch() { Characteristic = "LeafArrangement-Basal", Name = "Basal", Query = false, Column1 = "leafArrangement", SearchString1 = "basal", IconFileName = "basal.png" });
 
             conn.Insert(new WoodySearch() { Characteristic = "TwigTexture-Hairy", Name = "Hairy", Query = false, Column1 = "twigTexture", SearchString1 = "hairy", SearchString2 = "pubescent", SearchString3 = "villose", SearchString4 = "tomentose", SearchString5 = "pilose", SearchString6 = "woolly", SearchString7 = "canescent", SearchString8 = "velvety", SearchString9 = "fuzz" });
             conn.Insert(new WoodySearch() { Characteristic = "TwigTexture-Smooth", Name = "Smooth", Query = false, Column1 = "twigTexture", SearchString1 = "smooth", SearchString2 = "glabrous", SearchString3 = "waxy", SearchString4 = "glaucous", SearchString5 = "shiny", SearchString6 = "powdery", SearchString7 = "null", SearchString8 = "null", SearchString9 = "null" });
@@ -129,12 +129,12 @@ namespace PortableApp
             conn.Insert(new WoodySearch() { Characteristic = "FlowerShape-Round", Name = "Round", Query = false, Column1 = "flowerSymmetry", SearchString1 = "round", SearchString2 = "composite", SearchString3 = "rotate", SearchString4 = "cylindrical", SearchString5 = "null", SearchString6 = "null" });
             conn.Insert(new WoodySearch() { Characteristic = "FlowerShape-BellShaped", Name = "Bell-Shaped", Query = false, Column1 = "flowerSymmetry", SearchString1 = "bell-shaped", SearchString2 = "campanulate", SearchString3 = "funnelform", SearchString4 = "salverform", SearchString5 = "tubular", SearchString6 = "urceolate" });
             conn.Insert(new WoodySearch() { Characteristic = "FlowerShape-CupShaped", Name = "Cup-Shaped ", Query = false, Column1 = "flowerSymmetry", SearchString1 = "cup-shaped", SearchString2 = "crateriform", SearchString3 = "cupuliform", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null" });
-            conn.Insert(new WoodySearch() { Characteristic = "FlowerShape-StarShaped", Name = "Star-Shaped", Query = false, Column1 = "flowerSymmetry", SearchString1 = "star-shaped", SearchString2 = "cross-shaped", SearchString3 = "cruciform", SearchString4 = "stellate", SearchString5 = "null", SearchString6 = "null" });
+            conn.Insert(new WoodySearch() { Characteristic = "FlowerShape-StarShaped", Name = "Star Or Cross Shaped", Query = false, Column1 = "flowerSymmetry", SearchString1 = "star-shaped", SearchString2 = "cross-shaped", SearchString3 = "cruciform", SearchString4 = "stellate", SearchString5 = "null", SearchString6 = "null" });
             conn.Insert(new WoodySearch() { Characteristic = "FlowerShape-Other", Name = "Other", Query = false, Column1 = "flowerSymmetry", SearchString1 = "papilionaceous", SearchString2 = "null", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null", SearchString6 = "null" });
 
-            conn.Insert(new WoodySearch() { Characteristic = "FlowerVineShape-Shape1", Name = "Flower Shape One", Query = false, Column1 = "flowerShape", SearchString1 = "null"});
-            conn.Insert(new WoodySearch() { Characteristic = "FlowerVineShape-Shape2", Name = "Flower Shape Two", Query = false, Column1 = "flowerShape", SearchString1 = "null"});
-            conn.Insert(new WoodySearch() { Characteristic = "FlowerVineShape-Shape3", Name = "Flower Shape Three", Query = false, Column1 = "flowerShape", SearchString1 = "null"});
+            //conn.Insert(new WoodySearch() { Characteristic = "FlowerVineShape-Shape1", Name = "Flower Shape One", Query = false, Column1 = "flowerShape", SearchString1 = "null"});
+            //conn.Insert(new WoodySearch() { Characteristic = "FlowerVineShape-Shape2", Name = "Flower Shape Two", Query = false, Column1 = "flowerShape", SearchString1 = "null"});
+            //conn.Insert(new WoodySearch() { Characteristic = "FlowerVineShape-Shape3", Name = "Flower Shape Three", Query = false, Column1 = "flowerShape", SearchString1 = "null"});
 
             conn.Insert(new WoodySearch() { Characteristic = "FruitType-DrySeed", Name = "Dry Seed", Query = false, Column1 = "familyCharacteristics", SearchString1 = "achene", SearchString2 = "cypselae", SearchString3 = "utricle", SearchString4 = "null", SearchString5 = "null" });
             conn.Insert(new WoodySearch() { Characteristic = "FruitType-Acorn", Name = "Acorn", Query = false, Column1 = "familyCharacteristics", SearchString1 = "nut", SearchString2 = "nutlet", SearchString3 = "null", SearchString4 = "null", SearchString5 = "null" });
@@ -154,12 +154,10 @@ namespace PortableApp
             conn.Insert(new WoodySearch() { Characteristic = "FruitColor-Purple", Name = "Purple", Query = false, Column1 = "fruitType", SearchString1 = "purple", SearchString2 = "null"});
             conn.Insert(new WoodySearch() { Characteristic = "FruitColor-Gray", Name = "Gray", Query = false, Column1 = "fruitType", SearchString1 = "gray", SearchString2 = "silver"});
 
-            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-Flat1", Name = "Flat One", Query = false, Column1 = "null", SearchString1 = "null" });
-            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-Flat2", Name = "Flat Two", Query = false, Column1 = "null", SearchString1 = "null" });
-            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-Round1", Name = "Round One", Query = false, Column1 = "null", SearchString1 = "null" });         
-            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-Round2", Name = "Round Two", Query = false, Column1 = "null", SearchString1 = "null" });         
-            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-Branched", Name = "Branched", Query = false, Column1 = "null", SearchString1 = "null" });
-            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-FlatRound", Name = "Flat and Round", Query = false, Column1 = "null", SearchString1 = "null" });
+            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-Flat1", Name = "Flat", Query = false, Column1 = "twigTexture", SearchString1 = "flat"});
+            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-Sphere", Name = "Sphere", Query = false, Column1 = "twigTexture", SearchString1 = "spheric"});                
+            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-Branched", Name = "Branched", Query = false, Column1 = "twigTexture", SearchString1 = "branched"});
+            conn.Insert(new WoodySearch() { Characteristic = "CactusShape-Cylinder", Name = "Cylinder", Query = false, Column1 = "twigTexture", SearchString1 = "cylindric"});
 
 
         }

@@ -13,6 +13,7 @@ namespace PortableApp
         public static WoodyPlantImageRepository WoodyPlantImageRepo { get; private set; }
         public static WoodySettingRepository WoodySettingsRepo { get; private set; }
         public static WoodySearchRepository WoodySearchRepo { get; private set; }
+        public static WoodyPlantImageRepositoryLocal WoodyPlantImageRepoLocal { get; set; }
 
         public App(ISQLitePlatform sqliteplatform, string dbPath)
         {
@@ -30,7 +31,9 @@ namespace PortableApp
             WoodySettingsRepo = new WoodySettingRepository();
             WoodySearchRepo = new WoodySearchRepository();
 
+
             WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(WoodyPlantRepo.GetAllWoodyPlants());
+            WoodyPlantImageRepoLocal = new WoodyPlantImageRepositoryLocal(WoodyPlantImageRepo.GetAllWetlandPlantImages());
 
             this.MainPage = new NavigationPage(new MainPage());
         }

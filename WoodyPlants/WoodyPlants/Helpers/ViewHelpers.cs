@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using PortableApp.Models;
 using PortableApp.Views;
+using System.ComponentModel;
 
 namespace PortableApp
 {
@@ -15,8 +16,50 @@ namespace PortableApp
     {
     }
 
-    public class ViewHelpers : ContentPage
+    public class ViewHelpers : ContentPage, INotifyPropertyChanged
     {
+        
+
+
+
+        private bool isLoading;
+        public bool IsLoading
+        {
+            get
+            {
+                return this.isLoading;
+            }
+
+            set
+            {
+                this.isLoading = value;
+                RaisePropertyChanged("IsLoading");
+            }
+        }
+
+        private String isLoadingMessage = "Loading";
+        public String IsLoadingMessage
+        {
+            get
+            {
+                return this.isLoadingMessage;
+            }
+
+            set
+            {
+                this.isLoadingMessage = value;
+                RaisePropertyChanged("IsLoadingMessage");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RaisePropertyChanged(string pName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(pName));
+        }
+
+
         //
         // VIEWS
         //
@@ -33,7 +76,46 @@ namespace PortableApp
                 Aspect = Aspect.AspectFill,
                 Opacity = 0.7
             };
+
+            var loadingLabel = new Label()
+            {
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.End,
+                TextColor = Color.White
+            };
+
+            loadingLabel.BindingContext = this;
+            loadingLabel.SetBinding(Label.TextProperty, "IsLoadingMessage", BindingMode.TwoWay);
+            loadingLabel.SetBinding(Label.IsVisibleProperty, "IsLoading", BindingMode.OneWay);
+            loadingLabel.TextColor = Color.White;
+
+
+            var indicator = new ActivityIndicator()
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.StartAndExpand
+            };
+            indicator.Color = Color.Blue;
+            indicator.BindingContext = this;
+            indicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsLoading", BindingMode.TwoWay);
+
+            var grid = new Grid();
+
+            //  grid.BackgroundColor = IsLoading ? Color.Black: Color.Transparent;
+            //  grid.Opacity = .2;
+
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            grid.Children.Add(indicator, 0, 1);
+            grid.Children.Add(loadingLabel, 0, 0);
+            Grid.SetColumnSpan(loadingLabel, 2);
+            Grid.SetColumnSpan(indicator, 2);
+
             pageContainer.Children.Add(backgroundImage, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
+            pageContainer.Children.Add(grid, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
+
             return pageContainer;
         }
         
@@ -74,7 +156,7 @@ namespace PortableApp
 
             //Home
             gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            gridLayout.Children.Add(HomeImageConstructor(), 2, 0);
+            //gridLayout.Children.Add(HomeImageConstructor(), 2, 0);
 
             return gridLayout;
         }
@@ -251,14 +333,14 @@ namespace PortableApp
         public async void ToPlants(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage(false);
+            var plantsPage = new WoodyPlantsPage(false,true);
             await Navigation.PushAsync(plantsPage);
 
         }
         public async void ToFavorites(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage(false);
+            var plantsPage = new WoodyPlantsPage(false,false);
             await Navigation.PushAsync(plantsPage);
             plantsPage.FilterPlantsByFavorites();
         }
@@ -266,7 +348,7 @@ namespace PortableApp
         public async void ToSearch(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage(true);
+            var plantsPage = new WoodyPlantsPage(true,false);
             await Navigation.PushAsync(plantsPage);
 
         }

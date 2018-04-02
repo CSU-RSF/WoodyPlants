@@ -20,7 +20,7 @@ namespace PortableApp
         ObservableCollection<WoodyPlant> plants;
         bool cameFromSearch;
         Dictionary<string, string> sortOptions = new Dictionary<string, string> { { "Scientific Name", "scientificNameWeber" }, { "Common Name", "commonName" }, { "Family", "family" } };
-        Picker sortPicker = new Picker();
+        Picker sortPicker = new Picker ();
         Button sortButton = new Button { Style = Application.Current.Resources["semiTransparentPlantButton"] as Style, Text = "Sort", BorderRadius = Device.OnPlatform(0, 1, 0) };
         Button sortDirection = new Button { Style = Application.Current.Resources["semiTransparentPlantButton"] as Style, Text = "\u25BC", BorderRadius = Device.OnPlatform(0, 1, 0) };
         WoodySetting sortField;
@@ -30,29 +30,38 @@ namespace PortableApp
         public Button searchFilter;
         Button favoritesFilter;
         SearchBar searchBar;
+        bool cameFromHomeFamily;
+        bool cameFromHomeSearch  = false;
 
+        Page searchPage;
 
         protected async override void OnAppearing()
         {
+            IsLoading = true;
+            this.Content.IsEnabled = false;
             // Get filtered plant list if came from search
             if (!cameFromSearch)
             {
-                if(App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
+                if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
                 {
                     plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
+                    if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
+                    ChangeFilterColors(browseFilter);
+                    base.OnAppearing();
                 }
-               else
+                else
                 {
                     plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
+                    if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
+                    ChangeFilterColors(browseFilter);
+                    base.OnAppearing();
                 }
-                if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
-                //ChangeFilterColors(browseFilter);
-                
-                base.OnAppearing();
             }
-            // else
-            //ChangeFilterColors(searchFilter);
-
+            else
+            {
+                //plants = await App.WoodyPlantRepoLocal.GetAllSearchPlants();
+                ChangeFilterColors(searchFilter);              
+            }
             // Set sort settings and filter jump list
             GetSortField();
             if (sortField.valuetext == "Sort")
@@ -64,16 +73,28 @@ namespace PortableApp
             {
                 sortPicker.SelectedIndex = (int)sortField.valueint;
                 FilterJumpList(sortButton.Text);
+                SortItems();
+            }
+            if(cameFromHomeFamily)
+            {
+                sortPicker.Focus();
             }
 
-            ChangeFilterColors(browseFilter);
-            base.OnAppearing();
+            IsLoading = false;
+            this.Content.IsEnabled = true;
+
+            if (cameFromHomeSearch)
+            {
+                SearchFromHome(searchPage);
+            }
         }
 
-        public WoodyPlantsPage(bool cameFromHomeSearch)
+        public WoodyPlantsPage(bool cameFromHomeSearch, bool cameFromHomeFamily)
         {
-            // Initialize variables
-            sortField = new WoodySetting();
+            this.cameFromHomeFamily = cameFromHomeFamily;
+            this.cameFromHomeSearch = cameFromHomeSearch;
+           // Initialize variables
+           sortField = new WoodySetting();
 
             // Turn off navigation bar and initialize pageContainer
             NavigationPage.SetHasNavigationBar(this, false);
@@ -115,7 +136,9 @@ namespace PortableApp
                 Text = "Search"
             };
             var SearchPage = new WoodyPlantsSearchPage();
-            searchFilter.Clicked += async (s, e) => { await Navigation.PushModalAsync(SearchPage); };
+            //searchFilter.Clicked += async (s, e) => {await Navigation.PushModalAsync(SearchPage,false);};
+            searchFilter.Clicked += async (s, e) => { await Navigation.PushAsync(SearchPage, false); };
+
             SearchPage.InitRunSearch += HandleRunSearch;
             SearchPage.InitCloseSearch += HandleCloseSearch;
             plantFilterGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -235,24 +258,20 @@ namespace PortableApp
             pageContainer.Children.Add(innerContainer, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
             Content = pageContainer;
 
-            if(cameFromHomeSearch)
-            {
-                Navigation.PushModalAsync(SearchPage);
-            }
+            searchPage = SearchPage;
+        }
+
+        private async void SearchFromHome(Page searchpage)
+        {
+            this.cameFromHomeSearch = false;
+            await Navigation.PushAsync(searchpage, false);
         }
 
         private async void SearchBarOnChange(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(e.NewTextValue))
 
-                if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
-                {
-                    plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
-                }
-                else
-                {
-                    plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
-                }
+                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
             else
                 plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.WoodyPlantsQuickSearch(e.NewTextValue));
 
@@ -283,7 +302,24 @@ namespace PortableApp
             App.WoodySettingsRepo.AddOrUpdateSetting(new WoodySetting { name = "Sort Field", valuetext = sortButton.Text, valueint = sortPicker.SelectedIndex });
             woodyPlantsList.ItemTemplate = CellTemplate();
             woodyPlantsList.ItemsSource = plants;
-            //FilterJumpList(sortButton.Text);
+            FilterJumpList(sortButton.Text);
+        }
+
+        private void SortItems()
+        {
+            sortButton.Text = sortPicker.Items[sortPicker.SelectedIndex];
+            woodyPlantsList.ItemsSource = null;
+            if (sortButton.Text == "Scientific Name")
+                plants.Sort(i => i.scientificNameWeber, sortDirection.Text);
+            else if (sortButton.Text == "Common Name")
+                plants.Sort(i => i.commonName, sortDirection.Text);
+            else if (sortButton.Text == "Family")
+                plants.Sort(i => i.family, sortDirection.Text);
+
+            App.WoodySettingsRepo.AddOrUpdateSetting(new WoodySetting { name = "Sort Field", valuetext = sortButton.Text, valueint = sortPicker.SelectedIndex });
+            woodyPlantsList.ItemTemplate = CellTemplate();
+            woodyPlantsList.ItemsSource = plants;
+            FilterJumpList(sortButton.Text);
         }
 
         private void ChangeSortDirection(object sender, EventArgs e)
@@ -403,17 +439,7 @@ namespace PortableApp
             Button filter = (Button)sender;
             ChangeFilterColors(filter);
             if (filter.Text == "Browse")
-            {
-
-                if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
-                {
-                    plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
-                }
-                else
-                {
-                    plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
-                }
-            }
+                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
             else if (filter.Text == "Favorites")
                 plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetFavoritePlants());
 
@@ -460,13 +486,14 @@ namespace PortableApp
             plants = await App.WoodyPlantRepoLocal.GetAllSearchPlants();
             woodyPlantsList.ItemsSource = plants;
             cameFromSearch = true;
-            await App.Current.MainPage.Navigation.PopModalAsync();
+            this.cameFromHomeSearch = false;         
+            await App.Current.MainPage.Navigation.PopAsync(false);
         }
 
         public async void HandleCloseSearch(object sender, EventArgs e)
         {
-            cameFromSearch = true;
-            await App.Current.MainPage.Navigation.PopModalAsync();
+            cameFromSearch = false;
+            await App.Current.MainPage.Navigation.PopAsync(false);
         }
 
     }

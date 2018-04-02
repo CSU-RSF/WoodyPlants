@@ -44,5 +44,10 @@ namespace PortableApp
                 conn.Insert(new WoodyPlantImage { PlantId = i, Credit = "person3" });
             }
         }
+        public void ClearWoodyImages()
+        {
+            conn.DropTable<WoodyPlantImage>();
+            conn.CreateTable<WoodyPlantImage>();
+        }
     }
 }

@@ -30,6 +30,12 @@ namespace PortableApp
             return allWoodyPlants;
         }
 
+        public void ClearWoodyPlantsLocal()
+        {
+            allWoodyPlants = new List<WoodyPlant>();
+            searchPlants = new List<WoodyPlant>();
+        }
+
         // return a list of Woodyplants saved to the WoodyPlant table in the database
         public async Task<ObservableCollection<WoodyPlant>> GetAllSearchPlants()
         {
@@ -223,7 +229,7 @@ namespace PortableApp
                 var coneTypeQuery = PredicateBuilder.False<WoodyPlant>();
                 foreach (var coneType in queryConeType)
                 {
-                    coneTypeQuery = coneTypeQuery.Or(x => x.fruitType.ToLower().Contains(coneType.SearchString1) && !x.fruitType.ToLower().Contains(coneType.SearchString2));
+                    coneTypeQuery = coneTypeQuery.Or(x => x.fruitDescription.ToLower().Contains(coneType.SearchString1) || x.fruitDescription.ToLower().Contains(coneType.SearchString2));
                 }
                 overallQuery = overallQuery.And(coneTypeQuery);
             }
@@ -237,6 +243,28 @@ namespace PortableApp
                     fruitColorQuery = fruitColorQuery.Or(x => x.fruitColor.ToLower().Contains(fruitColor.SearchString1) || x.fruitColor.ToLower().Contains(fruitColor.SearchString2));
                 }
                 overallQuery = overallQuery.And(fruitColorQuery);
+            }
+
+            var queryCactusShape = selectCritList.Where(x => x.Characteristic.Contains("CactusShape"));
+            if (queryCactusShape.Count() > 0)
+            {
+                var cactusShapeQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var cactusShape in queryCactusShape)
+                {
+                    cactusShapeQuery = cactusShapeQuery.Or(x => x.twigTexture.ToLower().Contains(cactusShape.SearchString1));
+                }
+                overallQuery = overallQuery.And(cactusShapeQuery);
+            }
+
+            var queryVineLeaf = selectCritList.Where(x => x.Characteristic.Contains("ShapeVineLeaf"));
+            if (queryVineLeaf.Count() > 0)
+            {
+                var vineLeafQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var vineLeaf in queryVineLeaf)
+                {
+                    vineLeafQuery = vineLeafQuery.Or(x => x.leafType.ToLower().Contains(vineLeaf.SearchString1) || x.leafType.ToLower().Contains(vineLeaf.SearchString2) || x.leafType.ToLower().Contains(vineLeaf.SearchString3));
+                }
+                overallQuery = overallQuery.And(vineLeafQuery);
             }
 
             return overallQuery;

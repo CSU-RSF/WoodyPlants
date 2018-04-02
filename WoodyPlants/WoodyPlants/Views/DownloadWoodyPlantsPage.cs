@@ -13,6 +13,8 @@ using System.IO;
 //using ICSharpCode.SharpZipLib.Core;
 using System.Threading;
 
+
+
 namespace PortableApp
 {
     public partial class DownloadWoodyPlantsPage : ViewHelpers
@@ -20,6 +22,8 @@ namespace PortableApp
         public EventHandler InitFinishedDownload;
         public EventHandler InitCancelDownload;
         bool updatePlants;
+        bool resyncPlants;
+        bool clearDatabase;
         WoodySetting datePlantDataUpdatedLocally;
         WoodySetting datePlantDataUpdatedOnServer;
         List<WoodySetting> imageFilesToDownload;
@@ -31,7 +35,8 @@ namespace PortableApp
         CancellationTokenSource tokenSource;
         CancellationToken token;
         HttpClient client = new HttpClient();
-
+        IFolder rootFolder = FileSystem.Current.LocalStorage;
+        bool finished = false;
         protected async override void OnAppearing()
         {
             // Initialize CancellationToken
@@ -48,7 +53,7 @@ namespace PortableApp
 
             // Save plants to the database
             if (updatePlants && !token.IsCancellationRequested)
-                await UpdatePlants(token);
+                await StartDownload(token);
 
             // Save images to the database
             //if (imageFilesToDownload.Count > 0 && downloadImages && !token.IsCancellationRequested)
@@ -57,9 +62,11 @@ namespace PortableApp
             FinishDownload();
         }
 
-        public DownloadWoodyPlantsPage(bool updatePlantsNow, WoodySetting dateLocalPlantDataUpdated, WoodySetting datePlantDataUpdated)
+        public DownloadWoodyPlantsPage(bool updatePlantsNow, WoodySetting dateLocalPlantDataUpdated, WoodySetting datePlantDataUpdated, List<WoodySetting> imageFilesNeedingDownloaded, bool downloadImagesFromServer, bool resyncplants, bool clearDatabase)
         {
             updatePlants = updatePlantsNow;
+            this.resyncPlants = resyncplants;
+            this.clearDatabase = clearDatabase;
             datePlantDataUpdatedLocally = dateLocalPlantDataUpdated;
             datePlantDataUpdatedOnServer = datePlantDataUpdated;
             //imageFilesToDownload = (imageFilesNeedingDownloaded == null) ? new List<WoodySetting>() : imageFilesNeedingDownloaded;
@@ -111,39 +118,52 @@ namespace PortableApp
 
         private void CancelDownload(object sender, EventArgs e)
         {
+            progressBar.IsVisible = false;
+            downloadLabel.Text = "Canceling Download, One Moment...";
+
             tokenSource.Cancel();
+        }
+
+        private void CancelDownload()
+        {
+            while (true)
+            {
+                try
+                {
+                    ClearRepositories();
+                    ClearLocalRepositories();
+                    break;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("ex {0}", e.Message);
+                }
+            }
             InitCancelDownload?.Invoke(this, EventArgs.Empty);
         }
 
+
         // Get plants from MobileApi server and save locally
-        public async Task UpdatePlants(CancellationToken token)
+        public async Task StartDownload(CancellationToken token)
         {
             try
             {
-                downloadLabel.Text = "Downloading Plants...";
-                int plantsSaved = 0;
-                foreach (var plant in plants)
+                if (resyncPlants)
                 {
-                    if (token.IsCancellationRequested) { token.ThrowIfCancellationRequested(); };
-                    await App.WoodyPlantRepo.AddOrUpdatePlantAsync(plant);
-                    plantsSaved += 1;
-                    await progressBar.ProgressTo((double)plantsSaved / (plants.Count), 1, Easing.Linear);
-                    Double percent = (double)plantsSaved / (plants.Count);
-                    downloadLabel.Text = "Downloading Plant Database..." + Math.Round(percent * 100) + "%";
+                    ClearLocalRepositories();
                 }
-                //foreach (var term in terms)
-                //{
-                //    if (token.IsCancellationRequested) { token.ThrowIfCancellationRequested(); };
-                //    //await App.WoodyGlossaryRepo.AddOrUpdateTermAsync(term);
-                //    plantsSaved += 1;
-                //    await progressBar.ProgressTo((double)plantsSaved / (plants.Count + terms.Count), 1, Easing.Linear);
-                //}
+                ClearRepositories();
 
-                downloadLabel.Text = "Download Finished!";
-                datePlantDataUpdatedLocally.valuetimestamp = datePlantDataUpdatedOnServer.valuetimestamp;
-                await App.WoodySettingsRepo.AddOrUpdateSettingAsync(datePlantDataUpdatedLocally);
+                try
+                {
+                    IFolder folder = await rootFolder.GetFolderAsync("Images");
+                    await folder.DeleteAsync();
+                }
+                catch (Exception e) { }
 
-                App.WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(App.WoodyPlantRepo.GetAllWoodyPlants());
+
+                await UpdatePlants(token);
+                //App.WoodyPlantImageRepoLocal = new WoodyPlantImageRepositoryLocal(App.WoodyPlantImageRepo.GetAllWoodyPlantImages());
             }
             catch (OperationCanceledException e)
             {
@@ -157,5 +177,143 @@ namespace PortableApp
             }
         }
 
+        public async Task UpdatePlants(CancellationToken token)
+        {
+            //Remove when we have images
+            Task.Run(() => { UpdatePlantConcurrently(token); });
+            while (finished.Equals("false"))
+            {             
+                downloadLabel.Text = "Downloading Plant Data.";
+                await Task.Delay(1000);
+                downloadLabel.Text = "Downloading Plant Data..";
+                await Task.Delay(1000);
+                downloadLabel.Text = "Downloading Plant Data...";
+                await Task.Delay(1000);
+            }
+
+            /*
+            if (imageFilesToDownload.Count > 0)
+            {
+                try
+                {
+                    long receivedBytes = 0;
+                    long? totalBytes = imageFilesToDownload.Sum(x => x.valueint);
+
+                    await progressBar.ProgressTo(0, 1, Easing.Linear);
+                    downloadLabel.Text = "Beginning Download...";
+
+                    //Downlod Plant Data
+                    Task.Run(() => { UpdatePlantConcurrently(token); });
+                    //UpdatePlantConcurrently(token);                
+
+
+                    // IFolder interface from PCLStorage; create or open imagesZipped folder (in Library/Images)    
+
+                    IFolder folder = await rootFolder.CreateFolderAsync("Images", CreationCollisionOption.OpenIfExists);
+                    string folderPath = rootFolder.Path;
+
+                    // Get image file setting records from MobileApi to determine which files to download
+                    // TODO: Limit this to only the files needed, not just every file
+                    totalBytes = imageFilesToDownload.Sum(x => x.valueint);
+
+                    // For each setting, get the corresponding zip file and save it locally
+                    foreach (WoodySetting imageFileToDownload in imageFilesToDownload)
+                    {
+                        if (token.IsCancellationRequested) { break; };
+                        Stream webStream = await externalConnection.GetImageZipFiles(imageFileToDownload.valuetext.Replace(".zip", ""));
+                        ZipInputStream zipInputStream = new ZipInputStream(webStream);
+                        ZipEntry zipEntry = zipInputStream.GetNextEntry();
+                        while (zipEntry != null)
+                        {
+                            if (token.IsCancellationRequested)
+                            {
+                                break;
+                            };
+                            //token.ThrowIfCancellationRequested();
+                            String entryFileName = zipEntry.Name;
+                            // to remove the folder from the entry:- entryFileName = Path.GetFileName(entryFileName);
+                            // Optionally match entrynames against a selection list here to skip as desired.
+
+                            byte[] buffer = new byte[4096];
+
+                            IFile file = await folder.CreateFileAsync(entryFileName, CreationCollisionOption.OpenIfExists);
+                            using (Stream localStream = await file.OpenAsync(FileAccess.ReadAndWrite))
+                            {
+                                StreamUtils.Copy(zipInputStream, localStream, buffer);
+                            }
+                            receivedBytes += zipEntry.Size;
+                            //Double percentage = (((double)plantsSaved * 100000) + (double)receivedBytes) / (((plants.Count + terms.Count) * 100000) + (double)totalBytes);
+                            Double percentage = ((double)receivedBytes / (double)totalBytes);
+                            await progressBar.ProgressTo(percentage, 1, Easing.Linear);
+                            zipEntry = zipInputStream.GetNextEntry();
+
+                            if (Math.Round(percentage * 100) < 100)
+                            {
+                                downloadLabel.Text = "Downloading Plant Data..." + Math.Round(percentage * 100) + "%";
+                            }
+                            else
+                            {
+                                downloadLabel.Text = "Finishing Download...";
+                            }
+
+                        }
+
+                        if (!token.IsCancellationRequested)
+                        {
+                            downloadImages = true;
+                            await App.WoodySettingsRepo.AddSettingAsync(new WoodySetting { name = "ImagesZipFile", valuebool = true });
+                            await App.WoodySettingsRepo.AddSettingAsync(new WoodySetting { name = "ImagesZipFile", valuetimestamp = imageFileToDownload.valuetimestamp, valuetext = imageFileToDownload.valuetext });
+                            App.WoodyPlantImageRepoLocal = new WoodyPlantImageRepositoryLocal(App.WoodyPlantImageRepo.GetAllWoodyPlantImages());
+                        }
+                    }
+                }
+                catch (OperationCanceledException e)
+                {
+                    Debug.WriteLine("Canceled Downloading of Images {0}", e.Message);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("ex {0}", e.Message);
+                }
+            }
+            */
+        }
+        public async void UpdatePlantConcurrently(CancellationToken token)
+        {
+            try
+            {
+                if (!token.IsCancellationRequested)
+                {
+                    await App.WoodyPlantRepo.AddOrUpdateAllPlantsAsync(plants);
+                }
+                if (!token.IsCancellationRequested)
+                {
+                    await App.WoodySettingsRepo.AddOrUpdateSettingAsync(datePlantDataUpdatedLocally);
+                }
+                if (!token.IsCancellationRequested)
+                {
+                    datePlantDataUpdatedLocally.valuetimestamp = datePlantDataUpdatedOnServer.valuetimestamp;
+                    App.WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(App.WoodyPlantRepo.GetAllWoodyPlants());
+                }
+
+            }
+            catch (Exception e) { Debug.WriteLine("ex {0}", e.Message); };
+
+            finished = true;
+        }
+
+        private void ClearRepositories()
+        {
+            //Clear Repositories
+            App.WoodyPlantRepo.ClearWoodyPlants();
+            App.WoodyPlantImageRepo.ClearWoodyImages();
+            App.WoodySettingsRepo.ClearWoodySettings();
+        }
+
+        private void ClearLocalRepositories()
+        {
+            try { App.WoodyPlantRepoLocal.ClearWoodyPlantsLocal(); } catch (Exception e) { }
+            try { App.WoodyPlantImageRepoLocal.ClearWoodyImagesLocal(); } catch (Exception e) { }
+        }
     }
 }

@@ -49,7 +49,8 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignEntitlements>
+    </CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -90,6 +91,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CustomSearchBarRenderer.cs" />
+    <Compile Include="CustomSearchCharRenderer.cs" />
     <Compile Include="FileAccessHelper.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
@@ -313,6 +315,39 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\image9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\lobedcombined.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\narrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\oblanceolate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\opposite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\orbicular.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\palmate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\pinnate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\whorled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\alternate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\basal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\deltoid.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

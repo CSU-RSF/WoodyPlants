@@ -23,6 +23,29 @@ namespace PortableApp
             conn.CreateTable<WoodyPlant>();
             //SeedDB();
         }
+        public void ClearWoodyPlants()
+        {
+            conn.DropTable<WoodyPlant>();
+            conn.CreateTable<WoodyPlant>();
+        }
+
+        public async Task AddOrUpdateAllPlantsAsync(IList<WoodyPlant> plants)
+        {
+            try
+            {
+                // await connAsync.InsertOrReplaceWithChildrenAsync(plant);
+                await connAsync.RunInTransactionAsync((SQLite.Net.SQLiteConnection tran) =>
+                {
+                    tran.InsertOrReplaceAllWithChildren(plants);
+                });
+
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to add {0}. Error: {1}", "plants", ex.Message);
+            }
+
+        }
 
         // return a list of WoodyPlants saved to the WoodyPlant table in the database
         public List<WoodyPlant> GetAllWoodyPlants()
@@ -196,7 +219,18 @@ namespace PortableApp
                 }
                 overallQuery = overallQuery.And(fruitColorQuery);
             }
-            
+
+            var queryCactusShape = selectCritList.Where(x => x.Characteristic.Contains("CactusShape"));
+            if (queryCactusShape.Count() > 0)
+            {
+                var cactusShapeQuery = PredicateBuilder.False<WoodyPlant>();
+                foreach (var cactusShape in queryCactusShape)
+                {
+                    cactusShapeQuery = cactusShapeQuery.Or(x => x.twigTexture.ToLower().Contains(cactusShape.SearchString1));
+                }
+                overallQuery = overallQuery.And(cactusShapeQuery);
+            }
+
             return overallQuery;
         }
 

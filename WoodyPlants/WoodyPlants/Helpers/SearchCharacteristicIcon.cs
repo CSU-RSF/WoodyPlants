@@ -45,6 +45,7 @@ namespace PortableApp
             ContentLayout = new ButtonContentLayout(ButtonContentLayout.ImagePosition.Top, -5);
             BorderColor = Color.White;
             BackgroundColor = Color.Transparent;
+            BorderWidth = 2;
         }
 
     }

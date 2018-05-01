@@ -7,6 +7,7 @@ using PortableApp.Models;
 using System.ComponentModel;
 using System.Diagnostics;
 using PCLStorage;
+using System.Collections.ObjectModel;
 
 namespace PortableApp
 {
@@ -74,8 +75,6 @@ namespace PortableApp
 
                 //numberOfPlants = new List<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants()).Count;
 
-
-
                 // if connected to WiFi and updates are needed
                 if (isConnected)
                 {
@@ -83,8 +82,8 @@ namespace PortableApp
                     try
                     {
                         datePlantDataUpdatedOnServer = await externalConnection.GetDateUpdatedDataOnServer();
-                        //imageFileSettingsOnServer = await externalConnection.GetImageZipFileSettings();
-                        //ImageFilesToDownload();
+                        imageFileSettingsOnServer = await externalConnection.GetImageZipFileSettings();
+                        ImageFilesToDownload();
 
                         if (datePlantDataUpdatedLocally.valuetimestamp == datePlantDataUpdatedOnServer.valuetimestamp)
                         {
@@ -145,7 +144,9 @@ namespace PortableApp
             {
                 canceledDownload = false;
             }
-            
+
+            //ObservableCollection<WoodyPlant> plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
+           
         }
 
         public MainPage()
@@ -174,7 +175,7 @@ namespace PortableApp
             Button searchButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "Id By Plant Characteristic"
+                Text = "Identify By Plant Characteristic"
             };
             searchButton.Clicked += ToSearch;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
@@ -184,7 +185,7 @@ namespace PortableApp
             Button plantsButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "Id by Family/Species"
+                Text = "Identify by Family/Species"
             };
             plantsButton.Clicked += ToPlants;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
@@ -194,7 +195,7 @@ namespace PortableApp
             Button howToUseButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "Favorites/Browse"
+                Text = "Favorites"
             };
 
             howToUseButton.Clicked += ToFavorites;
@@ -320,7 +321,7 @@ namespace PortableApp
 
                     ClearRepositories();
                     ClearLocalRepositories();
-                    updatePlants = true;
+                    updatePlants = false;
                     resyncPlants = false;
                     clearDatabase = false;
 
@@ -331,15 +332,19 @@ namespace PortableApp
                     downloadImagesButton.Text = "Download (No Local Database)";
                     streamingLabel.Text = "You Are Streaming Plants";
                     downloadImagesLabel.TextColor = Color.Red;
+
+                    downloadImagesSetting.valuebool = true;
+                    
                 }
             }
             // If valid date comparison and date on server is more recent than local date, show download button
             else if (datePlantDataUpdatedOnServer.valuetimestamp != null)
             {
                 if ((datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp) || numberOfPlants == 0 || datePlantDataUpdatedLocally.valuetimestamp == null)
-                {
+                {                 
                     updatePlants = true;
                     ToDownloadPage();
+                    downloadImagesSetting.valuebool = false;
                 }
             }
             await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
@@ -351,14 +356,16 @@ namespace PortableApp
         {
             //Clear Repositories
             App.WoodyPlantRepo.ClearWoodyPlants();
-            App.WoodyPlantImageRepo.ClearWoodyImages();
+           // App.WoodyPlantImageRepo.ClearWoodyImages();
             App.WoodySettingsRepo.ClearWoodySettings();
+
+
         }
 
         private void ClearLocalRepositories()
         {
             try { App.WoodyPlantRepoLocal.ClearWoodyPlantsLocal(); } catch (Exception e) { }
-            try { App.WoodyPlantImageRepoLocal.ClearWoodyImagesLocal(); } catch (Exception e) { }
+           // try { App.WoodyPlantImageRepoLocal.ClearWoodyImagesLocal(); } catch (Exception e) { }
         }
 
     }

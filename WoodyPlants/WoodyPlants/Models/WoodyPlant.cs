@@ -203,19 +203,82 @@ namespace PortableApp.Models
 
         public string cultivar { get; set; }
 
+        public string imageNames { get; set; }
 
-
-        public bool isFavorite { get; set; }
-
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<WoodyPlantImage> Images { get; set; }
-
-        //public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
-        public ImageSource ThumbnailPath { get { return ImageSource.FromResource("WoodyPlants.Resources.Images.image.png"); } }
+        public bool isFavorite { get; set; }    
 
         public string scientificNameWeberFirstInitial { get { return scientificNameWeber[0].ToString(); } }
         public string familyFirstInitial { get { return family[0].ToString(); } }
         public string commonNameFirstInitial { get { return commonName[0].ToString(); } }
+
+
+
+        public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
+
+        //public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
+        public string ThumbnailPathDownloaded { get { return rootFolder.Path + "/Images/" + scientificNameWeber.ToLower() + "_1.jpg"; } }
+        public string ThumbnailPathStreamed
+        {
+            get{return "http://sdt1.agsci.colostate.edu/mobileapi/api/woody/image_name/" + scientificNameWeber.ToLower() + "_1";}
+        }
+
+
+        public List<WoodyPlantImage> Images
+        {
+           get
+            {
+                List<WoodyPlantImage> images = new List<WoodyPlantImage>();
+                List<string> names = imageNames.Split(',').ToList<string>();
+                foreach (string name in names)
+                {
+                    WoodyPlantImage image = new WoodyPlantImage(name.Trim(), rootFolder);
+                    images.Add(image);
+                }
+                try
+                {
+                    return images;
+                }
+                catch(NullReferenceException e)
+                {
+                    return null;
+                }
+               
+            }
+        }
+
+
+        public string RangePathDownloaded
+        {
+            get
+            {
+                try
+                {
+                    return rootFolder.Path + "/Images/map_" + scientificNameWeber+".png";
+                }
+                catch (NullReferenceException e)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string RangePathStreamed
+        {
+            get
+            {
+                try
+                {
+
+                    return "http://sdt1.agsci.colostate.edu/mobileapi/api/woody/range_images/" + "map_" + scientificNameWeber;
+                }
+                catch (NullReferenceException e)
+                {
+                    return null;
+                }
+            }
+
+        }
+
     }
 
 }

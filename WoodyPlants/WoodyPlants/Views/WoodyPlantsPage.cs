@@ -8,6 +8,8 @@ using System.ComponentModel;
 using Xamarin.Forms;
 using System.Linq;
 using System.Reflection;
+using FFImageLoading.Forms;
+using System.Diagnostics;
 
 namespace PortableApp
 {
@@ -33,64 +35,70 @@ namespace PortableApp
         bool cameFromHomeFamily;
         bool cameFromHomeSearch  = false;
 
+
         Page searchPage;
 
         protected async override void OnAppearing()
         {
-            IsLoading = true;
-            this.Content.IsEnabled = false;
-            // Get filtered plant list if came from search
-            if (!cameFromSearch)
-            {
-                if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
+                IsLoading = true;
+                this.Content.IsEnabled = false;
+
+
+                // Get filtered plant list if came from search
+                if (!cameFromSearch)
                 {
-                    plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
-                    if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
-                    ChangeFilterColors(browseFilter);
-                    base.OnAppearing();
+                    if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
+                    {
+                        plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
+                        if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
+                        ChangeFilterColors(browseFilter);
+                        base.OnAppearing();
+                    }
+                    else
+                    {
+                        plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
+                        if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
+                        ChangeFilterColors(browseFilter);
+                        base.OnAppearing();
+                    }
                 }
                 else
                 {
-                    plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
-                    if (plants.Count > 0) { woodyPlantsList.ItemsSource = plants; };
-                    ChangeFilterColors(browseFilter);
-                    base.OnAppearing();
+                    //plants = await App.WoodyPlantRepoLocal.GetAllSearchPlants();
+                    ChangeFilterColors(searchFilter);
                 }
-            }
-            else
-            {
-                //plants = await App.WoodyPlantRepoLocal.GetAllSearchPlants();
-                ChangeFilterColors(searchFilter);              
-            }
-            // Set sort settings and filter jump list
-            GetSortField();
-            if (sortField.valuetext == "Sort")
-            {
-                sortPicker.SelectedIndex = 0;
-                FilterJumpList("scientificNameWeber");
-            }
-            else
-            {
-                sortPicker.SelectedIndex = (int)sortField.valueint;
-                FilterJumpList(sortButton.Text);
-                SortItems();
-            }
-            if(cameFromHomeFamily)
-            {
-                sortPicker.Focus();
-            }
+                // Set sort settings and filter jump list
+                GetSortField();
+                if (sortField.valuetext == "Sort")
+                {
+                    sortPicker.SelectedIndex = 0;
+                    FilterJumpList("scientificNameWeber");
+                }
+                else
+                {
+                    sortPicker.SelectedIndex = (int)sortField.valueint;
+                    FilterJumpList(sortButton.Text);
+                    SortItems();
+                }
+                if (cameFromHomeFamily)
+                {
+                    sortPicker.Focus();
+                }
 
-            IsLoading = false;
-            this.Content.IsEnabled = true;
+                IsLoading = false;
+                this.Content.IsEnabled = true;
 
-            if (cameFromHomeSearch)
-            {
-                SearchFromHome(searchPage);
-            }
+                if (cameFromHomeSearch)
+                {
+                    SearchFromHome(searchPage);
+                }
+          
         }
 
         public WoodyPlantsPage(bool cameFromHomeSearch, bool cameFromHomeFamily)
         {
+            GC.Collect();
+
             this.cameFromHomeFamily = cameFromHomeFamily;
             this.cameFromHomeSearch = cameFromHomeSearch;
            // Initialize variables
@@ -221,7 +229,8 @@ namespace PortableApp
             };
 
             // Add Plants ListView
-            woodyPlantsList = new ListView { BackgroundColor = Color.Transparent, RowHeight = 100 };
+            woodyPlantsList = new ListView(ListViewCachingStrategy.RecycleElement) { BackgroundColor = Color.Transparent, RowHeight = 100 };
+
             woodyPlantsList.ItemTemplate = CellTemplate();
             woodyPlantsList.ItemSelected += OnItemSelected;
             woodyPlantsList.SeparatorVisibility = SeparatorVisibility.None;
@@ -259,6 +268,7 @@ namespace PortableApp
             Content = pageContainer;
 
             searchPage = SearchPage;
+            GC.Collect();
         }
 
         private async void SearchFromHome(Page searchpage)
@@ -346,19 +356,44 @@ namespace PortableApp
                 // Construct grid, the cell container
                 Grid cell = new Grid
                 {
-                    BackgroundColor = Color.FromHex("88000000"),
-                    Padding = new Thickness(20, 5, 20, 5),
-                    Margin = new Thickness(0, 0, 0, 10)
+                    BackgroundColor = Color.FromHex("DD000000"),
+                    Padding = new Thickness(5, 5, 5, 5),
+                    Margin = new Thickness(0, 0, 0, 2)
                 };
-                cell.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.3, GridUnitType.Star) });
-                cell.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.7, GridUnitType.Star) });
+                cell.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.6, GridUnitType.Star) });
+                cell.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.0, GridUnitType.Star) });
                 cell.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
 
                 // Add image
-                var image = new Image { Aspect = Aspect.AspectFill, Margin = new Thickness(0, 0, 0, 20) };
-                //string imageBinding = downloadImages ? "ThumbnailPathDownloaded" : "ThumbnailPathStreamed";
-                image.SetBinding(Image.SourceProperty, new Binding("ThumbnailPath"));
-                cell.Children.Add(image, 0, 0);
+                // var image = new Image { Aspect = Aspect.AspectFill, Margin = new Thickness(0, 0, 0, 20) };
+                string imageBinding = downloadImages ? "ThumbnailPathStreamed" : "ThumbnailPathDownloaded";
+
+                var cachedImage = new CachedImage()
+                {
+                    HorizontalOptions = LayoutOptions.Start,
+                    VerticalOptions = LayoutOptions.Center,
+                    WidthRequest = 300,
+                    HeightRequest = 300,
+                    Aspect = Aspect.AspectFill,
+                    Margin = new Thickness(0, 0, 0, 10),
+                    CacheDuration = TimeSpan.FromDays(30),
+                    DownsampleToViewSize = true,
+                    RetryCount = 0,
+                    RetryDelay = 250,
+                    TransparencyEnabled = false,
+                    FadeAnimationEnabled = false,
+                    LoadingPlaceholder = "loading.png",
+                    ErrorPlaceholder = "error.png",
+                };
+
+                /*
+                if (App.WoodyPlantRepoLocal.GetAllWoodyPlants() != null)
+                    if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
+                        imageBinding = "ThumbnailPathDownloaded";
+                */
+
+                cachedImage.SetBinding(CachedImage.SourceProperty, new Binding(imageBinding));
+                cell.Children.Add(cachedImage, 0, 0);
 
                 // Add text section
                 StackLayout textSection = new StackLayout { Orientation = StackOrientation.Vertical, Spacing = 2 };
@@ -381,8 +416,13 @@ namespace PortableApp
                 textSection.Children.Add(label3);
 
                 cell.Children.Add(textSection, 1, 0);
+
+
+
                 return new ViewCell { View = cell };
             });
+
+            GC.Collect();
             return cellTemplate;
         }
 

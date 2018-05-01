@@ -9,8 +9,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.IO;
-//using ICSharpCode.SharpZipLib.Zip;
-//using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Core;
 using System.Threading;
 
 
@@ -39,6 +39,7 @@ namespace PortableApp
         bool finished = false;
         protected async override void OnAppearing()
         {
+            downloadLabel.Text = "Connecting ...";
             // Initialize CancellationToken
             tokenSource = new CancellationTokenSource();
             token = tokenSource.Token;
@@ -55,6 +56,9 @@ namespace PortableApp
             if (updatePlants && !token.IsCancellationRequested)
                 await StartDownload(token);
 
+            if (token.IsCancellationRequested)
+                CancelDownload();
+
             // Save images to the database
             //if (imageFilesToDownload.Count > 0 && downloadImages && !token.IsCancellationRequested)
             //    await UpdatePlantImages(token);
@@ -69,8 +73,8 @@ namespace PortableApp
             this.clearDatabase = clearDatabase;
             datePlantDataUpdatedLocally = dateLocalPlantDataUpdated;
             datePlantDataUpdatedOnServer = datePlantDataUpdated;
-            //imageFilesToDownload = (imageFilesNeedingDownloaded == null) ? new List<WoodySetting>() : imageFilesNeedingDownloaded;
-            //downloadImages = downloadImagesFromServer;
+            imageFilesToDownload = (imageFilesNeedingDownloaded == null) ? new List<WoodySetting>() : imageFilesNeedingDownloaded;
+            downloadImages = downloadImagesFromServer;
 
             // Turn off navigation bar and initialize pageContainer
             NavigationPage.SetHasNavigationBar(this, false);
@@ -179,19 +183,8 @@ namespace PortableApp
 
         public async Task UpdatePlants(CancellationToken token)
         {
-            //Remove when we have images
-            Task.Run(() => { UpdatePlantConcurrently(token); });
-            while (finished.Equals("false"))
-            {             
-                downloadLabel.Text = "Downloading Plant Data.";
-                await Task.Delay(1000);
-                downloadLabel.Text = "Downloading Plant Data..";
-                await Task.Delay(1000);
-                downloadLabel.Text = "Downloading Plant Data...";
-                await Task.Delay(1000);
-            }
+       
 
-            /*
             if (imageFilesToDownload.Count > 0)
             {
                 try
@@ -203,8 +196,8 @@ namespace PortableApp
                     downloadLabel.Text = "Beginning Download...";
 
                     //Downlod Plant Data
-                    Task.Run(() => { UpdatePlantConcurrently(token); });
-                    //UpdatePlantConcurrently(token);                
+                    //await Task.Run(() => { UpdatePlantConcurrently(token); });
+                    await UpdatePlantConcurrently(token);                
 
 
                     // IFolder interface from PCLStorage; create or open imagesZipped folder (in Library/Images)    
@@ -263,7 +256,10 @@ namespace PortableApp
                             downloadImages = true;
                             await App.WoodySettingsRepo.AddSettingAsync(new WoodySetting { name = "ImagesZipFile", valuebool = true });
                             await App.WoodySettingsRepo.AddSettingAsync(new WoodySetting { name = "ImagesZipFile", valuetimestamp = imageFileToDownload.valuetimestamp, valuetext = imageFileToDownload.valuetext });
-                            App.WoodyPlantImageRepoLocal = new WoodyPlantImageRepositoryLocal(App.WoodyPlantImageRepo.GetAllWoodyPlantImages());
+
+
+
+                            // App.WoodyPlantImageRepoLocal = new WoodyPlantImageRepositoryLocal(App.WoodyPlantImageRepo.GetAllWoodyPlantImages());
                         }
                     }
                 }
@@ -276,9 +272,9 @@ namespace PortableApp
                     Debug.WriteLine("ex {0}", e.Message);
                 }
             }
-            */
+            
         }
-        public async void UpdatePlantConcurrently(CancellationToken token)
+        public async Task UpdatePlantConcurrently(CancellationToken token)
         {
             try
             {
@@ -306,14 +302,14 @@ namespace PortableApp
         {
             //Clear Repositories
             App.WoodyPlantRepo.ClearWoodyPlants();
-            App.WoodyPlantImageRepo.ClearWoodyImages();
+           // App.WoodyPlantImageRepo.ClearWoodyImages();
             App.WoodySettingsRepo.ClearWoodySettings();
         }
 
         private void ClearLocalRepositories()
         {
             try { App.WoodyPlantRepoLocal.ClearWoodyPlantsLocal(); } catch (Exception e) { }
-            try { App.WoodyPlantImageRepoLocal.ClearWoodyImagesLocal(); } catch (Exception e) { }
+            //try { App.WoodyPlantImageRepoLocal.ClearWoodyImagesLocal(); } catch (Exception e) { }
         }
     }
 }

@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using PortableApp.Models;
 using PortableApp.Views;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace PortableApp
 {
@@ -18,9 +19,7 @@ namespace PortableApp
 
     public class ViewHelpers : ContentPage, INotifyPropertyChanged
     {
-        
-
-
+       
 
         private bool isLoading;
         public bool IsLoading
@@ -185,23 +184,23 @@ namespace PortableApp
             {
                 //Previous 
                 gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                gridLayout.Children.Add(PreviousImageConstructor(plants, plantIndex), 3, 0);
+               // gridLayout.Children.Add(PreviousImageConstructor(plants, plantIndex), 3, 0);
 
                 //Next
                 gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                gridLayout.Children.Add(NextImageConstructor(plants, plantIndex), 4, 0);
+               // gridLayout.Children.Add(NextImageConstructor(plants, plantIndex), 4, 0);
             }
             else if (plantIndex > 0)
             {
                 //Previous 
                 gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                gridLayout.Children.Add(PreviousImageConstructor(plants, plantIndex), 3, 0);
+               // gridLayout.Children.Add(PreviousImageConstructor(plants, plantIndex), 3, 0);
             }
             else if (plantIndex < plants.Count - 1)
             {
                 //Next
                 gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                gridLayout.Children.Add(NextImageConstructor(plants, plantIndex), 3, 0);
+              //  gridLayout.Children.Add(NextImageConstructor(plants, plantIndex), 3, 0);
             }
         
             return gridLayout;
@@ -219,6 +218,7 @@ namespace PortableApp
             var backGestureRecognizer = new TapGestureRecognizer();
             backGestureRecognizer.Tapped += async (sender, e) =>
             {
+                GC.Collect();
                 await Navigation.PopAsync();
             };
             backImage.GestureRecognizers.Add(backGestureRecognizer);
@@ -347,10 +347,11 @@ namespace PortableApp
 
         public async void ToSearch(object sender, EventArgs e)
         {
+        
             ChangeButtonColor(sender, e);
             var plantsPage = new WoodyPlantsPage(true,false);
             await Navigation.PushAsync(plantsPage);
-
+           
         }
 
         public async void ToAbout(object sender, EventArgs e)

@@ -135,7 +135,7 @@ namespace PortableApp
             if (GetSetting("Sort Field") == null)
                 conn.Insert(new WoodySetting { name = "Sort Field", valuetext = "Scientific Name", valueint = 0 });
             if (GetSetting("Download Images") == null)
-                conn.Insert(new WoodySetting { name = "Download Images", valuebool = false });
+                conn.Insert(new WoodySetting { name = "Download Images", valuebool = true });
             if (GetSetting("Date Plants Downloaded") == null)
                 conn.Insert(new WoodySetting { name = "Date Plants Downloaded", valuetimestamp = null });
         }

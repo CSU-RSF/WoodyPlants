@@ -71,7 +71,7 @@ namespace PortableApp
                 isConnected = Connectivity.checkConnection();
                 isConnectedToWiFi = Connectivity.checkWiFiConnection();
                 downloadImagesSetting = await App.WoodySettingsRepo.GetSettingAsync("Download Images");
-                downloadImages = (bool)downloadImagesSetting.valuebool;
+                //downloadImages = (bool)downloadImagesSetting.valuebool;
 
                 //numberOfPlants = new List<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants()).Count;
 
@@ -94,6 +94,7 @@ namespace PortableApp
                             updatePlants = false;
                             resyncPlants = false;
                             clearDatabase = true;
+                            downloadImages = false;
                         }
                         else
                         {
@@ -106,6 +107,7 @@ namespace PortableApp
                                 updatePlants = true;
                                 resyncPlants = false;
                                 clearDatabase = false;
+                                downloadImages = true;
                             }
                             else if ((datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp) && datePlantDataUpdatedLocally.valuetimestamp != null)
                             {
@@ -116,6 +118,7 @@ namespace PortableApp
                                 updatePlants = true;
                                 resyncPlants = true;
                                 clearDatabase = false;
+                                downloadImages = false;
                             }
                         }
 
@@ -133,6 +136,7 @@ namespace PortableApp
                         updatePlants = false;
                         resyncPlants = false;
                         clearDatabase = false;
+                        downloadImages = true;
                     }
                     else
                     {
@@ -290,7 +294,7 @@ namespace PortableApp
 
 
 
-            await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
+           // await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
         }
 
         public void ImageFilesToDownload()
@@ -334,7 +338,8 @@ namespace PortableApp
                     downloadImagesLabel.TextColor = Color.Red;
 
                     downloadImagesSetting.valuebool = true;
-                    
+                    downloadImages = true;
+
                 }
             }
             // If valid date comparison and date on server is more recent than local date, show download button
@@ -345,6 +350,7 @@ namespace PortableApp
                     updatePlants = true;
                     ToDownloadPage();
                     downloadImagesSetting.valuebool = false;
+                    downloadImages = false;
                 }
             }
             await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);

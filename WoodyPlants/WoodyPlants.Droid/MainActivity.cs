@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using CarouselView.FormsPlugin.Android;
+using FFImageLoading.Forms.Droid;
 
 namespace PortableApp.Droid
 {
@@ -17,6 +18,7 @@ namespace PortableApp.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             CarouselViewRenderer.Init();
+            CachedImageRenderer.Init();
 
             string dbPath = FileAccessHelper.GetLocalFilePath("db.db3");
             var platform = new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid();

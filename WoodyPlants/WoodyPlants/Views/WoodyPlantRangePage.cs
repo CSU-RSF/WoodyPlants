@@ -9,7 +9,7 @@ namespace PortableApp
     public partial class WoodyPlantRangePage : ViewHelpers
     {
 
-        public WoodyPlantRangePage(WoodyPlant plant, ObservableCollection<WoodyPlant> plants)
+        public WoodyPlantRangePage(WoodyPlant plant, ObservableCollection<WoodyPlant> plants, bool streaming)
         {
             System.GC.Collect();
             // Turn off navigation bar and initialize pageContainer
@@ -61,7 +61,7 @@ namespace PortableApp
              };*/
 
             rangeImage.BindingContext = plant;
-            string imageBinding = downloadImages ? "RangePathStreamed" : "RangePathDownloaded";
+            string imageBinding = streaming ? "RangePathStreamed" : "RangePathDownloaded";
             rangeImage.SetBinding(Image.SourceProperty, new Binding(imageBinding));
             contentContainer.Children.Add(rangeImage);
 

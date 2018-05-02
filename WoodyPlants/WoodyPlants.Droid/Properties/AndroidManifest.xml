@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.RSF.woodyplants" android:versionName="1.7" android:versionCode="9">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.RSF.woodyplants" android:versionName="1.8" android:versionCode="10">
 	<uses-sdk android:minSdkVersion="21" />
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
-  
-	<application android:label="WoodyPlants" android:icon="@drawable/icon" android:largeHeap="true" android:hardwareAccelerated="false"></application>
+	<application android:label="WoodyPlants" android:icon="@drawable/icon" android:largeHeap="true" android:hardwareAccelerated="true"></application>
 </manifest>

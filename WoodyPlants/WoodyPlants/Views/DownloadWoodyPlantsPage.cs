@@ -74,7 +74,7 @@ namespace PortableApp
             datePlantDataUpdatedLocally = dateLocalPlantDataUpdated;
             datePlantDataUpdatedOnServer = datePlantDataUpdated;
             imageFilesToDownload = (imageFilesNeedingDownloaded == null) ? new List<WoodySetting>() : imageFilesNeedingDownloaded;
-            downloadImages = downloadImagesFromServer;
+            //downloadImages = downloadImagesFromServer;
 
             // Turn off navigation bar and initialize pageContainer
             NavigationPage.SetHasNavigationBar(this, false);
@@ -253,7 +253,7 @@ namespace PortableApp
 
                         if (!token.IsCancellationRequested)
                         {
-                            downloadImages = true;
+                            //downloadImages = true;
                             await App.WoodySettingsRepo.AddSettingAsync(new WoodySetting { name = "ImagesZipFile", valuebool = true });
                             await App.WoodySettingsRepo.AddSettingAsync(new WoodySetting { name = "ImagesZipFile", valuetimestamp = imageFileToDownload.valuetimestamp, valuetext = imageFileToDownload.valuetext });
 

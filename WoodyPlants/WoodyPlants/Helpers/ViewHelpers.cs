@@ -64,7 +64,9 @@ namespace PortableApp
         //
 
         public ExternalDBConnection externalConnection = new ExternalDBConnection();
-        public bool downloadImages = (bool)App.WoodySettingsRepo.GetSetting("Download Images").valuebool;
+        //public bool downloadImages = (bool)App.WoodySettingsRepo.GetSetting("Download Images").valuebool;
+
+        public bool downloadImages =true;
 
         // Construct Page Container as an AbsoluteLayout with a background image
         public AbsoluteLayout ConstructPageContainer()
@@ -271,7 +273,7 @@ namespace PortableApp
                     previousImage.Opacity = .5;
                     await Task.Delay(200);
                     previousImage.Opacity = 1;
-                    await Navigation.PushAsync(new WoodyPlantDetailPage(previousPlant, plants));
+                    await Navigation.PushAsync(new WoodyPlantDetailPage(previousPlant, downloadImages, plants));
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                 };
                 previousImage.GestureRecognizers.Add(previousImageGestureRecognizer);
@@ -300,7 +302,7 @@ namespace PortableApp
                     nextImage.Opacity = .5;
                     await Task.Delay(200);
                     nextImage.Opacity = 1;
-                    await Navigation.PushAsync(new WoodyPlantDetailPage(nextPlant, plants));
+                    await Navigation.PushAsync(new WoodyPlantDetailPage(nextPlant, downloadImages, plants));
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                 };
                 nextImage.GestureRecognizers.Add(nextImageGestureRecognizer);
@@ -333,14 +335,14 @@ namespace PortableApp
         public async void ToPlants(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage(false,true);
+            var plantsPage = new WoodyPlantsPage(false,true, downloadImages);
             await Navigation.PushAsync(plantsPage);
 
         }
         public async void ToFavorites(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage(false,false);
+            var plantsPage = new WoodyPlantsPage(false,false, downloadImages);
             await Navigation.PushAsync(plantsPage);
             plantsPage.FilterPlantsByFavorites();
         }
@@ -349,7 +351,7 @@ namespace PortableApp
         {
         
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage(true,false);
+            var plantsPage = new WoodyPlantsPage(true,false, downloadImages);
             await Navigation.PushAsync(plantsPage);
            
         }

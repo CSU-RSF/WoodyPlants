@@ -12,7 +12,7 @@ namespace PortableApp
     public partial class WoodyPlantImagesPage : ViewHelpers
     {
 
-        public WoodyPlantImagesPage(WoodyPlant plant, ObservableCollection<WoodyPlant> plants)
+        public WoodyPlantImagesPage(WoodyPlant plant, ObservableCollection<WoodyPlant> plants, bool streaming)
         {
             System.GC.Collect();
             // Turn off navigation bar and initialize pageContainer
@@ -51,7 +51,7 @@ namespace PortableApp
                 // Add image
                 var image = new ZoomImage { Margin = new Thickness(10, 0, 10, 0) };
 
-                string imageBinding = downloadImages ? "ImagePathStreamed" : "ImagePathDownloaded";
+                string imageBinding = streaming ? "ImagePathStreamed" : "ImagePathDownloaded";
 
                 var cachedImage = new CachedImage()
                 {

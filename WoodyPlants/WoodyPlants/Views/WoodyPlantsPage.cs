@@ -34,6 +34,7 @@ namespace PortableApp
         SearchBar searchBar;
         bool cameFromHomeFamily;
         bool cameFromHomeSearch  = false;
+        bool streaming;
 
 
         Page searchPage;
@@ -95,10 +96,11 @@ namespace PortableApp
           
         }
 
-        public WoodyPlantsPage(bool cameFromHomeSearch, bool cameFromHomeFamily)
+        public WoodyPlantsPage(bool cameFromHomeSearch, bool cameFromHomeFamily, bool streaming)
         {
             GC.Collect();
 
+            this.streaming = streaming;
             this.cameFromHomeFamily = cameFromHomeFamily;
             this.cameFromHomeSearch = cameFromHomeSearch;
            // Initialize variables
@@ -366,7 +368,7 @@ namespace PortableApp
 
                 // Add image
                 // var image = new Image { Aspect = Aspect.AspectFill, Margin = new Thickness(0, 0, 0, 20) };
-                string imageBinding = downloadImages ? "ThumbnailPathStreamed" : "ThumbnailPathDownloaded";
+                string imageBinding = streaming ? "ThumbnailPathStreamed" : "ThumbnailPathDownloaded";
 
                 var cachedImage = new CachedImage()
                 {
@@ -515,7 +517,7 @@ namespace PortableApp
             if (woodyPlantsList.SelectedItem != null)
             {
                 var selectedItem = e.SelectedItem as WoodyPlant;
-                var detailPage = new PortableApp.Views.WoodyPlantDetailPage(selectedItem, plants);
+                var detailPage = new PortableApp.Views.WoodyPlantDetailPage(selectedItem, streaming, plants);
                 detailPage.BindingContext = selectedItem;
                 woodyPlantsList.SelectedItem = null;
                 await Navigation.PushAsync(detailPage);

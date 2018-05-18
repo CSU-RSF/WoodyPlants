@@ -24,7 +24,7 @@ namespace PortableApp
 
             // Add header to inner container
 
-            Grid navigationBar = ConstructPlantNavigationBar(plant.scientificNameWeber, plant, plants);
+            Grid navigationBar = ConstructPlantNavigationBar(plant.commonName, plant, plants);
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             innerContainer.Children.Add(navigationBar, 0, 0);
 
@@ -107,10 +107,10 @@ namespace PortableApp
 
             if ((plant.alien != null && plant.alien.Length != 0) || (plant.weedManagement != null && plant.weedManagement.Length != 0))
             { 
-                html += "<div class='section_header'>WEED</div>";
+                html += "<div class='section_header'>Origin</div>";
                 if (plant.alien != null && plant.alien.Length != 0)
                 {
-                    html += "<strong>Alien: </strong>" + plant.alien + "<br/>";
+                    html +=  plant.alien + "<br/>";
                 }
                 if (plant.weedManagement != null && plant.weedManagement.Length != 0)
                 {

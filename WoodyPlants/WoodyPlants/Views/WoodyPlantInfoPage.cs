@@ -20,7 +20,7 @@ namespace PortableApp
             innerContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             // Add header to inner container
-            Grid navigationBar = ConstructPlantNavigationBar(plant.scientificNameWeber, plant, plants);
+            Grid navigationBar = ConstructPlantNavigationBar(plant.commonName, plant, plants);
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             innerContainer.Children.Add(navigationBar, 0, 0);
             

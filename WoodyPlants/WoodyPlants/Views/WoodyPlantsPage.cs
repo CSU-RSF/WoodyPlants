@@ -21,7 +21,7 @@ namespace PortableApp
         StackLayout jumpListContainer;
         ObservableCollection<WoodyPlant> plants;
         bool cameFromSearch;
-        Dictionary<string, string> sortOptions = new Dictionary<string, string> { { "Scientific Name", "scientificNameWeber" }, { "Common Name", "commonName" }, { "Family", "family" } };
+        Dictionary<string, string> sortOptions = new Dictionary<string, string> { { "Common Name", "commonName" }, { "Scientific Name", "scientificNameWeber" }, { "Family", "family" } };
         Picker sortPicker = new Picker ();
         Button sortButton = new Button { Style = Application.Current.Resources["semiTransparentPlantButton"] as Style, Text = "Sort", BorderRadius = Device.OnPlatform(0, 1, 0) };
         Button sortDirection = new Button { Style = Application.Current.Resources["semiTransparentPlantButton"] as Style, Text = "\u25BC", BorderRadius = Device.OnPlatform(0, 1, 0) };
@@ -35,7 +35,8 @@ namespace PortableApp
         bool cameFromHomeFamily;
         bool cameFromHomeSearch  = false;
         bool streaming;
-
+        bool cameFromHomeFavorites;
+        Grid gridLayout;
 
         Page searchPage;
 
@@ -73,7 +74,7 @@ namespace PortableApp
                 if (sortField.valuetext == "Sort")
                 {
                     sortPicker.SelectedIndex = 0;
-                    FilterJumpList("scientificNameWeber");
+                    FilterJumpList("Common Name");
                 }
                 else
                 {
@@ -93,16 +94,28 @@ namespace PortableApp
                 {
                     SearchFromHome(searchPage);
                 }
-          
+
+                if (cameFromHomeFavorites)
+                {
+                    FilterPlantsByFavorites();
+                }
+
+                cameFromHomeFamily = false;
+                cameFromHomeSearch = false;
+                cameFromHomeFavorites = false;
+
+                //gridLayout.Children.RemoveAt(0);
+                gridLayout.Children.Add(BackImageConstructor(cameFromSearch, searchPage), 0, 0);
         }
 
-        public WoodyPlantsPage(bool cameFromHomeSearch, bool cameFromHomeFamily, bool streaming)
+        public WoodyPlantsPage(bool cameFromHomeSearch, bool cameFromHomeFamily, bool cameFromHomeFavorites, bool streaming)
         {
             GC.Collect();
 
             this.streaming = streaming;
             this.cameFromHomeFamily = cameFromHomeFamily;
             this.cameFromHomeSearch = cameFromHomeSearch;
+            this.cameFromHomeFavorites = cameFromHomeFavorites;
            // Initialize variables
            sortField = new WoodySetting();
 
@@ -114,12 +127,16 @@ namespace PortableApp
             Grid innerContainer = new Grid { Padding = new Thickness(0, Device.OnPlatform(10, 0, 0), 0, 0), ColumnSpacing = 0 };
             innerContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-            Grid gridLayout = new Grid { VerticalOptions = LayoutOptions.FillAndExpand, HorizontalOptions = LayoutOptions.FillAndExpand, ColumnSpacing = 0 };
+            gridLayout = new Grid { VerticalOptions = LayoutOptions.FillAndExpand, HorizontalOptions = LayoutOptions.FillAndExpand, ColumnSpacing = 0 };
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
+
+            var SearchPage = new WoodyPlantsSearchPage();
 
             // BACK button
             gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            gridLayout.Children.Add(BackImageConstructor(), 0, 0);
+            gridLayout.Children.Add(BackImageConstructor(cameFromSearch, SearchPage), 0, 0);
+
+           
 
             // Construct filter button group
             plantFilterGroup = new Grid { ColumnSpacing = -1, Margin = new Thickness(0, 8, 0, 5) };
@@ -145,8 +162,7 @@ namespace PortableApp
                 Style = Application.Current.Resources["plantFilterButton"] as Style,
                 Text = "Search"
             };
-            var SearchPage = new WoodyPlantsSearchPage();
-            //searchFilter.Clicked += async (s, e) => {await Navigation.PushModalAsync(SearchPage,false);};
+          
             searchFilter.Clicked += async (s, e) => { await Navigation.PushAsync(SearchPage, false); };
 
             SearchPage.InitRunSearch += HandleRunSearch;
@@ -402,7 +418,7 @@ namespace PortableApp
 
                 Label label1 = new Label { TextColor = Color.White, FontSize = 12, FontAttributes = FontAttributes.Bold };
                 label1.SetBinding(Label.TextProperty, new Binding(labelValues[0]));
-                if (labelValues[0] == "scientificnameweber") label1.FontAttributes = FontAttributes.Italic;
+                if (labelValues[0] == "scientificNameWeber") label1.FontAttributes = FontAttributes.Italic;
                 textSection.Children.Add(label1);
 
                 var headerDivider = new BoxView { HeightRequest = 1, WidthRequest = 500, BackgroundColor = Color.White };
@@ -410,7 +426,7 @@ namespace PortableApp
 
                 Label label2 = new Label { TextColor = Color.White, FontSize = 12 };
                 label2.SetBinding(Label.TextProperty, new Binding(labelValues[1]));
-                if (labelValues[1] == "scientificnameweber") label2.FontAttributes = FontAttributes.Italic;
+                if (labelValues[1] == "scientificNameWeber") label2.FontAttributes = FontAttributes.Italic;
                 textSection.Children.Add(label2);
 
                 Label label3 = new Label { TextColor = Color.White, FontSize = 12 };
@@ -481,11 +497,19 @@ namespace PortableApp
             Button filter = (Button)sender;
             ChangeFilterColors(filter);
             if (filter.Text == "Browse")
-                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
+                if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
+                {
+                    plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
+                }
+                else
+                {
+                    plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
+                }
             else if (filter.Text == "Favorites")
                 plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetFavoritePlants());
 
             woodyPlantsList.ItemsSource = plants;
+            SortItems();
             FilterJumpList(sortButton.Text);
         }
 
@@ -527,9 +551,11 @@ namespace PortableApp
         {
             plants = await App.WoodyPlantRepoLocal.GetAllSearchPlants();
             woodyPlantsList.ItemsSource = plants;
+            SortItems();
             cameFromSearch = true;
-            this.cameFromHomeSearch = false;         
+            cameFromHomeSearch = false;           
             await App.Current.MainPage.Navigation.PopAsync(false);
+      
         }
 
         public async void HandleCloseSearch(object sender, EventArgs e)

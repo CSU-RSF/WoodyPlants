@@ -208,7 +208,7 @@ namespace PortableApp
             return gridLayout;
         }
 
-        public Image BackImageConstructor()
+        public Image BackImageConstructor(bool cameFromSearch = false, Page searchPage = null)
         {
             Image backImage = new Image
             {
@@ -220,8 +220,16 @@ namespace PortableApp
             var backGestureRecognizer = new TapGestureRecognizer();
             backGestureRecognizer.Tapped += async (sender, e) =>
             {
-                GC.Collect();
-                await Navigation.PopAsync();
+                if(cameFromSearch)
+                {
+                    await Navigation.PushAsync(searchPage, false);
+                }
+                else
+                {
+                    GC.Collect();
+                    await Navigation.PopAsync();
+                }
+               
             };
             backImage.GestureRecognizers.Add(backGestureRecognizer);
 
@@ -335,23 +343,22 @@ namespace PortableApp
         public async void ToPlants(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage(false,true, downloadImages);
+            var plantsPage = new WoodyPlantsPage(false,true,false, downloadImages);
             await Navigation.PushAsync(plantsPage);
 
         }
         public async void ToFavorites(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage(false,false, downloadImages);
-            await Navigation.PushAsync(plantsPage);
-            plantsPage.FilterPlantsByFavorites();
+            var plantsPage = new WoodyPlantsPage(false,false,true, downloadImages);
+            await Navigation.PushAsync(plantsPage);          
         }
 
         public async void ToSearch(object sender, EventArgs e)
         {
         
             ChangeButtonColor(sender, e);
-            var plantsPage = new WoodyPlantsPage(true,false, downloadImages);
+            var plantsPage = new WoodyPlantsPage(true,false,false, downloadImages);
             await Navigation.PushAsync(plantsPage);
            
         }

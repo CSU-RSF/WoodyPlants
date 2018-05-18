@@ -21,7 +21,7 @@ namespace PortableApp
             innerContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             // Add header to inner container
-            Grid navigationBar = ConstructPlantNavigationBar(plant.scientificNameWeber, plant, plants);
+            Grid navigationBar = ConstructPlantNavigationBar(plant.commonName, plant, plants);
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             innerContainer.Children.Add(navigationBar, 0, 0);
 
@@ -40,42 +40,33 @@ namespace PortableApp
                  HeightRequest = 300,
                  Aspect = Aspect.AspectFit,
                  Margin = new Thickness(10, 0, 10, 0),
-             };
-
-            /* var cachedImage = new CachedImage()
-             {
-                 HorizontalOptions = LayoutOptions.Center,
-                 VerticalOptions = LayoutOptions.Center,
-                 //WidthRequest = 300,
-                 //HeightRequest = 300,
-                 Aspect = Aspect.AspectFill,
-                 Margin = new Thickness(0, 0, 0, 10),
-                 CacheDuration = TimeSpan.FromDays(30),
-                 DownsampleToViewSize = true,
-                 RetryCount = 0,
-                 RetryDelay = 250,
-                 TransparencyEnabled = false,
-                 FadeAnimationEnabled = false,
-                 LoadingPlaceholder = "loading.png",
-                 ErrorPlaceholder = "error.png",
-             };*/
+             };         
 
             rangeImage.BindingContext = plant;
             string imageBinding = streaming ? "RangePathStreamed" : "RangePathDownloaded";
             rangeImage.SetBinding(Image.SourceProperty, new Binding(imageBinding));
             contentContainer.Children.Add(rangeImage);
 
-            /*Label elevationLabel = new Label {
-                Text = "Elevation: " + plant.elevminfeet + "-" + plant.elevmaxfeet + " ft. (" + plant.elevminm + "-" + plant.elevmaxm + " m)",
-                FontSize = 12,
-                TextColor = Color.White,
-                HorizontalTextAlignment = TextAlignment.Center
+
+            Image mapKey = new Image
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                WidthRequest = 600,
+                HeightRequest = 300,
+                Aspect = Aspect.AspectFit,
+                Margin = new Thickness(10, 0, 10, 0),
             };
-            contentContainer.Children.Add(elevationLabel);*/
+            mapKey.Source = ImageSource.FromResource("WoodyPlants.Resources.Images.WoodyMapKey.png");
+
+            contentContainer.Children.Add(mapKey);
 
             contentScrollView.Content = contentContainer;
             innerContainer.RowDefinitions.Add(new RowDefinition { });
             innerContainer.Children.Add(contentScrollView, 0, 1);
+
+
+           
 
             // Add inner container to page container and set as page content
             pageContainer.Children.Add(innerContainer, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);

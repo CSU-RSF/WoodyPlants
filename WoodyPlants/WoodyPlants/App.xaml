@@ -32,12 +32,12 @@
       </Style>
       <Style x:Key="jumpListLetter" TargetType="Label">
         <Setter Property="TextColor" Value="White" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property= "FontFamily" Value= "sans-serif" />  
       </Style>
       <Style x:Key="outlineButton" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="#66000000" />
+                <Setter Property="BackgroundColor" Value="#000000" />
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="FontSize" Value="15" />
                 <Setter Property="Margin" Value="10, 0, 10, 0" />
@@ -69,7 +69,6 @@
                 <Setter Property="Margin" Value="10, 0, 10, 0" />
                 <Setter Property= "FontFamily" Value= "sans-serif" />
             </Style>
-
         </ResourceDictionary>
   </Application.Resources>      
 </Application>

@@ -41,10 +41,10 @@ namespace PortableApp
 
         public SearchCharacteristicIcon()
         {
-            TextColor = Color.White;
+            TextColor = Color.Black;
             ContentLayout = new ButtonContentLayout(ButtonContentLayout.ImagePosition.Top, -5);
             BorderColor = Color.White;
-            BackgroundColor = Color.Transparent;
+            BackgroundColor = Color.White;
             BorderWidth = 2;
         }
 

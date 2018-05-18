@@ -32,7 +32,7 @@ namespace PortableApp
         {
             IsLoading = true;
 
-            ResetSearchFilters();
+           // ResetSearchFilters();
             //changed this to local
             if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
             {
@@ -68,9 +68,9 @@ namespace PortableApp
 
             // Initialize grid for inner container
             innerContainer = new Grid {
-                Padding = new Thickness(20, Device.OnPlatform(30, 20, 20), 20, 20),
-                BackgroundColor = Color.FromHex("88000000"),
-                RowSpacing = 10
+                //Padding = new Thickness(20, Device.OnPlatform(30, 20, 20), 20, 20),
+                BackgroundColor = Color.FromHex("00000000"),
+                RowSpacing = 0
             };
             innerContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
@@ -112,17 +112,20 @@ namespace PortableApp
             {
                 Content = searchFilters,
                 Orientation = ScrollOrientation.Vertical,
+                BackgroundColor = Color.FromHex("00000000"),     
+                         
             };
-
-           
-
+            
 
             // Add Search/Reset button group
-            Grid searchButtons = new Grid();
-            searchButtons.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            searchButtons.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            searchButtons.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            Grid searchButtons = new Grid { BackgroundColor = Color.FromHex("00000000"), Margin = new Thickness(0,5,0,5) };
+            //searchButtons.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
+            searchButtons.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+
+            searchButtons.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            searchButtons.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        
             Button resetButton = new Button { Text = "RESET", Style = Application.Current.Resources["semiTransparentWhiteButton"] as Style };
             resetButton.Clicked += ResetSearchFilters;
             searchButtons.Children.Add(resetButton, 0, 0);
@@ -133,6 +136,23 @@ namespace PortableApp
             searchButtons.Children.Add(searchButton, 1, 0);
 
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+
+            BoxView box1 = new BoxView
+            {
+                Color = Color.FromHex("88000000"),
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand               
+            };
+
+            BoxView box2 = new BoxView
+            {
+                Color = Color.FromHex("88000000"),
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand
+            };
+
+            innerContainer.Children.Add(box1,0,1);
+
             innerContainer.Children.Add(searchButtons, 0, 1);
 
             // Add Close button
@@ -140,10 +160,14 @@ namespace PortableApp
             {
                 Style = Application.Current.Resources["outlineButton"] as Style,
                 Text = "CLOSE",
-                BorderRadius = Device.OnPlatform(0, 1, 0)
+                BorderRadius = Device.OnPlatform(0, 1, 0),
+                //Margin = new Thickness(0,10,0,10)
             };
             closeButton.Clicked += CloseSearch;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+
+            innerContainer.Children.Add(box2, 0, 2);
+
             innerContainer.Children.Add(closeButton, 0, 2);
 
             // Add inner container to page container and set as page content
@@ -162,6 +186,7 @@ namespace PortableApp
             {
                 //searchCrit.BorderWidth = 0;
                 searchCrit.BorderColor = Color.White;
+                searchCrit.BackgroundColor = Color.White;
                 searchCrit.Query = false;
                 WoodySearch correspondingDBRecord = searchCriteriaDB.First(x => x.Characteristic == searchCrit.Characteristic);
                 correspondingDBRecord.Query = false;
@@ -191,6 +216,7 @@ namespace PortableApp
             {
                 //searchCrit.BorderWidth = 0;
                 searchCrit.BorderColor = Color.White;
+                searchCrit.BackgroundColor = Color.White;
                 searchCrit.Query = false;
                 WoodySearch correspondingDBRecord = searchCriteriaDB.First(x => x.Characteristic == searchCrit.Characteristic);
                 correspondingDBRecord.Query = false;
@@ -230,6 +256,11 @@ namespace PortableApp
             coniferPlantType.BorderColor = Color.White;
             vinePlantType.BorderColor = Color.White;
             cactiPlantType.BorderColor = Color.White;
+
+            deciduousPlantType.BackgroundColor = Color.White;
+            coniferPlantType.BackgroundColor = Color.White;
+            vinePlantType.BackgroundColor = Color.White;
+            cactiPlantType.BackgroundColor = Color.White;
 
             correspondingDBRecord1.Query = deciduousPlantType.Query = false;
             correspondingDBRecord2.Query = deciduousPlantType.Query = false;
@@ -317,12 +348,14 @@ namespace PortableApp
                     correspondingDBRecord.Query = button.Query = false;
                     //button.BorderWidth = 0;
                     button.BorderColor = Color.White;
+                    button.BackgroundColor = Color.White;
                 }
                 else if (button.Query == false)
                 {
                     correspondingDBRecord.Query = button.Query = true;
                     //  button.BorderWidth = 1;
                     button.BorderColor = Color.LightGreen;
+                    button.BackgroundColor = Color.LightGreen;
                 }
             }
             else
@@ -332,6 +365,7 @@ namespace PortableApp
                     ResetSearchFilters(sender,e);
                     //????????
                     button.BorderColor = Color.White;
+                    button.BackgroundColor = Color.White;
                     correspondingDBRecord.Query = button.Query = false;
                 }
                 else if (button.Query == false)
@@ -340,6 +374,7 @@ namespace PortableApp
                     //ResetSearchFilters(sender, e);
                    // button.BorderWidth = 1;
                     button.BorderColor = Color.LightGreen;
+                    button.BackgroundColor = Color.LightGreen;
                     correspondingDBRecord.Query = button.Query = true;
                     ChangeSearchCharacteristics(sender, e);
                 }
@@ -761,48 +796,48 @@ namespace PortableApp
             flowerColorLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             SearchCharacteristicIcon yellowFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Yellow");
-            yellowFlowerColor.BackgroundColor = Color.Yellow;
-            yellowFlowerColor.TextColor = Color.Black;
+            //yellowFlowerColor.BackgroundColor = Color.Yellow;
+           // yellowFlowerColor.TextColor = Color.Black;
             flowerColorLayout.Children.Add(yellowFlowerColor, 0, 0);
 
             SearchCharacteristicIcon blueFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Blue");
-            blueFlowerColor.BackgroundColor = Color.Blue;
-            blueFlowerColor.TextColor = Color.White;
+            //blueFlowerColor.BackgroundColor = Color.Blue;
+           // blueFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(blueFlowerColor, 1, 0);
 
             SearchCharacteristicIcon redFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Red");
-            redFlowerColor.BackgroundColor = Color.Red;
-            redFlowerColor.TextColor = Color.White;
+            //redFlowerColor.BackgroundColor = Color.Red;
+            //redFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(redFlowerColor, 0, 1);
 
             SearchCharacteristicIcon brownFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Brown");
-            brownFlowerColor.BackgroundColor = Color.SaddleBrown;
-            brownFlowerColor.TextColor = Color.White;
+            //brownFlowerColor.BackgroundColor = Color.SaddleBrown;
+            //brownFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(brownFlowerColor, 1, 1);
 
             SearchCharacteristicIcon whiteFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-White");
-            whiteFlowerColor.BackgroundColor = Color.White;
-            whiteFlowerColor.TextColor = Color.Black;
+            //whiteFlowerColor.BackgroundColor = Color.White;
+            //whiteFlowerColor.TextColor = Color.Black;
             flowerColorLayout.Children.Add(whiteFlowerColor, 0, 2);
 
             SearchCharacteristicIcon greenFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Green");
-            greenFlowerColor.BackgroundColor = Color.Green;
-            greenFlowerColor.TextColor = Color.White;
+            //greenFlowerColor.BackgroundColor = Color.Green;
+            //greenFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(greenFlowerColor, 1, 2);
 
             SearchCharacteristicIcon orangeFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Orange");
-            orangeFlowerColor.BackgroundColor = Color.Orange;
-            orangeFlowerColor.TextColor = Color.Black;
+            //orangeFlowerColor.BackgroundColor = Color.Orange;
+            //orangeFlowerColor.TextColor = Color.Black;
             flowerColorLayout.Children.Add(orangeFlowerColor, 0, 3);
 
             SearchCharacteristicIcon pinkFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Pink");
-            pinkFlowerColor.BackgroundColor = Color.Pink;
-            pinkFlowerColor.TextColor = Color.Black;
+            //pinkFlowerColor.BackgroundColor = Color.Pink;
+            //pinkFlowerColor.TextColor = Color.Black;
             flowerColorLayout.Children.Add(pinkFlowerColor, 1, 3);
 
             SearchCharacteristicIcon purpleFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Purple");
-            purpleFlowerColor.BackgroundColor = Color.Purple;
-            purpleFlowerColor.TextColor = Color.White;
+            //purpleFlowerColor.BackgroundColor = Color.Purple;
+            //purpleFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(purpleFlowerColor, 0, 4);
 
             searchFilters.Children.Add(flowerColorLayout);
@@ -822,33 +857,33 @@ namespace PortableApp
             flowerColorLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             SearchCharacteristicIcon yellowFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Yellow");
-            yellowFlowerColor.BackgroundColor = Color.Yellow;
-            yellowFlowerColor.TextColor = Color.Black;
+            //yellowFlowerColor.BackgroundColor = Color.Yellow;
+           // yellowFlowerColor.TextColor = Color.Black;
             flowerColorLayout.Children.Add(yellowFlowerColor, 0, 0);
 
             SearchCharacteristicIcon brownFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Brown");
-            brownFlowerColor.BackgroundColor = Color.SaddleBrown;
-            brownFlowerColor.TextColor = Color.White;
+            //brownFlowerColor.BackgroundColor = Color.SaddleBrown;
+            //brownFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(brownFlowerColor, 1, 0);
 
             SearchCharacteristicIcon whiteFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-White");
-            whiteFlowerColor.BackgroundColor = Color.White;
-            whiteFlowerColor.TextColor = Color.Black;
+            //whiteFlowerColor.BackgroundColor = Color.White;
+            //whiteFlowerColor.TextColor = Color.Black;
             flowerColorLayout.Children.Add(whiteFlowerColor, 0, 1);
        
             SearchCharacteristicIcon orangeFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Orange");
-            orangeFlowerColor.BackgroundColor = Color.Orange;
-            orangeFlowerColor.TextColor = Color.Black;
+           // orangeFlowerColor.BackgroundColor = Color.Orange;
+            //orangeFlowerColor.TextColor = Color.Black;
             flowerColorLayout.Children.Add(orangeFlowerColor, 1, 1);
 
             SearchCharacteristicIcon pinkFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Pink");
-            pinkFlowerColor.BackgroundColor = Color.Pink;
-            pinkFlowerColor.TextColor = Color.Black;
+            //pinkFlowerColor.BackgroundColor = Color.Pink;
+            //pinkFlowerColor.TextColor = Color.Black;
             flowerColorLayout.Children.Add(pinkFlowerColor, 0, 2);
 
             SearchCharacteristicIcon purpleFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Purple");
-            purpleFlowerColor.BackgroundColor = Color.Purple;
-            purpleFlowerColor.TextColor = Color.White;
+            //purpleFlowerColor.BackgroundColor = Color.Purple;
+            //purpleFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(purpleFlowerColor, 1, 2);
 
             searchFilters.Children.Add(flowerColorLayout);
@@ -867,23 +902,23 @@ namespace PortableApp
             flowerColorLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             SearchCharacteristicIcon yellowFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Yellow");
-            yellowFlowerColor.BackgroundColor = Color.Yellow;
-            yellowFlowerColor.TextColor = Color.Black;
+           // yellowFlowerColor.BackgroundColor = Color.Yellow;
+            //yellowFlowerColor.TextColor = Color.Black;
             flowerColorLayout.Children.Add(yellowFlowerColor, 0, 0);
 
             SearchCharacteristicIcon blueFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Blue");
-            blueFlowerColor.BackgroundColor = Color.Blue;
-            blueFlowerColor.TextColor = Color.White;
+            //blueFlowerColor.BackgroundColor = Color.Blue;
+            //blueFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(blueFlowerColor, 1, 0);
 
             SearchCharacteristicIcon greenFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Green");
-            greenFlowerColor.BackgroundColor = Color.Green;
-            greenFlowerColor.TextColor = Color.White;
+           // greenFlowerColor.BackgroundColor = Color.Green;
+            //greenFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(greenFlowerColor, 0, 1);
 
             SearchCharacteristicIcon purpleFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Purple");
-            purpleFlowerColor.BackgroundColor = Color.Purple;
-            purpleFlowerColor.TextColor = Color.White;
+            //purpleFlowerColor.BackgroundColor = Color.Purple;
+            //purpleFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(purpleFlowerColor, 1, 1);
 
             searchFilters.Children.Add(flowerColorLayout);

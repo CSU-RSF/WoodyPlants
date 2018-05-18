@@ -14,6 +14,20 @@ namespace PortableApp.iOS
             UISearchBar bar = (UISearchBar)this.Control;
             bar.SetPositionAdjustmentforSearchBarIcon(new UIOffset(10, 0), 0);
             bar.BarTintColor = new UIColor(red: 0.4f, green: 0.4f, blue: 0.4f, alpha: .0f);
+
+            bar.ShowsCancelButton = false;     
         }
+
+
+        protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+
+            if (e.PropertyName == "Text")
+            {
+                Control.ShowsCancelButton = false;
+            }
+        }
+        
     }
 }

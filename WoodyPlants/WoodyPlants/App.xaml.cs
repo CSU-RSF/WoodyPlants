@@ -10,10 +10,8 @@ namespace PortableApp
     {
         public static WoodyPlantRepository WoodyPlantRepo { get; private set; }
         public static WoodyPlantRepositoryLocal WoodyPlantRepoLocal { get; set; }
-       // public static WoodyPlantImageRepository WoodyPlantImageRepo { get; private set; }
         public static WoodySettingRepository WoodySettingsRepo { get; private set; }
         public static WoodySearchRepository WoodySearchRepo { get; private set; }
-        //public static WoodyPlantImageRepositoryLocal WoodyPlantImageRepoLocal { get; set; }
 
         public App(ISQLitePlatform sqliteplatform, string dbPath)
         {
@@ -26,14 +24,11 @@ namespace PortableApp
             SQLiteAsyncConnection newConnAsync = new SQLiteAsyncConnection(() => new SQLiteConnectionWithLock(sqliteplatform, new SQLiteConnectionString(dbPath, false)));
             DBConnection dbConnAsync = new DBConnection(newConnAsync);
 
-           // WoodyPlantImageRepo = new WoodyPlantImageRepository();
+
             WoodyPlantRepo = new WoodyPlantRepository();
             WoodySettingsRepo = new WoodySettingRepository();
             WoodySearchRepo = new WoodySearchRepository();
-
-
             WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(WoodyPlantRepo.GetAllWoodyPlants());
-           // WoodyPlantImageRepoLocal = new WoodyPlantImageRepositoryLocal(WoodyPlantImageRepo.GetAllWoodyPlantImages());
 
             this.MainPage = new NavigationPage(new MainPage());
         }

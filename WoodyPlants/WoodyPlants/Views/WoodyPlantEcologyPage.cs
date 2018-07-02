@@ -61,7 +61,7 @@ namespace PortableApp
             string html = "";
 
             html += "<!DOCTYPE html><html lang='en' xmlns='http://www.w3.org/1999/xhtml'><head><meta charset = 'utf-8' /><title>Plant Info Page</title></head><body>";
-            html += "<style>body, a { color: white; font-size: 0.9em; } .section_header { font-weight: bold; border-bottom: 1px solid white; margin: 10px 0; } .embedded_table { width: 100%; margin-left: 10px; } .iconImg { height: 40px; }</style>";
+            html += "<style>body{ color: white; font-size: 0.9em; padding-bottom: 200px; padding-top: 50px; } a { color: white; font-size: 0.9em; } .section_header { font-weight: bold; border-bottom: 1px solid white; margin: 10px 0; } .embedded_table { width: 100%; margin-left: 10px; } .iconImg { height: 40px; }</style>";
 
             if ((plant.frequency != null && plant.frequency.Length != 0) || (plant.lifeZone != null && plant.lifeZone.Length != 0) || (plant.habitat != null && plant.habitat.Length != 0) || (plant.endemicLocation != null && plant.endemicLocation.Length != 0))
             {

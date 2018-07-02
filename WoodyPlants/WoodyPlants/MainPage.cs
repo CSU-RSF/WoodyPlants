@@ -88,7 +88,7 @@ namespace PortableApp
                         if (datePlantDataUpdatedLocally.valuetimestamp == datePlantDataUpdatedOnServer.valuetimestamp)
                         {
                             DownloadButtonText = "Plant DB Up To Date";
-                            downloadImagesButton.Text = "Clear Local Database And Stream Plants";
+                            downloadImagesButton.Text = "Clear Database And Stream Plants";
                             streamingLabel.Text = "You Are Using Your Local Plant Database";
                             downloadImagesLabel.TextColor = Color.Green;
                             updatePlants = false;
@@ -101,7 +101,7 @@ namespace PortableApp
                             if (datePlantDataUpdatedLocally.valuetimestamp == null)
                             {
                                 DownloadButtonText = "Download Plant DB";
-                                downloadImagesButton.Text = "Download (No Local Database)";
+                                downloadImagesButton.Text = "Download Plant Database";
                                 streamingLabel.Text = "You Are Streaming Plants";
                                 downloadImagesLabel.TextColor = Color.Red;
                                 updatePlants = true;
@@ -112,7 +112,7 @@ namespace PortableApp
                             else if ((datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp) && datePlantDataUpdatedLocally.valuetimestamp != null)
                             {
                                 DownloadButtonText = "New Plant DB Available";
-                                downloadImagesButton.Text = "Re-Sync (New Database Available)";
+                                downloadImagesButton.Text = "Download Database Update";
                                 streamingLabel.Text = "You Are Using Your Local Plant Database";
                                 downloadImagesLabel.TextColor = Color.Yellow;
                                 updatePlants = true;
@@ -182,7 +182,7 @@ namespace PortableApp
                 Text = "Identify By Plant Characteristic"
             };
             searchButton.Clicked += ToSearch;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
             innerContainer.Children.Add(searchButton, 0, 2);
 
             // Add navigation buttons
@@ -192,7 +192,7 @@ namespace PortableApp
                 Text = "Identify By Family/Species"
             };
             plantsButton.Clicked += ToPlants;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
             innerContainer.Children.Add(plantsButton, 0, 3);
 
 
@@ -203,7 +203,7 @@ namespace PortableApp
             };
 
             howToUseButton.Clicked += ToFavorites;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
             innerContainer.Children.Add(howToUseButton, 0, 4);
 
             Button aboutButton = new Button
@@ -213,7 +213,7 @@ namespace PortableApp
             };
 
             aboutButton.Clicked += ToAbout;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
             innerContainer.Children.Add(aboutButton, 0, 5);
 
             Button linksButton = new Button
@@ -223,7 +223,7 @@ namespace PortableApp
             };
 
             linksButton.Clicked += ToLink;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(55) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
             innerContainer.Children.Add(linksButton, 0, 6);
 
 
@@ -237,7 +237,7 @@ namespace PortableApp
             //  downloadImagesLayout.Children.Add(downloadImagesLabel);
 
             downloadImagesLayout.Children.Add(streamingLabel);
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(85) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
             innerContainer.Children.Add(downloadImagesLayout, 0, 7);
 
 
@@ -278,24 +278,7 @@ namespace PortableApp
 
             await App.Current.MainPage.Navigation.PopModalAsync();
         }
-
-        private async void ClickDownloadImages(object sender, EventArgs e)
-        {
-
-            // If valid date comparison and date on server is more recent than local date, show download button
-            if (datePlantDataUpdatedLocally != null && datePlantDataUpdatedOnServer != null)
-            {
-                if (datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp || numberOfPlants == 0)
-                {
-                    updatePlants = true;
-                    ToDownloadPage();
-                }
-            }
-
-
-
-           // await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
-        }
+   
 
         public void ImageFilesToDownload()
         {
@@ -333,7 +316,7 @@ namespace PortableApp
                     await App.WoodySettingsRepo.AddOrUpdateSettingAsync(datePlantDataUpdatedLocally);
 
                     DownloadButtonText = "Download Plant DB";
-                    downloadImagesButton.Text = "Download (No Local Database)";
+                    downloadImagesButton.Text = "Download Plants";
                     streamingLabel.Text = "You Are Streaming Plants";
                     downloadImagesLabel.TextColor = Color.Red;
 

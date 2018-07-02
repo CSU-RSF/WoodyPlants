@@ -67,6 +67,8 @@ namespace PortableApp
         //public bool downloadImages = (bool)App.WoodySettingsRepo.GetSetting("Download Images").valuebool;
 
         public bool downloadImages =true;
+        Page searchPage;
+        bool cameFromSearch;
 
         // Construct Page Container as an AbsoluteLayout with a background image
         public AbsoluteLayout ConstructPageContainer()
@@ -210,6 +212,9 @@ namespace PortableApp
 
         public Image BackImageConstructor(bool cameFromSearch = false, Page searchPage = null)
         {
+            this.searchPage = searchPage;
+            this.cameFromSearch = cameFromSearch;
+
             Image backImage = new Image
             {
                 Source = ImageSource.FromResource("WoodyPlants.Resources.Icons.back_arrow.png"),
@@ -220,21 +225,27 @@ namespace PortableApp
             var backGestureRecognizer = new TapGestureRecognizer();
             backGestureRecognizer.Tapped += async (sender, e) =>
             {
-                if(cameFromSearch)
-                {
-                    await Navigation.PushAsync(searchPage, false);
-                }
-                else
-                {
-                    GC.Collect();
-                    await Navigation.PopAsync();
-                }
-               
+                BackAction();
             };
             backImage.GestureRecognizers.Add(backGestureRecognizer);
 
             return backImage;
         }
+
+        public async void BackAction()
+        {            
+            if (cameFromSearch)
+            {
+                await Navigation.PushAsync(searchPage, false);
+            }
+            else
+            {
+                GC.Collect();
+                await Navigation.PopAsync();
+            }           
+        }
+
+      
 
         public Image HomeImageConstructor()
         {

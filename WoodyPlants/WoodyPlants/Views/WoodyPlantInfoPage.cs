@@ -48,7 +48,7 @@ namespace PortableApp
             string html = "";
 
             html += "<!DOCTYPE html><html lang='en' xmlns='http://www.w3.org/1999/xhtml'><head><meta charset = 'utf-8' /><title>Plant Info Page</title></head><body>";
-            html += "<style>body { color: white; font-size: 0.9em; } .section_header { font-weight: bold; border-bottom: 1px solid white; margin: 10px 0; } .embedded_table { width: 100%; margin-left: 10px; }</style>";
+            html += "<style>body { color: white; font-size: 0.9em; padding-bottom: 200px; padding-top: 50px; } .section_header { font-weight: bold; border-bottom: 1px solid white; margin: 10px 0; } .embedded_table { width: 100%; margin-left: 10px; }</style>";
 
             html += "<div class='section_header'>NAME</div>";
             if (plant.commonName != null && plant.commonName.Length != 0)

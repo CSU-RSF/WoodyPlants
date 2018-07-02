@@ -220,20 +220,56 @@
     <EmbeddedResource Include="Views\HTML\Links.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Icons\alternate.png" />
-    <EmbeddedResource Include="Resources\Icons\basal.png" />
-    <EmbeddedResource Include="Resources\Icons\deltoid.png" />
-    <EmbeddedResource Include="Resources\Icons\lobedcombined.png" />
     <EmbeddedResource Include="Resources\Icons\narrow.png" />
     <EmbeddedResource Include="Resources\Icons\oblanceolate.png" />
-    <EmbeddedResource Include="Resources\Icons\opposite.png" />
-    <EmbeddedResource Include="Resources\Icons\orbicular.png" />
-    <EmbeddedResource Include="Resources\Icons\palmate.png" />
-    <EmbeddedResource Include="Resources\Icons\pinnate.png" />
-    <EmbeddedResource Include="Resources\Icons\whorled.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images\WoodyMapKey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Icons\Acorn.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Alternate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Basal.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Bell.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Berry.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Branched.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cacti.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Capsule.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Clusterof2.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Clusterof5.jpg" />
+    <EmbeddedResource Include="Resources\Icons\CompoundLeaf.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cone.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Conifer.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cordate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cup.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cylinder.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Deciduous.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Deltoid.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Achene.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Flat.jpg" />
+    <EmbeddedResource Include="Resources\Icons\FlatNeedle.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Fleshy.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Lanceolate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Linear.jpg" />
+    <EmbeddedResource Include="Resources\Icons\LobedCombined.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Obovate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Opposite.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Orbicular.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Ovate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Palmate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\PaperyCone.jpg" />
+    <EmbeddedResource Include="Resources\Icons\PinnateCombined.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Round.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Samara.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Scale.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Sharp.jpg" />
+    <EmbeddedResource Include="Resources\Icons\SimpleLeaf.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Inconspicuous.jpg" />
+    <EmbeddedResource Include="Resources\Icons\SolidCone.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Sphere.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Star.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Vine.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Whorled.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

@@ -116,8 +116,8 @@ namespace PortableApp
             this.cameFromHomeFamily = cameFromHomeFamily;
             this.cameFromHomeSearch = cameFromHomeSearch;
             this.cameFromHomeFavorites = cameFromHomeFavorites;
-           // Initialize variables
-           sortField = new WoodySetting();
+            // Initialize variables
+            sortField = new WoodySetting();
 
             // Turn off navigation bar and initialize pageContainer
             NavigationPage.SetHasNavigationBar(this, false);

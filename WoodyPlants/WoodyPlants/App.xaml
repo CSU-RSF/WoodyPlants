@@ -37,8 +37,8 @@
         <Setter Property= "FontFamily" Value= "sans-serif" />  
       </Style>
       <Style x:Key="outlineButton" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="#000000" />
-                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BackgroundColor" Value="#99ffffff" />
+                <Setter Property="TextColor" Value="Black" />
                 <Setter Property="FontSize" Value="15" />
                 <Setter Property="Margin" Value="10, 0, 10, 0" />
                 <Setter Property="BorderWidth" Value="1" />

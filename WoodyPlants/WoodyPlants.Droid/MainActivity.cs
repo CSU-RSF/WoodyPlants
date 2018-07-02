@@ -4,10 +4,11 @@ using Android.OS;
 using CarouselView.FormsPlugin.Android;
 using FFImageLoading.Forms.Droid;
 
+
 namespace PortableApp.Droid
 {
     [Activity(Label = "CO Woody Plants", Icon = "@drawable/icon", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity 
     {
         protected override void OnCreate(Bundle bundle)
         {
@@ -24,6 +25,8 @@ namespace PortableApp.Droid
             var platform = new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid();
             LoadApplication(new PortableApp.App(platform, dbPath));
         }
+
+       
     }
 }
 

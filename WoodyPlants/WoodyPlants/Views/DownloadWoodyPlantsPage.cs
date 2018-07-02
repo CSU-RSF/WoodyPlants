@@ -163,7 +163,10 @@ namespace PortableApp
                     IFolder folder = await rootFolder.GetFolderAsync("Images");
                     await folder.DeleteAsync();
                 }
-                catch (Exception e) { }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("ex {0}", e.Message);
+                }
 
 
                 await UpdatePlants(token);

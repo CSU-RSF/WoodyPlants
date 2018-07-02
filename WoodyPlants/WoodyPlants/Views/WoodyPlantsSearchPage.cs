@@ -118,7 +118,7 @@ namespace PortableApp
             
 
             // Add Search/Reset button group
-            Grid searchButtons = new Grid { BackgroundColor = Color.FromHex("00000000"), Margin = new Thickness(0,5,0,5) };
+            Grid searchButtons = new Grid { BackgroundColor = Color.FromHex("00000000"), RowSpacing = 10/*Margin = new Thickness(0,5,0,5)*/ };
             //searchButtons.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
             searchButtons.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
@@ -160,8 +160,8 @@ namespace PortableApp
             {
                 Style = Application.Current.Resources["outlineButton"] as Style,
                 Text = "CLOSE",
-                BorderRadius = Device.OnPlatform(0, 1, 0),
-                //Margin = new Thickness(0,10,0,10)
+                BorderRadius = Device.OnPlatform(1, 1, 0),
+                //Padding = new Thickness(0,10,0,10)
             };
             closeButton.Clicked += CloseSearch;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
@@ -263,9 +263,9 @@ namespace PortableApp
             cactiPlantType.BackgroundColor = Color.White;
 
             correspondingDBRecord1.Query = deciduousPlantType.Query = false;
-            correspondingDBRecord2.Query = deciduousPlantType.Query = false;
-            correspondingDBRecord3.Query = deciduousPlantType.Query = false;
-            correspondingDBRecord4.Query = deciduousPlantType.Query = false;
+            correspondingDBRecord2.Query = coniferPlantType.Query = false;
+            correspondingDBRecord3.Query = vinePlantType.Query = false;
+            correspondingDBRecord4.Query = cactiPlantType.Query = false;
 
             await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord1);
             await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord2);

@@ -216,7 +216,15 @@ namespace PortableApp.Models
         public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
 
         //public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
-        public string ThumbnailPathDownloaded { get { return rootFolder.Path + "/Images/" + scientificNameWeber.ToLower() + "_1.jpg"; } }
+        public string ThumbnailPathDownloaded
+        {
+            get
+            {
+                List<string> names = imageNames.Split(',').ToList<string>();
+
+                return rootFolder.Path + "/Images/" + names.ElementAt(0).Trim() + ".jpg";
+            }
+        }
         public string ThumbnailPathStreamed
         {
             get{return "http://sdt1.agsci.colostate.edu/mobileapi/api/woody/image_name/" + scientificNameWeber.ToLower() + "_1";}

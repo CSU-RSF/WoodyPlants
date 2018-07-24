@@ -182,7 +182,7 @@ namespace PortableApp
                 Text = "Identify By Plant Characteristic"
             };
             searchButton.Clicked += ToSearch;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
             innerContainer.Children.Add(searchButton, 0, 2);
 
             // Add navigation buttons
@@ -192,7 +192,7 @@ namespace PortableApp
                 Text = "Identify By Family/Species"
             };
             plantsButton.Clicked += ToPlants;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
             innerContainer.Children.Add(plantsButton, 0, 3);
 
 
@@ -203,7 +203,7 @@ namespace PortableApp
             };
 
             howToUseButton.Clicked += ToFavorites;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
             innerContainer.Children.Add(howToUseButton, 0, 4);
 
             Button aboutButton = new Button
@@ -213,7 +213,7 @@ namespace PortableApp
             };
 
             aboutButton.Clicked += ToAbout;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
             innerContainer.Children.Add(aboutButton, 0, 5);
 
             Button linksButton = new Button
@@ -223,7 +223,7 @@ namespace PortableApp
             };
 
             linksButton.Clicked += ToLink;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
             innerContainer.Children.Add(linksButton, 0, 6);
 
 

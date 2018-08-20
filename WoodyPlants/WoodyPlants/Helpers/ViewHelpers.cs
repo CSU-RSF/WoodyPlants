@@ -390,7 +390,7 @@ namespace PortableApp
         public async void ToLink(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            await Navigation.PushAsync(new HTMLPage("Links.html", "ABOUT"));
+            await Navigation.PushAsync(new HTMLPage("Links.html", "Links and Careers"));
         }
 
         public WebView HTMLProcessor(string location)

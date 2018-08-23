@@ -189,7 +189,7 @@ namespace PortableApp
             Button plantsButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "Identify By Family/Species"
+                Text = "Identify By Common/Scientific Name"
             };
             plantsButton.Clicked += ToPlants;
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });

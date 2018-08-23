@@ -32,6 +32,7 @@ namespace PortableApp
         public Button searchFilter;
         Button favoritesFilter;
         SearchBar searchBar;
+        int sortSearchHeight; // sets grid height for sort list and search field
         bool cameFromHomeFamily;
         bool cameFromHomeSearch  = false;
         bool streaming;
@@ -118,6 +119,7 @@ namespace PortableApp
             this.cameFromHomeFavorites = cameFromHomeFavorites;
             // Initialize variables
             sortField = new WoodySetting();
+            sortSearchHeight = 49;
 
             // Turn off navigation bar and initialize pageContainer
             NavigationPage.SetHasNavigationBar(this, false);
@@ -197,7 +199,7 @@ namespace PortableApp
 
             // Add button group grid
             Grid searchSortGroup = new Grid();
-            searchSortGroup.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
+            searchSortGroup.RowDefinitions.Add(new RowDefinition { Height = new GridLength(sortSearchHeight) });
             searchSortGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.7, GridUnitType.Star) });
             searchSortGroup.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
@@ -217,7 +219,7 @@ namespace PortableApp
             sortContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.7, GridUnitType.Star) });
             sortContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.25, GridUnitType.Star) });
             sortContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.05, GridUnitType.Star) });
-            sortContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
+            sortContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(sortSearchHeight) });
 
             sortButton.Clicked += SortPickerTapped;
             sortContainer.Children.Add(sortButton, 0, 0);
@@ -236,7 +238,7 @@ namespace PortableApp
 
             searchSortGroup.Children.Add(sortContainer, 1, 0);
 
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
             innerContainer.Children.Add(searchSortGroup, 0, 1);
 
             // Create ListView container

@@ -227,7 +227,11 @@ namespace PortableApp.Models
         }
         public string ThumbnailPathStreamed
         {
-            get{return "http://sdt1.agsci.colostate.edu/mobileapi/api/woody/image_name/" + scientificNameWeber.ToLower() + "_1";}
+            get
+            {
+                List<string> names = imageNames.Split(',').ToList<string>();
+                return "http://sdt1.agsci.colostate.edu/mobileapi/api/woody/image_name/" + names.ElementAt(0).Trim();
+            }
         }
 
 

@@ -28,11 +28,13 @@
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleDisplayName</key>
 	<string>CO Woody Plants</string>
+	<key>CFBundleName</key>
+	<string>CO Woody Plants</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.1</string>
 </dict>
 </plist>

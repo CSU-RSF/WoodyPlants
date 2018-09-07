@@ -32,21 +32,22 @@ namespace PortableApp
         {
             IsLoading = true;
 
-           // ResetSearchFilters();
+            // ResetSearchFilters();
             //changed this to local
-            if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
+            if (plants == null)
             {
-                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
-                base.OnAppearing();
-            }
-            else
-            {
-                plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
+                if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
+                {
+                    plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
+                    base.OnAppearing();
+                }
+                else
+                {
+                    plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
+                    App.WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(new List<WoodyPlant>(plants));
 
-
-                App.WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(new List<WoodyPlant>(plants));
-
-                base.OnAppearing();
+                    base.OnAppearing();
+                }
             }
 
             searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
@@ -55,7 +56,6 @@ namespace PortableApp
 
             innerContainer.Children.Add(scrollView, 0, 0);
         }
-
         public WoodyPlantsSearchPage()
         {
             //plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
@@ -207,7 +207,6 @@ namespace PortableApp
             
             
         }
-
         private async void ResetSearchFilters()
         {
             
@@ -238,7 +237,6 @@ namespace PortableApp
             
 
         }
-
         private async void ResetTypeButtons(object sender, EventArgs e)
         {
 
@@ -332,7 +330,6 @@ namespace PortableApp
             IsLoading = false;
 
         }
-
         private async void ProcessSearchFilter(object sender, EventArgs e)
         {
             
@@ -445,7 +442,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(leafShapeLayout);
         }
-
         private void VineLeafShapeSearch()
         {
             Label vineLeafShapeLabel = new Label { Text = "Leaf Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
@@ -464,7 +460,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(vineLeafShapeLayout);
         }
-
         private void NeedleShapeSearch()
         {
             Label needleShapeLabel = new Label { Text = "Needle Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
@@ -495,7 +490,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(needleLayout);
         }
-
         private void LeafArrangementSearch()
         {
             // Add Type of Plant
@@ -524,7 +518,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(leafArrangementLayout);
         }
-
         private void VineLeafArrangementSearch()
         {
             // Add Type of Plant
@@ -548,7 +541,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(leafArrangementLayout);
         }
-
         private void TwigTextureSearch()
         {
             // Add Type of Plant
@@ -583,7 +575,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(twigTextureLayout);
         }
-
         private void BarkTextureSearch()
         {
             // Add Type of Plant
@@ -611,7 +602,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(barkTextureLayout);
         }
-
         private void FlowerCluserSearch()
         {
             // Add Type of Plant
@@ -639,7 +629,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerClusterLayout);
         }
-
         private void FlowerShapeSearch()
         {
             // Add Type of PlantFIXXXXXXXXXXXXXX
@@ -675,7 +664,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerShapeLayout);
         }
-
         private void VineFlowerShapeSearch()
         {
             // Add Type of PlantFIXXXXXXXXXXXXXX
@@ -696,7 +684,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerShapeLayout);
         }
-
         private void FruitTypeSearch()
         {
             
@@ -732,7 +719,6 @@ namespace PortableApp
                 searchFilters.Children.Add(fruitTypeLayout);
 
         }
-
         private void VineFruitTypeSearch()
         {
 
@@ -754,7 +740,6 @@ namespace PortableApp
             searchFilters.Children.Add(fruitTypeLayout);
 
         }
-
         private void ConeTypeSearch()
         {
 
@@ -779,7 +764,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(coneTypeLayout);
         }
-
         private void FlowerColorSearch()
         {
             // Add Type of Plant
@@ -842,7 +826,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerColorLayout);
         }
-
         private void CactusFlowerColorSearch()
         {
             // Add Type of Plant
@@ -888,7 +871,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerColorLayout);
         }
-
         private void VineFlowerColorSearch()
         {
             // Add Type of Plant
@@ -923,9 +905,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerColorLayout);
         }
-
-       
-
         private void CactusShapeSearch()
         {
             Label cactusShapeLabel = new Label { Text = "Cactus Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
@@ -959,7 +938,6 @@ namespace PortableApp
             App.WoodyPlantRepoLocal.setSearchPlants(plants.ToList());
             InitRunSearch?.Invoke(this, EventArgs.Empty);
         }
-
         private void CloseSearch(object sender, EventArgs e)
         {
             InitCloseSearch?.Invoke(this, EventArgs.Empty);

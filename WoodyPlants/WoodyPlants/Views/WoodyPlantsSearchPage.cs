@@ -207,9 +207,32 @@ namespace PortableApp
             
             
         }
+        private async void ResetSearchFilters(object sender, EventArgs e, string toggleCharacteristic)
+        {
+
+            foreach (var searchCrit in searchCriteria)
+            {
+                if (!toggleCharacteristic.Equals(searchCrit.Characteristic))
+                {
+                    //searchCrit.BorderWidth = 0;
+                    searchCrit.BorderColor = Color.White;
+                    searchCrit.BackgroundColor = Color.White;
+                    searchCrit.Query = false;
+                    WoodySearch correspondingDBRecord = searchCriteriaDB.First(x => x.Characteristic == searchCrit.Characteristic);
+                    correspondingDBRecord.Query = false;
+                    await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord);
+                }
+            }
+
+            plants = await App.WoodyPlantRepoLocal.FilterPlantsBySearchCriteria();
+            searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
+
+
+
+        }
         private async void ResetSearchFilters()
         {
-            
+
 
             foreach (var searchCrit in searchCriteria)
             {
@@ -233,8 +256,8 @@ namespace PortableApp
             plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
             searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
 
-            
-            
+
+
 
         }
         private async void ResetTypeButtons(object sender, EventArgs e)
@@ -367,8 +390,8 @@ namespace PortableApp
                 }
                 else if (button.Query == false)
                 {
-                    ResetTypeButtons(sender, e);
-                    //ResetSearchFilters(sender, e);
+                    //ResetTypeButtons(sender, e);
+                    ResetSearchFilters(sender, e, button.Characteristic);
                    // button.BorderWidth = 1;
                     button.BorderColor = Color.LightGreen;
                     button.BackgroundColor = Color.LightGreen;

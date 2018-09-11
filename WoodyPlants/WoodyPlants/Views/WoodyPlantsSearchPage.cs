@@ -32,21 +32,24 @@ namespace PortableApp
         {
             IsLoading = true;
 
-           // ResetSearchFilters();
+            // ResetSearchFilters();
             //changed this to local
-            if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
+            if (plants == null)
             {
-                plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
-                base.OnAppearing();
-            }
-            else
-            {
-                plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
+                if (App.WoodyPlantRepoLocal.GetAllWoodyPlants().Count > 0)
+                {
+                    plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
+                    base.OnAppearing();
+                }
+                else
+                {
+                    plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
 
 
-                App.WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(new List<WoodyPlant>(plants));
+                    App.WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(new List<WoodyPlant>(plants));
 
-                base.OnAppearing();
+                    base.OnAppearing();
+                }
             }
 
             searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
@@ -55,7 +58,6 @@ namespace PortableApp
 
             innerContainer.Children.Add(scrollView, 0, 0);
         }
-
         public WoodyPlantsSearchPage()
         {
             //plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
@@ -207,7 +209,24 @@ namespace PortableApp
             
             
         }
-
+        private async void ResetSearchFilters(object sender, EventArgs e, string toggleCharacteristic)
+        {
+            foreach (var searchCrit in searchCriteria)
+            {
+                if (!toggleCharacteristic.Equals(searchCrit.Characteristic))
+                {
+                    //searchCrit.BorderWidth = 0;
+                    searchCrit.BorderColor = Color.White;
+                    searchCrit.BackgroundColor = Color.White;
+                    searchCrit.Query = false;
+                    WoodySearch correspondingDBRecord = searchCriteriaDB.First(x => x.Characteristic == searchCrit.Characteristic);
+                    correspondingDBRecord.Query = false;
+                    await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord);
+                }
+            }
+            plants = await App.WoodyPlantRepoLocal.FilterPlantsBySearchCriteria();
+            searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
+        }
         private async void ResetSearchFilters()
         {
             
@@ -238,7 +257,6 @@ namespace PortableApp
             
 
         }
-
         private async void ResetTypeButtons(object sender, EventArgs e)
         {
 
@@ -272,7 +290,6 @@ namespace PortableApp
             await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord3);
             await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord4);
         }
-
 
         private void ChangeSearchCharacteristics(object sender, EventArgs e)
         {
@@ -332,7 +349,6 @@ namespace PortableApp
             IsLoading = false;
 
         }
-
         private async void ProcessSearchFilter(object sender, EventArgs e)
         {
             
@@ -370,8 +386,8 @@ namespace PortableApp
                 }
                 else if (button.Query == false)
                 {
-                    ResetTypeButtons(sender, e);
-                    //ResetSearchFilters(sender, e);
+                    //ResetTypeButtons(sender, e);
+                    ResetSearchFilters(sender, e,button.Characteristic);
                    // button.BorderWidth = 1;
                     button.BorderColor = Color.LightGreen;
                     button.BackgroundColor = Color.LightGreen;
@@ -386,7 +402,6 @@ namespace PortableApp
             
 
         }
-
         private ObservableCollection<SearchCharacteristicIcon> SearchCharacteristicIconsCollection()
         {
             searchCriteria = new ObservableCollection<SearchCharacteristicIcon>();
@@ -445,7 +460,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(leafShapeLayout);
         }
-
         private void VineLeafShapeSearch()
         {
             Label vineLeafShapeLabel = new Label { Text = "Leaf Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
@@ -464,7 +478,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(vineLeafShapeLayout);
         }
-
         private void NeedleShapeSearch()
         {
             Label needleShapeLabel = new Label { Text = "Needle Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
@@ -495,7 +508,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(needleLayout);
         }
-
         private void LeafArrangementSearch()
         {
             // Add Type of Plant
@@ -524,7 +536,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(leafArrangementLayout);
         }
-
         private void VineLeafArrangementSearch()
         {
             // Add Type of Plant
@@ -548,7 +559,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(leafArrangementLayout);
         }
-
         private void TwigTextureSearch()
         {
             // Add Type of Plant
@@ -583,7 +593,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(twigTextureLayout);
         }
-
         private void BarkTextureSearch()
         {
             // Add Type of Plant
@@ -611,7 +620,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(barkTextureLayout);
         }
-
         private void FlowerCluserSearch()
         {
             // Add Type of Plant
@@ -639,7 +647,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerClusterLayout);
         }
-
         private void FlowerShapeSearch()
         {
             // Add Type of PlantFIXXXXXXXXXXXXXX
@@ -675,7 +682,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerShapeLayout);
         }
-
         private void VineFlowerShapeSearch()
         {
             // Add Type of PlantFIXXXXXXXXXXXXXX
@@ -696,7 +702,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerShapeLayout);
         }
-
         private void FruitTypeSearch()
         {
             
@@ -732,7 +737,6 @@ namespace PortableApp
                 searchFilters.Children.Add(fruitTypeLayout);
 
         }
-
         private void VineFruitTypeSearch()
         {
 
@@ -754,7 +758,6 @@ namespace PortableApp
             searchFilters.Children.Add(fruitTypeLayout);
 
         }
-
         private void ConeTypeSearch()
         {
 
@@ -779,7 +782,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(coneTypeLayout);
         }
-
         private void FlowerColorSearch()
         {
             // Add Type of Plant
@@ -842,7 +844,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerColorLayout);
         }
-
         private void CactusFlowerColorSearch()
         {
             // Add Type of Plant
@@ -888,7 +889,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerColorLayout);
         }
-
         private void VineFlowerColorSearch()
         {
             // Add Type of Plant
@@ -923,9 +923,6 @@ namespace PortableApp
 
             searchFilters.Children.Add(flowerColorLayout);
         }
-
-       
-
         private void CactusShapeSearch()
         {
             Label cactusShapeLabel = new Label { Text = "Cactus Shape:", Style = Application.Current.Resources["sectionHeader"] as Style };
@@ -953,13 +950,11 @@ namespace PortableApp
             searchFilters.Children.Add(cactusShapeLayout);
         }
 
-
         private void RunSearch(object sender, EventArgs e)
         {
             App.WoodyPlantRepoLocal.setSearchPlants(plants.ToList());
             InitRunSearch?.Invoke(this, EventArgs.Empty);
         }
-
         private void CloseSearch(object sender, EventArgs e)
         {
             InitCloseSearch?.Invoke(this, EventArgs.Empty);

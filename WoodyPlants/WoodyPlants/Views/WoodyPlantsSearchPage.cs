@@ -44,11 +44,6 @@ namespace PortableApp
                 else
                 {
                     plants = new ObservableCollection<WoodyPlant>(await externalConnection.GetAllPlants());
-<<<<<<< HEAD
-=======
-
-
->>>>>>> refs/remotes/origin/master
                     App.WoodyPlantRepoLocal = new WoodyPlantRepositoryLocal(new List<WoodyPlant>(plants));
 
                     base.OnAppearing();
@@ -214,10 +209,6 @@ namespace PortableApp
         }
         private async void ResetSearchFilters(object sender, EventArgs e, string toggleCharacteristic)
         {
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/master
             foreach (var searchCrit in searchCriteria)
             {
                 if (!toggleCharacteristic.Equals(searchCrit.Characteristic))
@@ -231,17 +222,8 @@ namespace PortableApp
                     await App.WoodySearchRepo.UpdateSearchCriteriaAsync(correspondingDBRecord);
                 }
             }
-<<<<<<< HEAD
-
             plants = await App.WoodyPlantRepoLocal.FilterPlantsBySearchCriteria();
             searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
-
-
-
-=======
-            plants = await App.WoodyPlantRepoLocal.FilterPlantsBySearchCriteria();
-            searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
->>>>>>> refs/remotes/origin/master
         }
         private async void ResetSearchFilters()
         {
@@ -268,13 +250,6 @@ namespace PortableApp
 
             plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
             searchButton.Text = "VIEW " + plants.Count() + " RESULTS";
-
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> refs/remotes/origin/master
         }
         private async void ResetTypeButtons(object sender, EventArgs e)
         {
@@ -406,11 +381,7 @@ namespace PortableApp
                 else if (button.Query == false)
                 {
                     //ResetTypeButtons(sender, e);
-<<<<<<< HEAD
                     ResetSearchFilters(sender, e, button.Characteristic);
-=======
-                    ResetSearchFilters(sender, e,button.Characteristic);
->>>>>>> refs/remotes/origin/master
                    // button.BorderWidth = 1;
                     button.BorderColor = Color.LightGreen;
                     button.BackgroundColor = Color.LightGreen;

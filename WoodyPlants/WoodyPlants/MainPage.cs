@@ -88,8 +88,8 @@ namespace PortableApp
                         if (datePlantDataUpdatedLocally.valuetimestamp == datePlantDataUpdatedOnServer.valuetimestamp)
                         {
                             DownloadButtonText = "Plant DB Up To Date";
-                            downloadImagesButton.Text = "Clear Database And Stream Plants";
-                            streamingLabel.Text = "You Are Using Your Local Plant Database";
+                            downloadImagesButton.Text = "Clear Offline Plant Data";
+                            streamingLabel.Text = "You Are Using Offline Plant Data";
                             downloadImagesLabel.TextColor = Color.Green;
                             updatePlants = false;
                             resyncPlants = false;
@@ -101,8 +101,8 @@ namespace PortableApp
                             if (datePlantDataUpdatedLocally.valuetimestamp == null)
                             {
                                 DownloadButtonText = "Download Plant DB";
-                                downloadImagesButton.Text = "Download Plant Database";
-                                streamingLabel.Text = "You Are Streaming Plants";
+                                downloadImagesButton.Text = "Download Offline Plant Data";
+                                streamingLabel.Text = "You Are Streaming Plant Data";
                                 downloadImagesLabel.TextColor = Color.Red;
                                 updatePlants = true;
                                 resyncPlants = false;
@@ -112,8 +112,8 @@ namespace PortableApp
                             else if ((datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp) && datePlantDataUpdatedLocally.valuetimestamp != null)
                             {
                                 DownloadButtonText = "New Plant DB Available";
-                                downloadImagesButton.Text = "Download Database Update";
-                                streamingLabel.Text = "You Are Using Your Local Plant Database";
+                                downloadImagesButton.Text = "Update Offline Plant Data";
+                                streamingLabel.Text = "You Are Using Offline Plant Data";
                                 downloadImagesLabel.TextColor = Color.Yellow;
                                 updatePlants = true;
                                 resyncPlants = true;
@@ -294,11 +294,11 @@ namespace PortableApp
         {
             if (clearDatabase)
             {
-                var answer = await DisplayAlert("Warning", "Are you sure you want to clear your database and stream plants?", "Yes", "No");
+                var answer = await DisplayAlert("Warning", "Are you sure you want to clear your offline plant data and stream plants?", "Yes", "No");
                 if (answer)
                 {
                     DownloadButtonText = "Plant DB Up To Date";
-                    downloadImagesButton.Text = "Clearing Local Database...";
+                    downloadImagesButton.Text = "Clearing Offline Plant Data...";
                     try
                     {
                         IFolder folder = await rootFolder.GetFolderAsync("Images");
@@ -316,7 +316,7 @@ namespace PortableApp
                     await App.WoodySettingsRepo.AddOrUpdateSettingAsync(datePlantDataUpdatedLocally);
 
                     DownloadButtonText = "Download Plant DB";
-                    downloadImagesButton.Text = "Download Plants";
+                    downloadImagesButton.Text = "Download Offline Plant Data";
                     streamingLabel.Text = "You Are Streaming Plants";
                     downloadImagesLabel.TextColor = Color.Red;
 

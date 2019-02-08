@@ -861,10 +861,10 @@ namespace PortableApp
             //brownFlowerColor.TextColor = Color.White;
             flowerColorLayout.Children.Add(brownFlowerColor, 1, 0);
 
-            SearchCharacteristicIcon whiteFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-White");
+            SearchCharacteristicIcon redFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Red");
             //whiteFlowerColor.BackgroundColor = Color.White;
             //whiteFlowerColor.TextColor = Color.Black;
-            flowerColorLayout.Children.Add(whiteFlowerColor, 0, 1);
+            flowerColorLayout.Children.Add(redFlowerColor, 0, 1);
        
             SearchCharacteristicIcon orangeFlowerColor = searchCriteria.First(x => x.Characteristic == "FlowerColor-Orange");
            // orangeFlowerColor.BackgroundColor = Color.Orange;

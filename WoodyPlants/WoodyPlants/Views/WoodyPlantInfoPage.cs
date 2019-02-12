@@ -91,6 +91,24 @@ namespace PortableApp
                 html += plant.fruitDescription;
             }
 
+            string leafDescrip = "";
+            if (plant.leafType != null && plant.leafType.Length != 0)
+            {
+                leafDescrip += "<b>Leaf Type: </b>";
+                leafDescrip += plant.leafType;
+                leafDescrip += "</br>";
+            }
+            if (plant.leafArrangement != null && plant.leafArrangement.Length != 0)
+            {
+                leafDescrip += "<b>Leaf Arrangement: </b>";
+                leafDescrip += plant.leafArrangement;
+            }
+
+            if (!leafDescrip.Equals("")) {
+                html += "<div class='section_header'>LEAF DESCRIPTION</div>";
+                html += leafDescrip;
+            }
+
             if (plant.barkDescription != null && plant.barkDescription.Length != 0)
             {
                 html += "<div class='section_header'>BARK/STEM DESCRIPTION</div>";

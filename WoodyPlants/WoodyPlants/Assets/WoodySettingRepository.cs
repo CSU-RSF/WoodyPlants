@@ -21,6 +21,13 @@ namespace PortableApp
             SeedDB();
         }
 
+        public void ClearWoodySettings()
+        {
+            conn.DropTable<WoodySetting>();
+            conn.CreateTable<WoodySetting>();
+            SeedDB();
+        }
+
         // return a list of Woodyplants saved to the WoodySetting table in the database
         public List<WoodySetting> GetAllWoodySettings()
         {
@@ -130,7 +137,7 @@ namespace PortableApp
             if (GetSetting("Download Images") == null)
                 conn.Insert(new WoodySetting { name = "Download Images", valuebool = true });
             if (GetSetting("Date Plants Downloaded") == null)
-                conn.Insert(new WoodySetting { name = "Date Plants Downloaded", valuetimestamp = new DateTime(2000, 1, 1) });
+                conn.Insert(new WoodySetting { name = "Date Plants Downloaded", valuetimestamp = null });
         }
 
     }

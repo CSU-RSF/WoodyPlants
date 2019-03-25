@@ -2,9 +2,12 @@
 using PortableApp.Data;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using PortableApp.Models;
+using System.ComponentModel;
+using System.Diagnostics;
+using PCLStorage;
+using System.Collections.ObjectModel;
 
 namespace PortableApp
 {
@@ -20,46 +23,134 @@ namespace PortableApp
         DownloadWoodyPlantsPage downloadPage;
         private bool finishedDownload = false;
         private bool canceledDownload = false;
+        private bool resyncPlants = false;
+        private bool clearDatabase = false;
         private WoodySetting datePlantDataUpdatedLocally;
         private WoodySetting datePlantDataUpdatedOnServer;
         private List<WoodySetting> imageFilesToDownload = new List<WoodySetting>();
         private IEnumerable<WoodySetting> imageFileSettingsOnServer;
+        private Button downloadImagesButton = new Button { Style = Application.Current.Resources["semiTransparentButton"] as Style, Text = "Trying To Connect To Server..." };
+        private Label downloadImagesLabel = new Label { TextColor = Color.White, BackgroundColor = Color.Transparent };
+        private Label streamingLabel = new Label { Text = "You Are Streaming Plants", Style = Application.Current.Resources["sectionHeader"] as Style, HorizontalOptions = LayoutOptions.CenterAndExpand, Margin = new Thickness(0, 0, 0, 0) };
 
+
+        IFolder rootFolder = FileSystem.Current.LocalStorage;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, e);
+            }
+        }
+        private string downloadButtonText = "Download Plant DB";
+        public string DownloadButtonText
+        {
+            get
+            {
+                return this.downloadButtonText;
+            }
+
+            set
+            {
+                this.downloadButtonText = value;
+                downloadImagesLabel.Text = this.downloadButtonText;
+                OnPropertyChanged(new PropertyChangedEventArgs("DownloadButtonText"));
+            }
+        }
+
+
+        //Start here
         protected override async void OnAppearing()
         {
-            // Initialize variables
-            isConnected = Connectivity.checkConnection();
-            isConnectedToWiFi = Connectivity.checkWiFiConnection();
-            numberOfPlants = new List<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants()).Count;
-            downloadImagesSetting = await App.WoodySettingsRepo.GetSettingAsync("Download Images");
-            downloadImages = (bool)downloadImagesSetting.valuebool;
-            downloadImagesSwitch.IsToggled = downloadImages;
 
-
-            // in order to go to the DownloadPage, must be connected to the internet (or cell data), did not just come from the download page
-            if (isConnected && !canceledDownload && !finishedDownload)
+            if (!canceledDownload)
             {
-                datePlantDataUpdatedLocally = App.WoodySettingsRepo.GetSetting("Date Plants Downloaded");
-                try
-                {
-                    datePlantDataUpdatedOnServer = await externalConnection.GetDateUpdatedDataOnServer();
-                    imageFileSettingsOnServer = await externalConnection.GetImageZipFileSettings();
-                    ImageFilesToDownload();
-                }
-                catch { }
+                // Initiate variables
+                isConnected = Connectivity.checkConnection();
+                isConnectedToWiFi = Connectivity.checkWiFiConnection();
+                downloadImagesSetting = await App.WoodySettingsRepo.GetSettingAsync("Download Images");
+                //downloadImages = (bool)downloadImagesSetting.valuebool;
 
-                // If valid date comparison and date on server is more recent than local date, show download button
-                if (datePlantDataUpdatedLocally != null && datePlantDataUpdatedOnServer != null)
+                //numberOfPlants = new List<WoodyPlant>(App.WoodyPlantRepo.GetAllWoodyPlants()).Count;
+
+                // if connected to WiFi and updates are needed
+                if (isConnected)
                 {
-                    if (datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp || numberOfPlants == 0)
+                    datePlantDataUpdatedLocally = App.WoodySettingsRepo.GetSetting("Date Plants Downloaded");
+                    try
                     {
-                        updatePlants = true;
-                        ToDownloadPage();
+                        datePlantDataUpdatedOnServer = await externalConnection.GetDateUpdatedDataOnServer();
+                        imageFileSettingsOnServer = await externalConnection.GetImageZipFileSettings();
+                        ImageFilesToDownload();
+
+                        if (datePlantDataUpdatedLocally.valuetimestamp == datePlantDataUpdatedOnServer.valuetimestamp)
+                        {
+                            DownloadButtonText = "Plant DB Up To Date";
+                            downloadImagesButton.Text = "Clear Offline Plant Data";
+                            streamingLabel.Text = "You Are Using Offline Plant Data";
+                            downloadImagesLabel.TextColor = Color.Green;
+                            updatePlants = false;
+                            resyncPlants = false;
+                            clearDatabase = true;
+                            downloadImages = false;
+                        }
+                        else
+                        {
+                            if (datePlantDataUpdatedLocally.valuetimestamp == null)
+                            {
+                                DownloadButtonText = "Download Plant DB";
+                                downloadImagesButton.Text = "Download Offline Plant Data";
+                                streamingLabel.Text = "You Are Streaming Plant Data";
+                                downloadImagesLabel.TextColor = Color.Red;
+                                updatePlants = true;
+                                resyncPlants = false;
+                                clearDatabase = false;
+                                downloadImages = true;
+                            }
+                            else if ((datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp) && datePlantDataUpdatedLocally.valuetimestamp != null)
+                            {
+                                DownloadButtonText = "New Plant DB Available";
+                                downloadImagesButton.Text = "Update Offline Plant Data";
+                                streamingLabel.Text = "You Are Using Offline Plant Data";
+                                downloadImagesLabel.TextColor = Color.Yellow;
+                                updatePlants = true;
+                                resyncPlants = true;
+                                clearDatabase = false;
+                                downloadImages = false;
+                            }
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Canceled UpdatePlants {0}", e.Message);
                     }
                 }
-                
+                else
+                {
+                    if (numberOfPlants == 0)
+                    {
+                        await DisplayAlert("No Local Database Detected", "Please connect to WiFi or cell network to download or use CO Woodys App", "OK");
+                        updatePlants = false;
+                        resyncPlants = false;
+                        clearDatabase = false;
+                        downloadImages = true;
+                    }
+                    else
+                    {
+                        downloadImagesButton.Text = "No Internet Connection";
+                    }
+                }
             }
-            base.OnAppearing();
+            else
+            {
+                canceledDownload = false;
+            }
+
+            //ObservableCollection<WoodyPlant> plants = new ObservableCollection<WoodyPlant>(App.WoodyPlantRepoLocal.GetAllWoodyPlants());
+           
         }
 
         public MainPage()
@@ -85,82 +176,109 @@ namespace PortableApp
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
 
+            Button searchButton = new Button
+            {
+                Style = Application.Current.Resources["semiTransparentButton"] as Style,
+                Text = "Identify By Plant Characteristic"
+            };
+            searchButton.Clicked += ToSearch;
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
+            innerContainer.Children.Add(searchButton, 0, 2);
+
             // Add navigation buttons
             Button plantsButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "PLANTS"
+                Text = "Identify By Common/Scientific Name"
             };
             plantsButton.Clicked += ToPlants;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-            innerContainer.Children.Add(plantsButton, 0, 2);
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
+            innerContainer.Children.Add(plantsButton, 0, 3);
 
-            Button helpButton = new Button
-            {
-                Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "BOTANICAL HELP"
-            };
-            helpButton.Clicked += ToHelp;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-            innerContainer.Children.Add(helpButton, 0, 3);
 
             Button howToUseButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "HOW TO USE"
+                Text = "Favorites"
             };
 
-            howToUseButton.Clicked += ToHowToUse;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            howToUseButton.Clicked += ToFavorites;
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
             innerContainer.Children.Add(howToUseButton, 0, 4);
 
             Button aboutButton = new Button
             {
                 Style = Application.Current.Resources["semiTransparentButton"] as Style,
-                Text = "ABOUT/CONTACT"
+                Text = "About"
             };
 
             aboutButton.Clicked += ToAbout;
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
             innerContainer.Children.Add(aboutButton, 0, 5);
 
-            // Switch for downloading images
-            StackLayout downloadImagesLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Margin = new Thickness(20, 0, 20, 0), HorizontalOptions = LayoutOptions.EndAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
-            downloadImagesSwitch = new Switch { BackgroundColor = Color.FromHex("66000000") };
-            downloadImagesSwitch.Toggled += ToggleDownloadImagesSwitch;
-            Label downloadImagesLabel = new Label { Text = "Download Images", TextColor = Color.White };
-            downloadImagesLayout.Children.Add(downloadImagesLabel);
-            downloadImagesLayout.Children.Add(downloadImagesSwitch);
-            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(45) });
-            innerContainer.Children.Add(downloadImagesLayout, 0, 6);
+            Button linksButton = new Button
+            {
+                Style = Application.Current.Resources["semiTransparentButton"] as Style,
+                Text = "Links and Careers in Natural Resources"
+            };
 
-            // Add empty space
+            linksButton.Clicked += ToLink;
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(65) });
+            innerContainer.Children.Add(linksButton, 0, 6);
+
+
+            StackLayout downloadImagesLayout = new StackLayout { BackgroundColor = Color.Transparent, Orientation = StackOrientation.Vertical, Padding = new Thickness(5, 5, 5, 0), HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand };
+
+            //Button to download images
+
+            downloadImagesButton.Clicked += DownloadImagesPressed;
+            downloadImagesLayout.Children.Add(downloadImagesButton);
+
+            //  downloadImagesLayout.Children.Add(downloadImagesLabel);
+
+            downloadImagesLayout.Children.Add(streamingLabel);
+            innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100) });
+            innerContainer.Children.Add(downloadImagesLayout, 0, 7);
+
+
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
+           
 
+
+        }
+
+        private async void ToDownloadPage()
+        {
+            downloadPage = new DownloadWoodyPlantsPage(updatePlants, datePlantDataUpdatedLocally, datePlantDataUpdatedOnServer, imageFilesToDownload, downloadImages, resyncPlants, clearDatabase);
+            downloadPage.InitCancelDownload += HandleCancelDownload;
+            downloadPage.InitFinishedDownload += HandleFinishedDownload;
+            await Navigation.PushModalAsync(downloadPage);
         }
 
         private async void HandleFinishedDownload(object sender, EventArgs e)
         {
             finishedDownload = true;
+            datePlantDataUpdatedLocally.valuetimestamp = datePlantDataUpdatedOnServer.valuetimestamp;
+            await App.WoodySettingsRepo.AddOrUpdateSettingAsync(datePlantDataUpdatedLocally);
             await App.Current.MainPage.Navigation.PopModalAsync();
         }
 
         private async void HandleCancelDownload(object sender, EventArgs e)
         {
             canceledDownload = true;
+            //ClearRepositories();
+            //ClearLocalRepositories();
+            try
+            {
+                IFolder folder = await rootFolder.GetFolderAsync("Images");
+                await folder.DeleteAsync();
+            }
+            catch (Exception exception) { }
+
             await App.Current.MainPage.Navigation.PopModalAsync();
         }
-
-        private async void ToDownloadPage()
-        {
-            downloadPage = new DownloadWoodyPlantsPage(updatePlants, datePlantDataUpdatedLocally, datePlantDataUpdatedOnServer);
-            updatePlants = true;
-            downloadPage.InitCancelDownload += HandleCancelDownload;
-            downloadPage.InitFinishedDownload += HandleFinishedDownload;
-            await Navigation.PushModalAsync(downloadPage);
-           
-        }
+   
 
         public void ImageFilesToDownload()
         {
@@ -172,18 +290,72 @@ namespace PortableApp
             }
         }
 
-        private async void ToggleDownloadImagesSwitch(object sender, ToggledEventArgs e)
+        private async void DownloadImagesPressed(object sender, EventArgs e)
         {
-            if (downloadImagesSwitch.IsToggled == true)
+            if (clearDatabase)
             {
-                downloadImagesSetting.valuebool = true;
-                if (imageFilesToDownload.Count > 0)
-                    ToDownloadPage();
-            }
-            else
-                downloadImagesSetting.valuebool = false;
+                var answer = await DisplayAlert("Warning", "Are you sure you want to clear your offline plant data and stream plants?", "Yes", "No");
+                if (answer)
+                {
+                    DownloadButtonText = "Plant DB Up To Date";
+                    downloadImagesButton.Text = "Clearing Offline Plant Data...";
+                    try
+                    {
+                        IFolder folder = await rootFolder.GetFolderAsync("Images");
+                        await folder.DeleteAsync();
+                    }
+                    catch (Exception exception) { }
 
+                    ClearRepositories();
+                    ClearLocalRepositories();
+                    updatePlants = false;
+                    resyncPlants = false;
+                    clearDatabase = false;
+
+                    datePlantDataUpdatedLocally.valuetimestamp = null;
+                    await App.WoodySettingsRepo.AddOrUpdateSettingAsync(datePlantDataUpdatedLocally);
+
+                    DownloadButtonText = "Download Plant DB";
+                    downloadImagesButton.Text = "Download Offline Plant Data";
+                    streamingLabel.Text = "You Are Streaming Plants";
+                    downloadImagesLabel.TextColor = Color.Red;
+
+                    downloadImagesSetting.valuebool = true;
+                    downloadImages = true;
+
+                }
+            }
+            // If valid date comparison and date on server is more recent than local date, show download button
+            else if (datePlantDataUpdatedOnServer.valuetimestamp != null)
+            {
+                if ((datePlantDataUpdatedLocally.valuetimestamp < datePlantDataUpdatedOnServer.valuetimestamp) || numberOfPlants == 0 || datePlantDataUpdatedLocally.valuetimestamp == null)
+                {                 
+                    updatePlants = true;
+                    ToDownloadPage();
+                    downloadImagesSetting.valuebool = false;
+                    downloadImages = false;
+                }
+            }
             await App.WoodySettingsRepo.AddOrUpdateSettingAsync(downloadImagesSetting);
+
+
         }
+
+        private void ClearRepositories()
+        {
+            //Clear Repositories
+            App.WoodyPlantRepo.ClearWoodyPlants();
+           // App.WoodyPlantImageRepo.ClearWoodyImages();
+            App.WoodySettingsRepo.ClearWoodySettings();
+
+
+        }
+
+        private void ClearLocalRepositories()
+        {
+            try { App.WoodyPlantRepoLocal.ClearWoodyPlantsLocal(); } catch (Exception e) { }
+           // try { App.WoodyPlantImageRepoLocal.ClearWoodyImagesLocal(); } catch (Exception e) { }
+        }
+
     }
 }

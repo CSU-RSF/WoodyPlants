@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using PortableApp.Models;
 using PortableApp.Views;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace PortableApp
 {
@@ -15,14 +17,58 @@ namespace PortableApp
     {
     }
 
-    public class ViewHelpers : ContentPage
+    public class ViewHelpers : ContentPage, INotifyPropertyChanged
     {
+       
+
+        private bool isLoading;
+        public bool IsLoading
+        {
+            get
+            {
+                return this.isLoading;
+            }
+
+            set
+            {
+                this.isLoading = value;
+                RaisePropertyChanged("IsLoading");
+            }
+        }
+
+        private String isLoadingMessage = "Loading";
+        public String IsLoadingMessage
+        {
+            get
+            {
+                return this.isLoadingMessage;
+            }
+
+            set
+            {
+                this.isLoadingMessage = value;
+                RaisePropertyChanged("IsLoadingMessage");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RaisePropertyChanged(string pName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(pName));
+        }
+
+
         //
         // VIEWS
         //
 
         public ExternalDBConnection externalConnection = new ExternalDBConnection();
-        public bool downloadImages = (bool)App.WoodySettingsRepo.GetSetting("Download Images").valuebool;
+        //public bool downloadImages = (bool)App.WoodySettingsRepo.GetSetting("Download Images").valuebool;
+
+        public bool downloadImages =true;
+        Page searchPage;
+        bool cameFromSearch;
 
         // Construct Page Container as an AbsoluteLayout with a background image
         public AbsoluteLayout ConstructPageContainer()
@@ -33,7 +79,46 @@ namespace PortableApp
                 Aspect = Aspect.AspectFill,
                 Opacity = 0.7
             };
+
+            var loadingLabel = new Label()
+            {
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.End,
+                TextColor = Color.White
+            };
+
+            loadingLabel.BindingContext = this;
+            loadingLabel.SetBinding(Label.TextProperty, "IsLoadingMessage", BindingMode.TwoWay);
+            loadingLabel.SetBinding(Label.IsVisibleProperty, "IsLoading", BindingMode.OneWay);
+            loadingLabel.TextColor = Color.White;
+
+
+            var indicator = new ActivityIndicator()
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.StartAndExpand
+            };
+            indicator.Color = Color.Blue;
+            indicator.BindingContext = this;
+            indicator.SetBinding(ActivityIndicator.IsRunningProperty, "IsLoading", BindingMode.TwoWay);
+
+            var grid = new Grid();
+
+            //  grid.BackgroundColor = IsLoading ? Color.Black: Color.Transparent;
+            //  grid.Opacity = .2;
+
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            grid.Children.Add(indicator, 0, 1);
+            grid.Children.Add(loadingLabel, 0, 0);
+            Grid.SetColumnSpan(loadingLabel, 2);
+            Grid.SetColumnSpan(indicator, 2);
+
             pageContainer.Children.Add(backgroundImage, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
+            pageContainer.Children.Add(grid, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
+
             return pageContainer;
         }
         
@@ -74,7 +159,7 @@ namespace PortableApp
 
             //Home
             gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            gridLayout.Children.Add(HomeImageConstructor(), 2, 0);
+            //gridLayout.Children.Add(HomeImageConstructor(), 2, 0);
 
             return gridLayout;
         }
@@ -103,30 +188,33 @@ namespace PortableApp
             {
                 //Previous 
                 gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                gridLayout.Children.Add(PreviousImageConstructor(plants, plantIndex), 3, 0);
+               // gridLayout.Children.Add(PreviousImageConstructor(plants, plantIndex), 3, 0);
 
                 //Next
                 gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                gridLayout.Children.Add(NextImageConstructor(plants, plantIndex), 4, 0);
+               // gridLayout.Children.Add(NextImageConstructor(plants, plantIndex), 4, 0);
             }
             else if (plantIndex > 0)
             {
                 //Previous 
                 gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                gridLayout.Children.Add(PreviousImageConstructor(plants, plantIndex), 3, 0);
+               // gridLayout.Children.Add(PreviousImageConstructor(plants, plantIndex), 3, 0);
             }
             else if (plantIndex < plants.Count - 1)
             {
                 //Next
                 gridLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                gridLayout.Children.Add(NextImageConstructor(plants, plantIndex), 3, 0);
+              //  gridLayout.Children.Add(NextImageConstructor(plants, plantIndex), 3, 0);
             }
         
             return gridLayout;
         }
 
-        public Image BackImageConstructor()
+        public Image BackImageConstructor(bool cameFromSearch = false, Page searchPage = null)
         {
+            this.searchPage = searchPage;
+            this.cameFromSearch = cameFromSearch;
+
             Image backImage = new Image
             {
                 Source = ImageSource.FromResource("WoodyPlants.Resources.Icons.back_arrow.png"),
@@ -137,12 +225,27 @@ namespace PortableApp
             var backGestureRecognizer = new TapGestureRecognizer();
             backGestureRecognizer.Tapped += async (sender, e) =>
             {
-                await Navigation.PopAsync();
+                BackAction();
             };
             backImage.GestureRecognizers.Add(backGestureRecognizer);
 
             return backImage;
         }
+
+        public async void BackAction()
+        {            
+            if (cameFromSearch)
+            {
+                await Navigation.PushAsync(searchPage, false);
+            }
+            else
+            {
+                GC.Collect();
+                await Navigation.PopAsync();
+            }           
+        }
+
+      
 
         public Image HomeImageConstructor()
         {
@@ -189,7 +292,7 @@ namespace PortableApp
                     previousImage.Opacity = .5;
                     await Task.Delay(200);
                     previousImage.Opacity = 1;
-                    await Navigation.PushAsync(new WoodyPlantDetailPage(previousPlant, plants));
+                    await Navigation.PushAsync(new WoodyPlantDetailPage(previousPlant, downloadImages, plants));
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                 };
                 previousImage.GestureRecognizers.Add(previousImageGestureRecognizer);
@@ -218,7 +321,7 @@ namespace PortableApp
                     nextImage.Opacity = .5;
                     await Task.Delay(200);
                     nextImage.Opacity = 1;
-                    await Navigation.PushAsync(new WoodyPlantDetailPage(nextPlant, plants));
+                    await Navigation.PushAsync(new WoodyPlantDetailPage(nextPlant, downloadImages, plants));
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                 };
                 nextImage.GestureRecognizers.Add(nextImageGestureRecognizer);
@@ -248,28 +351,46 @@ namespace PortableApp
             return favoriteImage;
         }
 
-        public async void ToHelp(object sender, EventArgs e)
-        {
-            ChangeButtonColor(sender, e);
-            await Navigation.PushAsync(new HTMLPage("Help.html", "BOTANICAL HELP"));
-        }
-
         public async void ToPlants(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
-            await Navigation.PushAsync(new WoodyPlantsPage());
+            var plantsPage = new WoodyPlantsPage(false,true,false, downloadImages);
+            await Navigation.PushAsync(plantsPage);
+
+        }
+        public async void ToFavorites(object sender, EventArgs e)
+        {
+            ChangeButtonColor(sender, e);
+            var plantsPage = new WoodyPlantsPage(false,false,true, downloadImages);
+            await Navigation.PushAsync(plantsPage);          
+        }
+
+        public async void ToSearch(object sender, EventArgs e)
+        {
+        
+            ChangeButtonColor(sender, e);
+            var plantsPage = new WoodyPlantsPage(true,false,false, downloadImages);
+            await Navigation.PushAsync(plantsPage);
+           
         }
 
         public async void ToAbout(object sender, EventArgs e)
         {
+            
             ChangeButtonColor(sender, e);
-            await Navigation.PushAsync(new HTMLPage("About.html", "ABOUT/CONTACT"));
+            await Navigation.PushAsync(new HTMLPage("About.html", "ABOUT"));
         }
 
         public async void ToHowToUse(object sender, EventArgs e)
         {
             ChangeButtonColor(sender, e);
             await Navigation.PushAsync(new HTMLPage("HowToUse.html", "HOW TO USE"));
+        }
+
+        public async void ToLink(object sender, EventArgs e)
+        {
+            ChangeButtonColor(sender, e);
+            await Navigation.PushAsync(new HTMLPage("Links.html", "Links and Careers"));
         }
 
         public WebView HTMLProcessor(string location)
@@ -305,6 +426,15 @@ namespace PortableApp
             button.BackgroundColor = Color.FromHex("BBC9D845");
             await Task.Delay(100);
             button.BackgroundColor = Color.FromHex("CC1E4D2B");
+        }
+
+
+        protected async void ChangeDownloadText(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            button.Text = "Plants Downloaded";
+            await Task.Delay(100);
+           // button.BackgroundColor = Color.FromHex("CC1E4D2B");
         }
     }
 

@@ -24,7 +24,7 @@ namespace PortableApp
 
             // Add header to inner container
 
-            Grid navigationBar = ConstructPlantNavigationBar(plant.scientificNameWeber, plant, plants);
+            Grid navigationBar = ConstructPlantNavigationBar(plant.commonName, plant, plants);
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             innerContainer.Children.Add(navigationBar, 0, 0);
 
@@ -35,7 +35,7 @@ namespace PortableApp
                 Margin = new Thickness(0, 0, 0, 0)
             };
 
-            //TransparentWebView browser = ConstructHTMLContent(plant);
+            TransparentWebView browser = ConstructHTMLContent(plant);
             //browser.Navigating += ToWoodyType;
 
             contentScrollView.Content = browser;
@@ -50,32 +50,138 @@ namespace PortableApp
             pageContainer.Children.Add(innerContainer, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
             Content = pageContainer;
 
+            base.OnAppearing();
+
         }
-        
-        //public TransparentWebView ConstructHTMLContent(WoodyPlant plant)
-        //{
-        //    browser = new TransparentWebView();
-        //    var htmlSource = new HtmlWebViewSource();
-        //    string html = "";
 
-        //    html += "<!DOCTYPE html><html lang='en' xmlns='http://www.w3.org/1999/xhtml'><head><meta charset = 'utf-8' /><title>Plant Info Page</title></head><body>";
-        //    html += "<style>body, a { color: white; font-size: 0.9em; } .section_header { font-weight: bold; border-bottom: 1px solid white; margin: 10px 0; } .embedded_table { width: 100%; margin-left: 10px; } .iconImg { height: 40px; }</style>";
+        public TransparentWebView ConstructHTMLContent(WoodyPlant plant)
+        {
+            browser = new TransparentWebView();
+            var htmlSource = new HtmlWebViewSource();
+            string html = "";
 
-        //    html += "<div class='section_header'>HABITAT & ECOLOGY</div>" + plant.habitat;
+            html += "<!DOCTYPE html><html lang='en' xmlns='http://www.w3.org/1999/xhtml'><head><meta charset = 'utf-8' /><title>Plant Info Page</title></head><body>";
+            html += "<style>body{ color: white; font-size: 0.9em; padding-bottom: 200px; padding-top: 50px; } a { color: white; font-size: 0.9em; } .section_header { font-weight: bold; border-bottom: 1px solid white; margin: 10px 0; } .embedded_table { width: 100%; margin-left: 10px; } .iconImg { height: 40px; }</style>";
 
-        //    html += "<div class='section_header'>COMMENTS</div>" + plant.comments;
+            if ((plant.frequency != null && plant.frequency.Length != 0) || (plant.lifeZone != null && plant.lifeZone.Length != 0) || (plant.habitat != null && plant.habitat.Length != 0) || (plant.endemicLocation != null && plant.endemicLocation.Length != 0))
+            {
+                html += "<div class='section_header'>ECOSYSTEM</div>";
+                if (plant.frequency != null && plant.frequency.Length != 0)
+                {
+                    html += "<strong>Frequency: </strong>" + plant.frequency + "<br/>";
+                }
+                if (plant.lifeZone != null && plant.lifeZone.Length != 0)
+                {
+                    html += "<strong>Life Zone: </strong>" + plant.lifeZone + "<br/>";
+                }
+                if (plant.habitat != null && plant.habitat.Length != 0)
+                {
+                    html += "<strong>Habitat: </strong>" + plant.habitat + "<br/>";
+                }
+                if (plant.endemicLocation != null && plant.endemicLocation.Length != 0)
+                {
+                    html += "<strong>Endemic Location: </strong>" + plant.endemicLocation + "<br/>";
+                }       
+            }
 
-        //    html += "<div class='section_header'>Woody TYPES</div>" + ReconstructWoodyTypes(plant.ecologicalsystems);
+            if ((plant.edibility != null && plant.edibility.Length != 0) || (plant.toxicity != null && plant.toxicity.Length != 0) || (plant.fiber != null && plant.fiber.Length != 0) || (plant.otherUses != null && plant.otherUses.Length != 0))
+            {
+                html += "<div class='section_header'>HUMAN CONNECTIONS</div>";
+                if (plant.edibility != null && plant.edibility.Length != 0)
+                {
+                    html += "<strong>Edibility: </strong>" + plant.edibility + "<br/>";
+                }
+                if (plant.toxicity != null && plant.toxicity.Length != 0)
+                {
+                    html += "<strong>Toxicity: </strong>" + plant.toxicity + "<br/>";
+                }
+                if (plant.fiber != null && plant.fiber.Length != 0)
+                {
+                    html += "<strong>Fiber/Dye: </strong>" + plant.fiber + "<br/>";
+                }
+                if (plant.otherUses != null && plant.otherUses.Length != 0)
+                {
+                    html += "<strong>Other Uses: </strong>" + plant.otherUses + "<br/>";
+                }   
+            }
 
-        //    html += "<div class='section_header'>ANIMAL USE</div>" + plant.animaluse.Replace("resources/images/animals/", "");
+            if ((plant.alien != null && plant.alien.Length != 0) || (plant.weedManagement != null && plant.weedManagement.Length != 0))
+            { 
+                html += "<div class='section_header'>Origin</div>";
+                if (plant.alien != null && plant.alien.Length != 0)
+                {
+                    html +=  plant.alien + "<br/>";
+                }
+                if (plant.weedManagement != null && plant.weedManagement.Length != 0)
+                {
+                    html += "<strong>Weed Management: </strong>" + plant.weedManagement + "<br/>";
+                }
+            }
 
-        //    html += "</body></html>";
+            if ((plant.landscapingUse != null && plant.landscapingUse.Length != 0) || (plant.matureHeight != null && plant.matureHeight.Length != 0) || (plant.matureSpread != null && plant.matureSpread.Length != 0) || (plant.siteRequirements != null && plant.siteRequirements.Length != 0) || (plant.soilRequirements != null && plant.soilRequirements.Length != 0) || (plant.moistureRequirements != null && plant.moistureRequirements.Length != 0) || (plant.cultivar != null && plant.cultivar.Length != 0) || (plant.availability != null && plant.availability.Length != 0))
+            {
+                html += "<div class='section_header'>LANDSCAPING</div>";
+                if (plant.landscapingUse != null && plant.landscapingUse.Length != 0)
+                {
+                    html += "<strong>Landscaping Use: </strong>" + plant.landscapingUse + "<br/>";
+                }
+                if (plant.matureHeight != null && plant.matureHeight.Length != 0)
+                {
+                    html += "<strong>Mature Height: </strong>" + plant.matureHeight + "<br/>";
+                }
+                if (plant.matureSpread != null && plant.matureSpread.Length != 0)
+                {
+                    html += "<strong>Mature Spread: </strong>" + plant.matureSpread + "<br/>";
+                }
+                if (plant.siteRequirements != null && plant.siteRequirements.Length != 0)
+                {
+                    html += "<strong>Site Requirements: </strong>" + plant.siteRequirements + "<br/>";
+                }
+                if (plant.soilRequirements != null && plant.soilRequirements.Length != 0)
+                {
+                    html += "<strong>Soil Requirements: </strong>" + plant.soilRequirements + "<br/>";
+                }
+                if (plant.moistureRequirements != null && plant.moistureRequirements.Length != 0)
+                {
+                    html += "<strong>Moisture Requirements: </strong>" + plant.moistureRequirements + "<br/>";
+                }
+                if (plant.cultivar != null && plant.cultivar.Length != 0)
+                {
+                    html += "<strong>Cultivar: </strong>" + plant.cultivar + "<br/>";
+                }
+                if (plant.availability != null && plant.availability.Length != 0)
+                {
+                    html += "<strong>Availability: </strong>" + plant.availability + "<br/>";
+                }    
+            }
 
-        //    htmlSource.Html = html;
-        //    browser.Source = htmlSource;
-            
-        //    return browser;
-        //}
+            if ((plant.ecologicalRelationships != null && plant.ecologicalRelationships.Length != 0) || (plant.scientificNameMeaning != null && plant.scientificNameMeaning.Length != 0) || (plant.derivation != null && plant.derivation.Length != 0) || (plant.comments != null && plant.comments.Length != 0))
+            {
+                html += "<div class='section_header'>NOTES</div>";
+                if (plant.ecologicalRelationships != null && plant.ecologicalRelationships.Length != 0)
+                {
+                    html += "<strong>Ecological Relationships: </strong>" + plant.ecologicalRelationships + "<br/>";
+                }
+                if (plant.scientificNameMeaning != null && plant.scientificNameMeaning.Length != 0)
+                {
+                    html += "<strong>Scientific Name Meaning: </strong>" + plant.scientificNameMeaning + "<br/>";
+                }
+                if (plant.derivation != null && plant.derivation.Length != 0)
+                {
+                    html += "<strong>Derivation: </strong>" + plant.derivation + "<br/>";
+                }
+                if (plant.comments != null && plant.comments.Length != 0)
+                {
+                    html += "<strong>Comments: </strong>" + plant.comments + "<br/>";
+                }  
+            }
+            html += "</body></html>";
+
+            htmlSource.Html = html;
+            browser.Source = htmlSource;
+
+            return browser;
+        }
 
         //// Prepare Woody type for navigation on click
         //private async void ToWoodyType(object sender, WebNavigatingEventArgs e)
@@ -89,7 +195,7 @@ namespace PortableApp
         //        await Navigation.PushModalAsync(detailPage);
         //    }            
         //}
-        
+
         // Reconstruct Woody types ('ecologicalsystems' field) so as to contain an internal link
         private string ReconstructWoodyTypes(string WoodyTypes)
         {

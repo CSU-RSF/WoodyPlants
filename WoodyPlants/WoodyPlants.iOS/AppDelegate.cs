@@ -5,6 +5,7 @@ using SQLite.Net.Platform.XamarinIOS;
 using Foundation;
 using UIKit;
 using CarouselView.FormsPlugin.iOS;
+using FFImageLoading.Forms.Touch;
 
 namespace PortableApp.iOS
 {
@@ -25,6 +26,9 @@ namespace PortableApp.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             CarouselViewRenderer.Init();
+            CachedImageRenderer.Init();
+            UIApplication.SharedApplication.IdleTimerDisabled = true;
+
 
             string dbPath = FileAccessHelper.GetLocalFilePath("db.db3");
             var platform = new SQLitePlatformIOS();
@@ -32,5 +36,11 @@ namespace PortableApp.iOS
 
             return base.FinishedLaunching(app, options);
         }
+
+       /* public override UIWindow Window
+        {
+            get;
+            set;
+        }*/
     }
 }

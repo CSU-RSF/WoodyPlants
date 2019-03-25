@@ -38,16 +38,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Assets\WoodyPlantRepositoryLocal.cs" />
     <Compile Include="Assets\WoodySearchRepository.cs" />
-    <Compile Include="Assets\WoodyPlantImageRepository.cs" />
     <Compile Include="Assets\WoodySettingRepository.cs" />
     <Compile Include="Assets\WoodyPlantRepository.cs" />
     <Compile Include="Data\Connectivity.cs" />
     <Compile Include="Data\DBConnection.cs" />
     <Compile Include="Data\ExternalDBConnection.cs" />
+    <Compile Include="EmbeddedImageResourceExtension.cs" />
     <Compile Include="Helpers\Grouping.cs" />
     <Compile Include="Helpers\HTMLPage.cs" />
     <Compile Include="Helpers\PredicateBuilder.cs" />
+    <Compile Include="Helpers\SearchCharactericticBuilder.cs" />
     <Compile Include="Helpers\SearchCharacteristicIcon.cs" />
     <Compile Include="Helpers\ViewHelpers.cs" />
     <Compile Include="Helpers\ZoomImage.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Models\WoodyPlant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\DownloadWoodyPlantsPage.cs" />
+    <Compile Include="Views\WoodyPlantRangePage.cs" />
     <Compile Include="Views\WoodyPlantsSearchPage.cs" />
     <Compile Include="Views\WoodyPlantImagesPage.cs" />
     <Compile Include="Views\WoodyPlantInfoPage.cs" />
@@ -84,6 +87,25 @@
     <Reference Include="ExifLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ExifLib.PCL.1.0.1\lib\portable-net45+sl50+win+WindowsPhoneApp81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\ExifLib.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="FFImageLoading, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.2.2.20\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.Forms.2.2.20\lib\portable-net45+win8+wpa81+wp8+netstandard1.0\FFImageLoading.Forms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FFImageLoading.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.2.2.20\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib.Portable, Version=0.86.0.51803, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.Portable.0.86.0.0003\lib\portable-net45+netcore45+wp8+win8+wpa81+MonoTouch+MonoAndroid+Xamarin.iOS10\ICSharpCode.SharpZipLib.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\v7.1\Mono.Android.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
@@ -194,17 +216,72 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Icons\simple.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\HTML\Links.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Icons\narrow.png" />
+    <EmbeddedResource Include="Resources\Icons\oblanceolate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Images\WoodyMapKey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Icons\Acorn.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Alternate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Basal.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Bell.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Berry.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Branched.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cacti.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Capsule.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Clusterof2.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Clusterof5.jpg" />
+    <EmbeddedResource Include="Resources\Icons\CompoundLeaf.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cone.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Conifer.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cordate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cup.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Cylinder.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Deciduous.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Deltoid.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Achene.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Flat.jpg" />
+    <EmbeddedResource Include="Resources\Icons\FlatNeedle.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Fleshy.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Lanceolate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Linear.jpg" />
+    <EmbeddedResource Include="Resources\Icons\LobedCombined.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Obovate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Opposite.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Orbicular.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Ovate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Palmate.jpg" />
+    <EmbeddedResource Include="Resources\Icons\PaperyCone.jpg" />
+    <EmbeddedResource Include="Resources\Icons\PinnateCombined.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Round.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Samara.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Scale.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Sharp.jpg" />
+    <EmbeddedResource Include="Resources\Icons\SimpleLeaf.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Inconspicuous.jpg" />
+    <EmbeddedResource Include="Resources\Icons\SolidCone.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Sphere.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Star.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Vine.jpg" />
+    <EmbeddedResource Include="Resources\Icons\Whorled.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.3.4.247\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets'))" />
-  </Target>
-  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
 </Project>

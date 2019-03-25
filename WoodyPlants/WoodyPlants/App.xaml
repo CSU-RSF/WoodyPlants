@@ -13,12 +13,14 @@
         <Setter Property="TextColor" Value="White" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="Margin" Value="20, 0, 20, 0" />
+        <Setter Property= "FontFamily" Value= "sans-serif" />
       </Style>
     
       <Style x:Key="plantFilterButton" TargetType="Button">
         <Setter Property="BackgroundColor" Value="#66000000" />
         <Setter Property="TextColor" Value="White" />
         <Setter Property="FontSize" Value="13" />
+        <Setter Property= "FontFamily" Value= "sans-serif" />  
       </Style>
     
       <Style x:Key="semiTransparentPlantButton" TargetType="Button">
@@ -26,35 +28,47 @@
         <Setter Property="TextColor" Value="White" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="Margin" Value="0" />
+        <Setter Property= "FontFamily" Value= "sans-serif" />
       </Style>
       <Style x:Key="jumpListLetter" TargetType="Label">
         <Setter Property="TextColor" Value="White" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property= "FontFamily" Value= "sans-serif" />  
       </Style>
       <Style x:Key="outlineButton" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="#00000000" />
-        <Setter Property="TextColor" Value="White" />
-        <Setter Property="FontSize" Value="15" />
-        <Setter Property="Margin" Value="10, 0, 10, 0" />
-        <Setter Property="BorderWidth" Value="1" />
-        <Setter Property="BorderColor" Value="White" />
-      </Style>
+                <Setter Property="BackgroundColor" Value="#99ffffff" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="Margin" Value="10, 0, 10, 0" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="BorderColor" Value="White" />
+                <Setter Property= "FontFamily" Value= "sans-serif" />
+            </Style>
 
       <Style x:Key="sectionHeader" TargetType="Label">
         <Setter Property="TextColor" Value="White" />
         <Setter Property="FontSize" Value="15" />
         <Setter Property="Margin" Value="0, 10, 0, 0" />
         <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property= "FontFamily" Value= "sans-serif" /> 
       </Style>
 
-      <Style x:Key="semiTransparentWhiteButton" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="#99ffffff" />
-        <Setter Property="TextColor" Value="Black" />
-        <Setter Property="FontSize" Value="15" />
-        <Setter Property="Margin" Value="10, 0, 10, 0" />
-      </Style>
-      
-    </ResourceDictionary>
+        <Style x:Key="semiTransparentWhiteButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#99ffffff" />
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="Margin" Value="10, 0, 10, 0" />
+            <Setter Property= "FontFamily" Value= "sans-serif" />
+            </Style>
+
+            <Style x:Key="semiTransparentWhiteButton2" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#99ffffff" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Margin" Value="10, 0, 10, 0" />
+                <Setter Property= "FontFamily" Value= "sans-serif" />
+            </Style>
+        </ResourceDictionary>
   </Application.Resources>      
 </Application>

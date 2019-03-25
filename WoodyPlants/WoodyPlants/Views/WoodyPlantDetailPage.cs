@@ -10,19 +10,19 @@ namespace PortableApp.Views
     {
         public WoodySetting selectedTabSetting = App.WoodySettingsRepo.GetSetting("SelectedTab");
 
-        public WoodyPlantDetailPage(WoodyPlant plant, ObservableCollection<WoodyPlant> plants = null)
+        public WoodyPlantDetailPage(WoodyPlant plant, bool streaming, ObservableCollection<WoodyPlant> plants = null)
         {
+            GC.Collect();
             NavigationPage.SetHasNavigationBar(this, false);
             var helpers = new ViewHelpers();
 
-            Children.Add(new WoodyPlantImagesPage(plant, plants) { Title = "IMAGES", Icon = "images.png" });
+            Children.Add(new WoodyPlantImagesPage(plant, plants, streaming) { Title = "IMAGES", Icon = "images.png" });
             Children.Add(new WoodyPlantInfoPage(plant, plants) { Title = "INFO", Icon = "info.png" });
             Children.Add(new WoodyPlantEcologyPage(plant, plants) { Title = "ECOLOGY", Icon = "ecology.png" });
-            //Children.Add(new WoodyPlantRangePage(plant, plants) { Title = "RANGE", Icon = "range.png" });
-            //Children.Add(new WoodyPlantSimilarPage(plant, plants) { Title = "SIMILAR", Icon = "similar.png" });
+            Children.Add(new WoodyPlantRangePage(plant, plants, streaming) { Title = "RANGE", Icon = "range.png" });
             BarBackgroundColor = Color.Black;
             BarTextColor = Color.White;
-
+            BackgroundColor = Color.Black;
             if (selectedTabSetting != null)
                 SelectedItem = Children[Convert.ToInt32(selectedTabSetting.valueint)];
             else

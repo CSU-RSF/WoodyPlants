@@ -62,7 +62,9 @@ namespace PortableApp.Models
         public string scientificNameNelson { get; set; }
         
         public string scientificNameMeaningNelson { get; set; }
-        
+
+        public string scientificNameMeaning { get; set; }
+
         public string seasonOfBloom { get; set; }
         
         public string familyCharacteristics { get; set; }
@@ -177,18 +179,118 @@ namespace PortableApp.Models
         
         public string shrubs { get; set; }
 
+        public string barkDescription { get; set; }
 
-        public bool isFavorite { get; set; }
+        public string barkTexture { get; set; }
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<WoodyPlantImage> Images { get; set; }
+        public string twigTexture { get; set; }
 
-        //public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
-        public ImageSource ThumbnailPath { get { return ImageSource.FromResource("WoodyPlants.Resources.Images.image.png"); } }
+        public string leafArrangement { get; set; }
+
+        public string flowerDescription { get; set; }
+
+        public string fruitDescription { get; set; }
+
+        public string otherUses { get; set; }
+
+        public string alien { get; set; }
+
+        public string siteRequirements { get; set; }
+
+        public string derivation { get; set; }
+
+        public string comments { get; set; }
+
+        public string cultivar { get; set; }
+
+        public string imageNames { get; set; }
+
+        public bool isFavorite { get; set; }    
 
         public string scientificNameWeberFirstInitial { get { return scientificNameWeber[0].ToString(); } }
         public string familyFirstInitial { get { return family[0].ToString(); } }
         public string commonNameFirstInitial { get { return commonName[0].ToString(); } }
+
+
+
+        public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
+
+        //public IFolder rootFolder { get { return FileSystem.Current.LocalStorage; } }
+        public string ThumbnailPathDownloaded
+        {
+            get
+            {
+                List<string> names = imageNames.Split(',').ToList<string>();
+
+                return rootFolder.Path + "/Images/" + names.ElementAt(0).Trim() + ".jpg";
+            }
+        }
+        public string ThumbnailPathStreamed
+        {
+            get
+            {
+                List<string> names = imageNames.Split(',').ToList<string>();
+                return "http://sdt1.agsci.colostate.edu/mobileapi/api/woody/image_name/" + names.ElementAt(0).Trim();
+            }
+        }
+
+
+        public List<WoodyPlantImage> Images
+        {
+           get
+            {
+                List<WoodyPlantImage> images = new List<WoodyPlantImage>();
+                List<string> names = imageNames.Split(',').ToList<string>();
+                foreach (string name in names)
+                {
+                    WoodyPlantImage image = new WoodyPlantImage(name.Trim(), rootFolder);
+                    images.Add(image);
+                }
+                try
+                {
+                    return images;
+                }
+                catch(NullReferenceException e)
+                {
+                    return null;
+                }
+               
+            }
+        }
+
+
+        public string RangePathDownloaded
+        {
+            get
+            {
+                try
+                {
+                    return rootFolder.Path + "/Images/map_" + scientificNameWeber+".png";
+                }
+                catch (NullReferenceException e)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string RangePathStreamed
+        {
+            get
+            {
+                try
+                {
+
+                    return "http://sdt1.agsci.colostate.edu/mobileapi/api/woody/range_images/" + "map_" + scientificNameWeber;
+                }
+                catch (NullReferenceException e)
+                {
+                    return null;
+                }
+            }
+
+        }
+
     }
 
 }

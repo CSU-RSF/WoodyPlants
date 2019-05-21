@@ -1,6 +1,6 @@
 ﻿using PCLStorage;
-using SQLite.Net.Attributes;
-using SQLiteNetExtensions.Attributes;
+using SQLite;
+//using SQLiteNetExtensions.Attributes;
 
 
 namespace PortableApp.Models

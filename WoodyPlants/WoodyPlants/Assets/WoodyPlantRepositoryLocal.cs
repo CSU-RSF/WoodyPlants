@@ -3,8 +3,8 @@ using System.Linq;
 using PortableApp.Models;
 using System.Threading.Tasks;
 using System;
-using SQLiteNetExtensions.Extensions;
-using SQLiteNetExtensionsAsync.Extensions;
+//using SQLiteNetExtensions.Extensions;
+//using SQLiteNetExtensionsAsync.Extensions;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 

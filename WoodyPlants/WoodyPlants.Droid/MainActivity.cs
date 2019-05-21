@@ -19,8 +19,10 @@ namespace PortableApp.Droid
             CarouselViewRenderer.Init();
 
             string dbPath = FileAccessHelper.GetLocalFilePath("db.db3");
-            var platform = new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid();
-            LoadApplication(new PortableApp.App(platform, dbPath));
+            //var platform = new SQLite.Platform.XamarinAndroid.SQLitePlatformAndroid();
+            //LoadApplication(new PortableApp.App(platform, dbPath));
+            LoadApplication(new App(dbPath));
+
         }
     }
 }

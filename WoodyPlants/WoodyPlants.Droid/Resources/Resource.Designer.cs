@@ -1857,8 +1857,6 @@ namespace WoodyPlants.Droid
 			global::CarouselView.FormsPlugin.Android.Resource.Styleable.ViewStubCompat_android_layout = global::WoodyPlants.Droid.Resource.Styleable.ViewStubCompat_android_layout;
 			global::PCLStorage.Resource.String.ApplicationName = global::WoodyPlants.Droid.Resource.String.ApplicationName;
 			global::PCLStorage.Resource.String.Hello = global::WoodyPlants.Droid.Resource.String.Hello;
-			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::WoodyPlants.Droid.Resource.String.ApplicationName;
-			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::WoodyPlants.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::WoodyPlants.Droid.Resource.Attribute.actionBarSize;
 			global::XLabs.Forms.Resource.Animation.abc_fade_in = global::WoodyPlants.Droid.Resource.Animation.abc_fade_in;
 			global::XLabs.Forms.Resource.Animation.abc_fade_out = global::WoodyPlants.Droid.Resource.Animation.abc_fade_out;

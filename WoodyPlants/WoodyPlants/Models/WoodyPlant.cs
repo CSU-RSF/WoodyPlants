@@ -1,6 +1,6 @@
 ﻿using PCLStorage;
-using SQLite.Net.Attributes;
-using SQLiteNetExtensions.Attributes;
+using SQLite;
+//using SQLiteExtensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -222,7 +222,9 @@ namespace PortableApp.Models
             {
                 List<string> names = imageNames.Split(',').ToList<string>();
 
+                string debugCheck= rootFolder.Path + "/Images/" + names.ElementAt(0).Trim() + ".jpg";
                 return rootFolder.Path + "/Images/" + names.ElementAt(0).Trim() + ".jpg";
+                //return rootFolder.Path + "/Images/" + names.ElementAt(0).Trim() + ".txt";
             }
         }
         public string ThumbnailPathStreamed

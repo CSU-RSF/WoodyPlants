@@ -3,6 +3,7 @@ using System.Linq;
 using PortableApp.Models;
 using System.Threading.Tasks;
 using System;
+using SQLite;
 using SQLiteNetExtensions.Extensions;
 using SQLiteNetExtensionsAsync.Extensions;
 using System.Collections.ObjectModel;
@@ -34,7 +35,7 @@ namespace PortableApp
             try
             {
                 // await connAsync.InsertOrReplaceWithChildrenAsync(plant);
-                await connAsync.RunInTransactionAsync((SQLite.Net.SQLiteConnection tran) =>
+                await connAsync.RunInTransactionAsync((SQLite.SQLiteConnection tran) =>
                 {
                     tran.InsertOrReplaceAllWithChildren(plants);
                 });

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SQLite.Net.Platform.XamarinIOS;
+//using SQLite.Platform.XamarinIOS;
 using Foundation;
 using UIKit;
 using CarouselView.FormsPlugin.iOS;
@@ -31,16 +31,16 @@ namespace PortableApp.iOS
 
 
             string dbPath = FileAccessHelper.GetLocalFilePath("db.db3");
-            var platform = new SQLitePlatformIOS();
-            LoadApplication(new PortableApp.App(platform, dbPath));
+            // var platform = new SQLitePlatformIOS();
+            LoadApplication(new App(dbPath));
 
             return base.FinishedLaunching(app, options);
         }
 
-       /* public override UIWindow Window
-        {
-            get;
-            set;
-        }*/
+        /* public override UIWindow Window
+         {
+             get;
+             set;
+         }*/
     }
 }

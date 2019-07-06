@@ -12,21 +12,11 @@
                         <viewControllerLayoutGuide type="top" id="Y8P-hJ-Z43"/>
                         <viewControllerLayoutGuide type="bottom" id="9ZL-r4-8FZ"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="yd7-JS-zBw">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" image="Icon-60.png" translatesAutoresizingMaskIntoConstraints="NO" id="23">
-                                <rect key="frame" x="270" y="270" width="60" height="60"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.20392156862745098" green="0.59607843137254901" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="23" firstAttribute="centerY" secondItem="yd7-JS-zBw" secondAttribute="centerY" priority="1" id="39"/>
-                            <constraint firstItem="23" firstAttribute="centerX" secondItem="yd7-JS-zBw" secondAttribute="centerX" priority="1" id="41"/>
-                        </constraints>
-                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="639" key="view" image="Icon.png">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <color key="backgroundColor" colorSpace="calibratedRGB" red="0.12549019607843137" green="0.30588235294117649" blue="0.15686274509803921" alpha="1"/>
+                        <color key="tintColor" colorSpace="calibratedRGB" red="0.16470588235294117" green="0.35294117647058826" blue="0.32941176470588235" alpha="1"/>
+                    </imageView>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XAI-xm-WK6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -34,6 +24,73 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Icon-60.png" width="180" height="180"/>
+        <image name="Icon-60.png" width="60" height="60"/>
+        <image name="Icon-Small-40.png" width="40" height="40"/>
+        <image name="Icon-Small.png" width="29" height="29"/>
+        <image name="ecology.png" width="30" height="30"/>
+        <image name="512.png" width="512" height="512"/>
+        <image name="1024.png" width="1024" height="1024"/>
+        <image name="Icon-83.5.png" width="83.5" height="83.5"/>
+        <image name="info.png" width="30" height="30"/>
+        <image name="images.png" width="30" height="30"/>
+        <image name="image1.png" width="218" height="141"/>
+        <image name="image2.jpg" width="436" height="115"/>
+        <image name="image3.jpg" width="324" height="156"/>
+        <image name="image4.png" width="415" height="121"/>
+        <image name="image5.png" width="274" height="184"/>
+        <image name="image6.png" width="225" height="225"/>
+        <image name="image7.png" width="277" height="102"/>
+        <image name="image8.png" width="399" height="115"/>
+        <image name="image9.png" width="900" height="900"/>
+        <image name="narrow.png" width="50" height="50"/>
+        <image name="oblanceolate.png" width="50" height="51"/>
+        <image name="loading.png" width="300" height="300"/>
+        <image name="error.png" width="300" height="300"/>
+        <image name="simple.png" width="50" height="50"/>
+        <image name="range.png" width="30" height="30"/>
+        <image name="Acorn.jpg" width="50" height="50"/>
+        <image name="Alternate.jpg" width="41" height="50"/>
+        <image name="Basal.jpg" width="50" height="56"/>
+        <image name="Bell.jpg" width="50" height="50"/>
+        <image name="Berry.jpg" width="50" height="43"/>
+        <image name="Branched.jpg" width="50" height="45"/>
+        <image name="Cacti.jpg" width="50" height="49"/>
+        <image name="Capsule.jpg" width="41" height="50"/>
+        <image name="Clusterof2.jpg" width="23" height="50"/>
+        <image name="Clusterof5.jpg" width="43" height="50"/>
+        <image name="CompoundLeaf.jpg" width="50" height="38"/>
+        <image name="Cone.jpg" width="50" height="46"/>
+        <image name="Conifer.jpg" width="50" height="48"/>
+        <image name="Cordate.jpg" width="50" height="45"/>
+        <image name="Cup.jpg" width="50" height="48"/>
+        <image name="Cylinder.jpg" width="50" height="44"/>
+        <image name="Deciduous.jpg" width="50" height="46"/>
+        <image name="Deltoid.jpg" width="50" height="50"/>
+        <image name="Achene.jpg" width="50" height="46"/>
+        <image name="Flat.jpg" width="50" height="46"/>
+        <image name="FlatNeedle.jpg" width="50" height="26"/>
+        <image name="Fleshy.jpg" width="50" height="50"/>
+        <image name="Lanceolate.jpg" width="19" height="50"/>
+        <image name="Linear.jpg" width="8" height="50"/>
+        <image name="LobedCombined.jpg" width="50" height="37"/>
+        <image name="Obovate.jpg" width="35" height="50"/>
+        <image name="Opposite.jpg" width="35" height="50"/>
+        <image name="Orbicular.jpg" width="50" height="50"/>
+        <image name="Ovate.jpg" width="50" height="54"/>
+        <image name="Palmate.jpg" width="50" height="54"/>
+        <image name="PaperyCone.jpg" width="50" height="48"/>
+        <image name="PinnateCombined.jpg" width="50" height="44"/>
+        <image name="Round.jpg" width="50" height="46"/>
+        <image name="Samara.jpg" width="50" height="44"/>
+        <image name="Scale.jpg" width="20" height="50"/>
+        <image name="Sharp.jpg" width="42" height="50"/>
+        <image name="SimpleLeaf.jpg" width="37" height="50"/>
+        <image name="Inconspicuous.jpg" width="38" height="50"/>
+        <image name="SolidCone.jpg" width="50" height="55"/>
+        <image name="Sphere.jpg" width="50" height="48"/>
+        <image name="Star.jpg" width="50" height="50"/>
+        <image name="Vine.jpg" width="10" height="50"/>
+        <image name="Whorled.jpg" width="50" height="50"/>
+        <image name="Icon.png" width="540" height="960.5"/>
     </resources>
 </document>

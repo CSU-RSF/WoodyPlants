@@ -400,7 +400,7 @@ namespace PortableApp
                     DownsampleToViewSize = true,
                     RetryCount = 0,
                     RetryDelay = 250,
-                    TransparencyEnabled = false,
+                    //TransparencyEnabled = false,
                     FadeAnimationEnabled = false,
                     LoadingPlaceholder = "loading.png",
                     ErrorPlaceholder = "error.png",

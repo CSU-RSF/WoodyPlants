@@ -66,7 +66,7 @@ namespace PortableApp
                     RetryCount = 0,
 
                     RetryDelay = 250,
-                    TransparencyEnabled = false,
+                    //TransparencyEnabled = false,
                     LoadingPlaceholder = "loading.png",
                     ErrorPlaceholder = "error.png",
                 };

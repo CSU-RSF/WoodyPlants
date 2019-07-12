@@ -164,7 +164,7 @@ namespace PortableApp
             innerContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
             // Add header to inner container            
-            Grid navigationBar = ConstructNavigationBarMain("Colorado Woody Plants");
+            Grid navigationBar = ConstructNavigationBarMain("\nColorado Woody Plants");
             innerContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50) });
             innerContainer.Children.Add(navigationBar, 0, 0);
 

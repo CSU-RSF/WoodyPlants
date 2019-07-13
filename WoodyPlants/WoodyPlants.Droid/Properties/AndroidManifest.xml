@@ -4,5 +4,5 @@
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<application android:label=" " android:icon="@drawable/icon" android:largeHeap="true" android:hardwareAccelerated="true"></application>
+	<application android:label="CO Woody Plants" android:icon="@drawable/icon" android:largeHeap="true" android:hardwareAccelerated="true"></application>
 </manifest>

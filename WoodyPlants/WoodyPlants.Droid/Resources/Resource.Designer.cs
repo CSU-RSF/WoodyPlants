@@ -5697,8 +5697,8 @@ namespace WoodyPlants.Droid
 			// aapt resource value: 0x7f0200c2
 			public const int narrow = 2130837698;
 			
-			// aapt resource value: 0x7f0200d8
-			public const int notification_template_icon_bg = 2130837720;
+			// aapt resource value: 0x7f0200d9
+			public const int notification_template_icon_bg = 2130837721;
 			
 			// aapt resource value: 0x7f0200c3
 			public const int oblanceolate = 2130837699;
@@ -5755,13 +5755,16 @@ namespace WoodyPlants.Droid
 			public const int splash_screen = 2130837716;
 			
 			// aapt resource value: 0x7f0200d5
-			public const int Star = 2130837717;
+			public const int splash_screen_02 = 2130837717;
 			
 			// aapt resource value: 0x7f0200d6
-			public const int Vine = 2130837718;
+			public const int Star = 2130837718;
 			
 			// aapt resource value: 0x7f0200d7
-			public const int Whorled = 2130837719;
+			public const int Vine = 2130837719;
+			
+			// aapt resource value: 0x7f0200d8
+			public const int Whorled = 2130837720;
 			
 			static Drawable()
 			{
